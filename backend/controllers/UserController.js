@@ -3,18 +3,18 @@ const User = require("../models/user");
 const Admin = require("../models/admin");
 const Role = require("../models/role");
 const bcrypt = require("bcrypt");
-const jsonwebtoken = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const TOKEN_KEY = 'DCMXIXvHBH';
 
-// router.get("/books", async function (req, res) {
-//     const listBooks = await Book.find();
-//     console.log("Books", listBooks);
-//     if(listBooks == '') {
-//         return res.send({message: 'No books Found'});
-//     };
-//     res.send(listBooks);
-// });
+router.get("/user/get", async function (req, res) {
+    const listUsers = await User.find();
+    console.log("Books", listUsers);
+    if(listUsers == '') {
+        return res.send({message: 'No books Found'});
+    };
+    res.send(listUsers);
+});
 
 // router.post("/add", async function(req, res) {
 //     const body = { 
@@ -73,20 +73,20 @@ router.post("/admin/signUp", async function (req, res) {
 });
 
 router.post("/user/signUp", async function (req, res) {
-    const { first_name, last_name, email, password } = req.body;
+    const { first_name, last_name, username, password } = req.body;
     const pass = bcrypt.hashSync(password, 10);
-    if (!(email && password && first_name && last_name)) {
+    if (!(username && password && first_name && last_name)) {
         res.status(400).send("All input is required");
     }
     const addUser = await User.create({
         first_name,
         last_name,
-        email,
+        username,
         password: pass,
         role: "USER"
     });
     const token = jwt.sign(
-        {user_id: addUser._id, email, role: "USER"},
+        {user_id: addUser._id, username, role: "USER"},
         TOKEN_KEY,
         {
             expiresIn: "2h"
@@ -127,7 +127,9 @@ router.post("/role/add", async function (req, res) {
 });
 
 router.delete("/role/delete", async function (req, res) {
-    const deleteRole = await Role.deleteOne({_id: req.body._id});
+    const id = req.body._id;
+    const role = await Role.findOne(id);
+    const deleteRole = await Role.deleteOne(role);
     res.send({ message : 'Role deleted'});
 });
 
@@ -135,7 +137,5 @@ router.get("/role/get", async function (req, res) {
     const getRoles = await Role.find();
     res.send(getRoles);
 });
-
-module.exports = router;
 
 module.exports = router;
