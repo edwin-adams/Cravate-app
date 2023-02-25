@@ -10,9 +10,9 @@ const TOKEN_KEY = 'DCMXIXvHBH';
 
 router.get("/user/get", async function (req, res) {
     const listUsers = await User.find();
-    console.log("Books", listUsers);
+    console.log("Users", listUsers);
     if(listUsers == '') {
-        return res.send({message: 'No books Found'});
+        return res.send({message: 'No users found'});
     };
     res.send(listUsers);
 });
