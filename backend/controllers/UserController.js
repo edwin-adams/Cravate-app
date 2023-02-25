@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const Role = require("../models/role");
+const Vendor = require("../models/vendor");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
@@ -46,21 +47,44 @@ router.get("/user/get", async function (req, res) {
 //     res.send({message: 'Book deleted'});
 // });
 
+// router.post("/signIn", async function (req, res) {
+//     // const token = jwtDecode(req.headers.token);
+
+//     // const role = token.role;
+//     const { username, password } = req.body;
+//     // if(role == 'USER') {
+//         const user = await User.findOne({username: username});
+//         const comparePassword = bcrypt.compareSync(password, user.password);
+//         if(comparePassword == true) {
+//             return res.send({message: "SignIn successfull"});
+//         }
+//         return res.send({message: "Incorrect Password"});
+//     // }
+//     // else{
+//         const admin = await User.findOne({username: username});
+//         const comparePassword = bcrypt.compareSync(password, admin.password);
+//         if(comparePassword == true) {
+//             return res.send({message: "SignIn successfull"});
+//         }
+//         return res.send({message: "Incorrect Password"});
+//     // }
+// });
+
 router.post("/admin/signUp", async function (req, res) {
-    const { first_name, last_name, email, password } = req.body;
+    const { first_name, last_name, username, password } = req.body;
     const pass = bcrypt.hashSync(password, 10);
-    if (!(email && password && first_name && last_name)) {
+    if (!(username && password && first_name && last_name)) {
         res.status(400).send("All input is required");
     }
-    const addAdmin = await User.create({
+    const addAdmin = await Admin.create({
         first_name,
         last_name,
-        email,
+        username,
         password: pass,
         role: "ADMIN"
     });
     const token = jwt.sign(
-        {user_id: addAdmin._id, email, role: "ADMIN"},
+        {user_id: addAdmin._id, username, role: "ADMIN"},
         TOKEN_KEY,
         {
             expiresIn: "2h"
@@ -96,28 +120,62 @@ router.post("/user/signUp", async function (req, res) {
     addUser.token = token;
 
     res.send(addUser);
-}); 
+});
 
-router.post("/signIn", async function (req, res) {
-    const token = jwtDecode(req.headers.token);
-    const role = token.role;
-    const { email, password } = req.body;
-    if(role == 'USER') {
-        const user = await User.findOne({email: email});
+router.post("/vendor/signUp", async function (req, res) {
+    const { first_name, last_name, username, password } = req.body;
+    const pass = bcrypt.hashSync(password, 10);
+    if (!(username && password && first_name && last_name)) {
+        res.status(400).send("All input is required");
+    }
+    const addVendor = await Vendor.create({
+        first_name,
+        last_name,
+        username,
+        password: pass,
+        role: "VENDOR"
+    });
+    const token = jwt.sign(
+        {user_id: addVendor._id, username, role: "VENDOR"},
+        TOKEN_KEY,
+        {
+            expiresIn: "2h"
+        }
+    );
+
+    addVendor.token = token;
+
+    res.send(addVendor);
+});
+
+router.get("/vendor/login", async function (req, res) {
+    const { username, password } = req.body;
+        const vendor = await Vendor.findOne({username: username});
+        const comparePassword = bcrypt.compareSync(password, vendor.password);
+        if(comparePassword == true) {
+            return res.send({message: "SignIn successfull"});
+        }
+        return res.send({message: "Incorrect Password"});
+});
+
+router.get("/user/login", async function (req, res) {
+    const { username, password } = req.body;
+        const user = await User.findOne({username: username});
         const comparePassword = bcrypt.compareSync(password, user.password);
         if(comparePassword == true) {
             return res.send({message: "SignIn successfull"});
         }
         return res.send({message: "Incorrect Password"});
-    }
-    else{
-        const admin = await User.findOne({email: email});
+});
+
+router.get("/admin/login", async function (req, res) {
+    const { username, password } = req.body;
+        const admin = await Admin.findOne({username: username});
         const comparePassword = bcrypt.compareSync(password, admin.password);
         if(comparePassword == true) {
             return res.send({message: "SignIn successfull"});
         }
         return res.send({message: "Incorrect Password"});
-    }
 });
 
 router.post("/role/add", async function (req, res) {
