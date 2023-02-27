@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Admin = require("../models/admin");
 const Role = require("../models/role");
 const Vendor = require("../models/vendor");
+const Truck = require("../models/trucks");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
@@ -76,6 +77,10 @@ router.post("/admin/signUp", async function (req, res) {
     if (!(username && password && first_name && last_name)) {
         res.status(400).send("All input is required");
     }
+    const adminExists = await Admin.findOne({username: username});
+    if(!(adminExists == null)) {
+        res.send({message: "Admin Exists"});
+    }
     const addAdmin = await Admin.create({
         first_name,
         last_name,
@@ -101,6 +106,10 @@ router.post("/user/signUp", async function (req, res) {
     const pass = bcrypt.hashSync(password, 10);
     if (!(username && password && first_name && last_name)) {
         res.status(400).send("All input is required");
+    }
+    const userExists = await User.findOne({username: username});
+    if(!(userExists == null)) {
+        res.send({message: "User Exists"});
     }
     const addUser = await User.create({
         first_name,
