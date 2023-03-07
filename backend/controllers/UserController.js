@@ -1,4 +1,4 @@
-const router = require("express").Router();
+    const router = require("express").Router();
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const Role = require("../models/role");
@@ -8,13 +8,31 @@ const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const TOKEN_KEY = 'DCMXIXvHBH';
 
-router.get("/user/get", async function (req, res) {
+router.get("/user/getall", async function (req, res) {
     const listUsers = await User.find();
     console.log("Users", listUsers);
     if(listUsers == '') {
         return res.send({message: 'No users found'});
     };
     res.send(listUsers);
+});
+
+router.get("/admin/getall", async function (req, res) {
+    const listAdmins = await Admin.find();
+    console.log("Admins", listAdmins);
+    if(listAdmins == '') {
+        return res.send({message: 'No admins found'});
+    };
+    res.send(listAdmins);
+});
+
+router.get("/vendor/getall", async function (req, res) {
+    const listVendors = await Vendor.find();
+    console.log("Vendors", listVendors);
+    if(listVendors == '') {
+        return res.send({message: 'No vendors found'});
+    };
+    res.send(listVendors);
 });
 
 // router.post("/add", async function(req, res) {
@@ -188,12 +206,48 @@ router.delete("/role/delete", async function (req, res) {
     const id = req.body._id;
     const role = await Role.findOne(id);
     const deleteRole = await Role.deleteOne(role);
-    res.send({ message : 'Role deleted'});
+    res.send({ message : 'Role Deleted.'});
+});
+
+router.delete("/admin/delete", async function (req, res) {
+    const id = req.body._id;
+    const admin = await Admin.findOne(id);
+    const deleteAdmin = await Admin.deleteOne(admin);
+    res.send({ message : 'Admin Deleted.'});
+});
+
+router.delete("/vendor/delete", async function(req,res){
+    const id =req.body._id;
+    const vendor = await Vendor.findOne(id);
+    const deleteVendor = await Vendor.deleteOne(vendor);
+    res.send({message : 'Vendor Deleted.'});
+});
+
+router.delete("/user/delete", async function(req,res){
+    const id =req.body._id;
+    const user = await User.findOne(id);
+    const deleteUser = await User.deleteOne(user);
+    res.send({message : 'User Deleted.'});
 });
 
 router.get("/role/get", async function (req, res) {
-    const getRoles = await Role.find();
-    res.send(getRoles);
+    const getRole = await Role.find();
+    res.send(getRole);
+});
+
+router.get("/user/get", async function (req, res) {
+    const getUser = await User.find();
+    res.send(getUser);
+});
+
+router.get("/admin/get", async function (req, res) {
+    const getAdmin = await Admin.find();
+    res.send(getAdmin);
+});
+
+router.get("/vendor/get", async function (req, res) {
+    const getVendor = await Vendor.find();
+    res.send(getVendor);
 });
 
 module.exports = router;
