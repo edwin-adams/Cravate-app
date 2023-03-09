@@ -28,6 +28,28 @@ router.get('/role/get', async function (req, res) {
     } catch (error) {
         console.log('Error: ', error);
     }
+    const adminExists = await Admin.findOne({username: username});
+    if(!(adminExists == null)) {
+        res.send({message: "Admin Exists"});
+    }
+    const addAdmin = await Admin.create({
+        first_name,
+        last_name,
+        username,
+        password: pass,
+        role: "ADMIN"
+    });
+    const token = jwt.sign(
+        {user_id: addAdmin._id, username, role: "ADMIN"},
+        TOKEN_KEY,
+        {
+            expiresIn: "2h"
+        }
+    );
+
+    addAdmin.token = token;
+
+    res.send(addAdmin);
 });
 
 router.get('/roles/getall', async function (req, res) {
@@ -51,6 +73,10 @@ router.post('/user/signUp', async function (req, res) {
     const pass = bcrypt.hashSync(password, 10);
     if (!(username && password && first_name && last_name)) {
         res.status(400).send('Provide all details.');
+    }
+    const userExists = await User.findOne({username: username});
+    if(!(userExists == null)) {
+        res.send({message: "User Exists"});
     }
     const addUser = await User.create({
         first_name,
