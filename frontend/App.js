@@ -1,6 +1,8 @@
 import HomeScreen from "./screens/HomeScreen";
 import VendorLanding from "./screens/VendorLanding";
 import CustomerLanding from "./screens/CustomerLanding";
+import { LoginScreen } from "./screens/authentication/loginPage";
+import { RegisterScreen } from "./screens/authentication/registerPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -10,6 +12,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen 
+          name="login"
+          component={LoginScreen}
+          options = {{}}
+        />
+        <Stack.Screen 
+          name="register"
+          component={RegisterScreen}
+          options = {{}}
+        />
         <Stack.Screen
           name="home"
           component={HomeScreen}
