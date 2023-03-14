@@ -3,6 +3,7 @@ const User = require('../models/user');
 const Admin = require('../models/admin');
 const Role = require('../models/role');
 const Vendor = require('../models/vendor');
+const Truck = require('../models/trucks');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtDecode = require('jwt-decode');
@@ -309,16 +310,28 @@ router.delete('/vendor/delete', async function(req,res){
 
 router.post('/truck/add', async function (req, res) {
     const body = req.body;
-    const addTruck = await Truck.create({ truck_name: body.name});
-    res.send('Truck Added.');
+    if(body.truck_name == null) {
+        res.send("Truck_name should not be empty");
+    }
+    if(body.address == null) {
+        res.send("Truck address should not be empty");
+    }
+    const addTruck = await Truck.create(body);
+    res.send({
+        truck: addTruck,
+        message: 'Truck Added.'
+    });
 });
 
 router.get('/truck/get', async function (req, res) {
     try{
         const truck = req.body.name;
+        if(truck == null) {
+            res,send("Truck name is required");
+        }
         const getTruck = await Truck.findOne({truck_name: truck});
         if(getTruck == null){
-            res.send('Truck not found.');
+            res.send({message: 'Truck not found.'});
         }
         else{     
             res.send(getTruck);
@@ -329,13 +342,12 @@ router.get('/truck/get', async function (req, res) {
     }
 });
 
-router.get('/trucks/getall', async function (req, res) {
+router.get('/truck/getall', async function (req, res) {
     const listTrucks = await Truck.find();
-    console.log('Trucks', listTrucks);
     if(listTrucks == '') {
         return res.send({message: 'No trucks found'});
     };
     res.send(listTrucks);
 });
 
-module.exports = router;
+module.exports = router;    

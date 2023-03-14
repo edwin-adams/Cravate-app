@@ -50,6 +50,14 @@ const trucksSchema = new mongoose.Schema({
     isAvailable: {
         type: Boolean,
         default: true
+    },
+    start_time: {
+        type: String,
+        required: true
+    },
+    end_time: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 
