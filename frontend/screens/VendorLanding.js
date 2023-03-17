@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Button} from 'react-native';
 export default function VendorLanding() {
     return (
         <View style = {styles.container}>
-            <Text>Vendor Login & Signup</Text>
+            <Text>Vendor Page</Text>
 
             {/*<Button
                 title = "For Vendors"
