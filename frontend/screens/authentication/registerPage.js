@@ -15,9 +15,9 @@ export const RegisterScreen = ({navigation}) => {
                 <TextInput label = "First name" style = {styles.textinput} />
                 <TextInput label = "Last name" style = {styles.textinput}/>
                 <TextInput label = "Username" style = {styles.textinput}/>
-                <TextInput label = "Password" secureTextEntry={true} right={<TextInput.Icon name="eye"/>} style = {styles.textinput}/>
+                <TextInput label = "Password" right={<TextInput.Icon name="eye" />} style = {styles.textinput}/>
                 <TextInput label = "Confirm Password" secureTextEntry={true} style = {styles.textinput}/>
-                <Button mode="contained" style={styles.button} onPress={() => navigation.navigate("ValidateFoodTruck")}>Register</Button>
+                <Button mode="contained" style={styles.button}>Register</Button>
                 <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("login")}>Have an account? Login here</Button>
             </ScrollView>
         </SafeAreaView>
