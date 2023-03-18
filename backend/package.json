@@ -1,0 +1,36 @@
+{
+  "name": "cravate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha ./test/test.js",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MitulShah0710/Cravate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MitulShah0710/Cravate/issues"
+  },
+  "homepage": "https://github.com/MitulShah0710/Cravate#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
+    "mocha": "^10.2.0",
+    "mongoose": "^6.9.1",
+    "nodemon": "^2.0.20",
+    "pm2": "^5.2.2",
+    "superset": "^2.0.1"
+  }
+}
