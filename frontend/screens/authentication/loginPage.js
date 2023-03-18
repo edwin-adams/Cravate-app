@@ -2,6 +2,7 @@ import React,{ useState } from "react";
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import axios from 'axios';
 
 
 export const LoginScreen = ({navigation}) => {
@@ -9,17 +10,15 @@ export const LoginScreen = ({navigation}) => {
     const [showPassword, setShowPassword] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm();
 
-    // const onSubmit = async (data) => {
-    //     try {
-    //     const response = await axios.post('http://yourbackendurl.com/login', data);
-    //     console.log(response.data);
-    //     } catch (error) {
-    //     console.error(error);
-    //     }
-    // };
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+     const onSubmit = async (data) => {
+            console.log(data);
+            try {
+             const response = await axios.get('http://3.239.61.7:3000/login', data);
+             console.log(response.data);
+          } catch (error) {
+              console.error(error);
+          }
+    };
     
     return (
         <SafeAreaView style={styles.container}>
