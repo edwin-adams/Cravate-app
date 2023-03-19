@@ -65,7 +65,7 @@ export const LoginScreen = ({navigation}) => {
                                 value={value}
                                 error={!!errors.password}
                                 secureTextEntry={!showPassword}
-                                right={<TextInput.Icon name={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(!showPassword)} />}
+                                right={<TextInput.Icon icon={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(!showPassword)} />}
                             />
                             )}
                             name="password"
