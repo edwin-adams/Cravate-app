@@ -18,7 +18,7 @@ router.post('/role/add', async function (req, res) {
     res.send('Role Created');
 });
 
-router.get('/role/get', async function (req, res) {
+router.post('/role/get', async function (req, res) {
     try {
     const roleID = req.body.id;
     const getRole = await Role.findOne({_id: roleID});
@@ -108,7 +108,7 @@ router.post('/user/signUp', async function (req, res) {
     res.send(addUser);
 });
 
-router.get('/user/login', async function (req, res) {
+router.post('/user/login', async function (req, res) {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
     if (user == null) {
@@ -123,7 +123,7 @@ router.get('/user/login', async function (req, res) {
     }
 });
 
-router.get('/user/get', async function (req, res) {
+router.post('/user/get', async function (req, res) {
     try{
         const user = req.body.username;
     const getUser = await User.findOne({username:user});
@@ -190,7 +190,7 @@ router.post('/admin/signUp', async function (req, res) {
     res.send(addAdmin);
 });
 
-router.get('/admin/login', async function (req, res) {
+router.post('/admin/login', async function (req, res) {
     const { username, password } = req.body;
         const admin = await Admin.findOne({username: username});
         if (admin == null) {
@@ -207,7 +207,7 @@ router.get('/admin/login', async function (req, res) {
        
 });
 
-router.get('/admin/get', async function (req, res) {
+router.post('/admin/get', async function (req, res) {
     try{
     const admin = req.body.firstname;
     const getAdmin = await User.findOne({first_name:admin});
@@ -279,7 +279,7 @@ router.post('/vendor/signUp', async function (req, res) {
     }
 });
 
-router.get('/vendor/login', async function (req, res) {
+router.post('/vendor/login', async function (req, res) {
     const { username, password } = req.body;
         const vendor = await Vendor.findOne({username: username});
         if (vendor == null) {
@@ -293,7 +293,7 @@ router.get('/vendor/login', async function (req, res) {
         return res.send('Incorrect Password.');
 });
 
-router.get('/vendor/get', async function (req, res) {
+router.post('/vendor/get', async function (req, res) {
     try{
         const vendor = req.body.username;
         const getVendor = await Vendor.findOne({username:vendor});
@@ -350,7 +350,7 @@ router.post('/truck/add', async function (req, res) {
     });
 });
 
-router.get('/truck/get', async function (req, res) {
+router.post('/truck/get', async function (req, res) {
     try{
         const truck = req.body.name;
         if(truck == null) {
