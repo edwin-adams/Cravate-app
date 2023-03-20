@@ -11,7 +11,7 @@ const server = app.listen(PORT, function () {
 })
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("Welcome to Cravate");
 })
 
 app.use(bodyParser.json());
