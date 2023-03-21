@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
@@ -34,20 +34,45 @@ export const VendorLoginScreen = ({ navigation }) => {
             setPasswordError('');
             }
 
-            if (firstNameValid && lastNameValid && usernameValid && passwordValid && confirmPasswordValid) {
+            if (usernameValid && passwordValid) {
                 const data = {
                     username: username,
                     password: password
                 };
                 console.log(data);
-                // Redirect based on toggle value
                 await fetch('http://3.239.61.7:3000/vendor/login', {
-                        method: 'POST',
-                        body: JSON.stringify(data),headers: {
-                                'Content-Type': 'application/json' } })
-                                .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
-                console.log(data)
-                navigation.navigate("VendorLanding");
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }).then(async response => {
+                    //console.log(response);
+                    let message = await response.text();
+                    if (message === 'Successfully logged in.') navigation.navigate("VendorLanding")
+                    else Alert.alert('Authentication failed')
+                    
+                    //const message = JSON.stringify(await response.text())
+                    //console.log(JSON.stringify(await response.text()))
+                    console.log(message);
+                    //if (message == "Successfully logged in."){
+                    //  navigation.navigate("CustomerLanding");
+                    //}
+                    //else{
+                    //  Alert.alert("Authentication failed");
+                    //}
+                    console.log("-------------------------------------------");
+                    // console.log(responseData);
+                });
+                // Redirect based on toggle value
+                // await fetch('http://3.239.61.7:3000/vendor/login', {
+                // method: 'POST',
+                // body: JSON.stringify(data),headers: {
+                //         'Content-Type': 'application/json' } })
+                //         .then(res => console.log(JSON.stringify(res.text()))) 
+                //         .catch(err => console.log('err =>', JSON.stringify(err)))
+                // console.log(data);
+                // navigation.navigate("VendorLanding");
             }
     };    
 

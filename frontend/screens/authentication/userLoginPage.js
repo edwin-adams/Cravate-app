@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
@@ -18,9 +18,22 @@ export const UserLoginScreen = ({ navigation }) => {
             },
             body: JSON.stringify(data),
         }).then(async response => {
-            console.log(JSON.stringify(await response.text()))
+            //console.log(response);
+            let message = await response.text();
+            if (message === 'Successfully logged in.') navigation.navigate("CustomerLanding")
+             else Alert.alert('Authentication failed')
+            
+            //const message = JSON.stringify(await response.text())
+            //console.log(JSON.stringify(await response.text()))
+            console.log(message);
+            //if (message == "Successfully logged in."){
+              //  navigation.navigate("CustomerLanding");
+            //}
+            //else{
+              //  Alert.alert("Authentication failed");
+            //}
             console.log("-------------------------------------------");
-            navigation.navigate("CustomerLanding");
+            // console.log(responseData);
         });
     };
 

@@ -28,6 +28,10 @@ export const VendorRegisterScreen = ({ navigation }) => {
         setConfirmPasswordVisible(!confirmPasswordVisible);
     };
 
+    const handleVerify = () =>{
+        
+    }
+    
     const handleSignup = async () => {
         let contactPersonNameValid = true;
         let foodTruckNameValid = true;
@@ -45,7 +49,7 @@ export const VendorRegisterScreen = ({ navigation }) => {
 
         if (foodTruckName.length === 0) {
         foodTruckNameValid = false;
-        setFoodTruckNameError('Last name is required');
+        setFoodTruckNameError('Food Truck Name is required');
         } else {
         setFoodTruckNameError('');
         }
@@ -81,7 +85,7 @@ export const VendorRegisterScreen = ({ navigation }) => {
             setPermitNumberError('');
         }
 
-        if (contactPersonNameValid && foodTruckNameValid && usernameValid && passwordValid && confirmPasswordValid) {
+        if (contactPersonNameValid && foodTruckNameValid && usernameValid && passwordValid && confirmPasswordValid && permitNumberValid) {
         const data = {
             contact_person: contactPersonName,
             food_truck: foodTruckName,
@@ -90,7 +94,6 @@ export const VendorRegisterScreen = ({ navigation }) => {
             permit_numer: permitNumber
         };
         console.log(data);
-        // Redirect based on toggle value
         await fetch('http://3.239.61.7:3000/vendor/signUp', {
                 method: 'POST',
                 body: JSON.stringify(data),headers: {
@@ -169,22 +172,17 @@ export const VendorRegisterScreen = ({ navigation }) => {
                 />
                 {confirmPasswordError ? <Text style={styles.error}>{confirmPasswordError}</Text> : null}
 
-                <TextInput
-                    label="Food Truck Permit Number"
-                    value={permitNumber}
-                    onChangeText={setPermitNumber}
-                    error={!!permitNumberError}
-                    errorText={permitNumberError}
-                    style={styles.textinput}
-                    right={
-                        <IconButton
-                        icon="send"
-                        label="send"
-                        color="blue"
-                        //onPress={handlePress}
-                        />
-                    }
-                />
+                <View style={{flexDirection:"row",flex:1}}>
+                    <TextInput
+                        label="Food Truck Permit Number"
+                        value={permitNumber}
+                        onChangeText={setPermitNumber}
+                        error={!!permitNumberError}
+                        errorText={permitNumberError}
+                        style={styles.textinput}
+                    />
+                    <Button mode="contained" style={styles.button} onPress={handleVerify}>Verify</Button>
+                </View>
                 {permitNumberError ? <Text style={styles.error}>{permitNumberError}</Text> : null}
 
                 <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
@@ -209,6 +207,7 @@ const styles = StyleSheet.create({
         marginLeft:10,
       },
     textinput: {
+        flex:1,
         margin: 10,  
     },
     toggleContainer: {

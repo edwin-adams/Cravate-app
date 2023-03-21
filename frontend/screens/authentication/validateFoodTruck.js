@@ -9,7 +9,7 @@ export const ValidateFoodTruck = ({ navigation }) => {
         let permitValid = true;
         if (permit.length === 0) {
             permitValid = false;
-            setPermitError('First name is required');
+            setPermitError('Permit number is required');
         } else {
             setPermitError('');
         }
