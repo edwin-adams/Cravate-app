@@ -1,150 +1,230 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { TextInput, Button, Text,Card, Checkbox, Switch } from 'react-native-paper';
-import { useForm, Controller } from 'react-hook-form';
+import { TextInput, Button, Text, Card, Checkbox, Switch,ToggleButton } from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 export const RegisterScreen = ({ navigation }) => {
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(true);
-  const [toggleSwitch, setToggleSwitch] = useState(false);
-  const { control, handleSubmit, formState: { errors } } = useForm();
-  
-  const onSubmit = data => {
-    // handle submit logic based on switch value
-    console.log(data);
-    // if (toggleSwitch) {
-    //   navigation.navigate('AnotherPage');
-    // } else {
-    //   navigation.navigate('HomePage');
-    // }
-  }
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [value, setValue] = useState('left');
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  return (
-      <SafeAreaView>
-        <ScrollView>
-            <Card>
-                <Card.Title title = "Register" titleStyle= {styles.title}></Card.Title>
-            </Card>
-            
-            <Controller
-                name="firstName"
-                control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field: { onChange, onBlur, value } }) => (
+    const onToggle = (newValue) => {
+        setValue(newValue);
+    };
+
+    const handlePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
+    const handleConfirmPasswordVisibility = () => {
+        setConfirmPasswordVisible(!confirmPasswordVisible);
+    };
+
+    const handleSignup = async () => {
+        let firstNameValid = true;
+        let lastNameValid = true;
+        let usernameValid = true;
+        let passwordValid = true;
+        let confirmPasswordValid = true;
+
+        if (firstName.length === 0) {
+        firstNameValid = false;
+        setFirstNameError('First name is required');
+        } else {
+        setFirstNameError('');
+        }
+
+        if (lastName.length === 0) {
+        lastNameValid = false;
+        setLastNameError('Last name is required');
+        } else {
+        setLastNameError('');
+        }
+
+        if (username.length === 0) {
+        usernameValid = false;
+        setUsernameError('Username is required');
+        } else {
+        setUsernameError('');
+        }
+
+        if (password.length < 6) {
+        passwordValid = false;
+        setPasswordError('Password must be at least 6 characters long');
+        } else {
+        setPasswordError('');
+        }
+
+        if (confirmPassword.length < 6) {
+        confirmPasswordValid = false;
+        setConfirmPasswordError('Confirm password must be at least 6 characters long');
+        } else if (password !== confirmPassword) {
+        confirmPasswordValid = false;
+        setConfirmPasswordError('Passwords do not match');
+        } else {
+        setConfirmPasswordError('');
+        }
+
+        if (firstNameValid && lastNameValid && usernameValid && passwordValid && confirmPasswordValid) {
+        const data = {
+            first_name: firstName,
+            last_name: lastName,
+            username: username,
+            password: password
+        };
+        console.log(data);
+        // Redirect based on toggle value
+        if (value === 'left') {
+            await fetch('http://3.239.61.7:3000/user/signUp', {
+                method: 'POST',
+                body: JSON.stringify(data),headers: {
+                        'Content-Type': 'application/json' } })
+                        .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
+            console.log(data)
+            console.log('Successful');
+        } else {
+            await fetch('http://3.239.61.7:3000/vendor/signUp', {
+                method: 'POST',
+                body: JSON.stringify(data),headers: {
+                        'Content-Type': 'application/json' } })
+                        .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
+            console.log(data)
+            console.log('Successful');
+            // Redirect to page 2
+        }
+        }
+    };
+
+
+    return (
+        <SafeAreaView>
+            <ScrollView>
+                <Card>
+                    <Card.Title title="Register" titleStyle={styles.title}></Card.Title>
+                </Card>
+
                 <TextInput
-                    label="First Name"
-                    mode="outlined"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    error={errors.firstName && <Text>This field is required</Text>}
+                    label="First name"
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    error={!!firstNameError}
+                    errorText={firstNameError}
+                    style={styles.textinput}
                 />
-                )}
-            />
-            <Controller
-                name="lastName"
-                control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field: { onChange, onBlur, value } }) => (
+                {firstNameError ? <Text style={styles.error}>{firstNameError}</Text> : null}
                 <TextInput
-                    label="Last Name"
-                    mode="outlined"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    error={errors.lastName && <Text>This field is required</Text>}
+                    label="Last name"
+                    value={lastName}
+                    onChangeText={setLastName}
+                    error={!!lastNameError}
+                    errorText={lastNameError}
+                    style={styles.textinput}
                 />
-                )}
-            />
-            <Controller
-                name="username"
-                control={control}
-                rules={{ required: true }}
-                defaultValue=""
-                render={({ field: { onChange, onBlur, value } }) => (
+                 {lastNameError ? <Text style={styles.error}>{lastNameError}</Text> : null}
                 <TextInput
                     label="Username"
-                    mode="outlined"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    error={errors.username && <Text>This field is required</Text>}
+                    value={username}
+                    onChangeText={setUsername}
+                    error={!!usernameError}
+                    errorText={usernameError}
+                    style={styles.textinput}
                 />
-                )}
-            />
-            <Controller
-                name="password"
-                control={control}
-                rules={{ required: true, minLength: 6 }}
-                defaultValue=""
-                render={({ field: { onChange, onBlur, value } }) => (
+                {usernameError ? <Text style={styles.error}>{usernameError}</Text> : null}
                 <TextInput
                     label="Password"
-                    mode="outlined"
-                    secureTextEntry={passwordVisibility}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    error={errors.password && <Text>This field is required and must be at least 6 characters</Text>}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!passwordVisible}
+                    error={!!passwordError}
+                    errorText={passwordError}
+                    style={styles.textinput}
                     right={
                     <TextInput.Icon
-                        name={passwordVisibility ? 'eye-off' : 'eye'}
-                        onPress={() => setPasswordVisibility(!passwordVisibility)}
+                        icon={passwordVisible ? 'eye-off' : 'eye'}
+                        onPress={handlePasswordVisibility}
                     />
                     }
                 />
-                )}
-            />
-            <Controller
-                name="confirmPassword"
-                control={control}
-                rules={{
-                required: true,
-                validate: (value) => value === control.getValues('password')
-                }}
-                defaultValue=""
-                render={({ field: { onChange, onBlur, value } }) => (
+                {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
                 <TextInput
-                    label="Confirm Password"
-                    mode="outlined"
-                    secureTextEntry={confirmPasswordVisibility}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    error={errors.confirmPassword && <Text>This field is required and must match Password field</Text>}
-                    right={ <TextInput.Icon
-                    name={confirmPasswordVisibility ? 'eye-off' : 'eye'}
-                    onPress={() => setConfirmPasswordVisibility(!confirmPasswordVisibility)}
+                    label="Confirm password"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={!confirmPasswordVisible}
+                    error={!!confirmPasswordError}
+                    errorText={confirmPasswordError}
+                    style={styles.textinput}
+                    right={
+                    <TextInput.Icon
+                        icon={confirmPasswordVisible ? 'eye-off' : 'eye'}
+                        onPress={handleConfirmPasswordVisibility}
+                    />
+                    }
                 />
-                }
-                />
-                )}
-            />
-            <View style={styles.switchContainer}>
-                <Text>Toggle Switch: </Text>
-                <Switch value={toggleSwitch} onValueChange={setToggleSwitch} />
-            </View>
-            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-                Submit
-            </Button>
-        </ScrollView>
-    </SafeAreaView>  
-);
+                {confirmPasswordError ? <Text style={styles.error}>{confirmPasswordError}</Text> : null}
+
+                <ToggleButton.Row onValueChange={(val) => onToggle(val)} value={value}>
+                    <ToggleButton
+                        icon= {()=><View><Text style={{color:'blue'}}>Customer</Text></View>}
+                        value="left"
+                        color={value === 'left' ? '#fff' : '#000'}
+                        style={{flex: 1}}
+                    >
+                        <Text style={{color: value === 'left' ? '#000' : '#fff'}}>Unlock</Text>
+                    </ToggleButton>
+                    <ToggleButton
+                        icon={()=><View><Text style={{color:'blue'}}>Vendor</Text></View>}
+                        value="right"
+                        color={value === 'right' ? '#fff' : '#000'}
+                        style={{flex: 1}}
+                    >
+                        <Text style={{color: value === 'right' ? '#000' : '#fff'}}>Lock</Text>
+                    </ToggleButton>
+                </ToggleButton.Row>
+
+                <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
+                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("login")}>Already an account? Login here</Button>
+
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-      display: "flex",
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "row",
-      backgroundColor: "rgb(101,37,131)"
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        backgroundColor: "rgb(101,37,131)"
     },
+    error: {
+        color: 'red',
+        marginBottom: 8,
+        marginLeft:10,
+      },
     textinput: {
-      margin: 10,  
+        margin: 10,  
+    },
+    toggleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 16
+    },
+    toggleText: {
+        fontSize: 16,
     },
     view: {
         width: "80%",
@@ -153,10 +233,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     title: {
-        marginVertical:20,
+        marginVertical: 20,
         color: "rgb(101,37,131)",
         fontSize: 20,
         textAlign: "center",
     },
-  });
-    
+});

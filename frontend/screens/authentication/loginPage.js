@@ -1,46 +1,51 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import axios from 'axios';
 
 
-export const LoginScreen = ({navigation}) => {
-    
+export const LoginScreen = ({ navigation }) => {
+
     const [showPassword, setShowPassword] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm();
 
-     const onSubmit = async (data) => {
-            console.log(data);
-            try {
-             const response = await axios.get('http://3.239.61.7:3000/login', data);
-             console.log(response.data);
-          } catch (error) {
-              console.error(error);
-          }
+    const onSubmit = async (data) => {
+        console.log(data);
+        await fetch('http://3.239.61.7:3000/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then(async response => {
+            console.log(JSON.stringify(await response.text()))
+            console.log("-------------------------------------------");
+            // console.log(responseData);
+        });
     };
-    
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style = {styles.view}>
+            <View style={styles.view}>
                 <Card>
-                    <Card.Title title = "Cravate" titleStyle= {styles.title}></Card.Title>
+                    <Card.Title title="Cravate" titleStyle={styles.title}></Card.Title>
                     <Card.Content>
 
                         <Controller
                             control={control}
                             rules={{
-                            required: true,
+                                required: true,
                             }}
                             render={({ field: { onChange, onBlur, value } }) => (
-                            <TextInput
-                                label="Username"
-                                onBlur={onBlur}
-                                style={styles.textinput}
-                                onChangeText={onChange}
-                                value={value}
-                                error={!!errors.username}
-                            />
+                                <TextInput
+                                    label="Username"
+                                    onBlur={onBlur}
+                                    style={styles.textinput}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    error={!!errors.username}
+                                />
                             )}
                             name="username"
                             defaultValue=""
@@ -53,20 +58,20 @@ export const LoginScreen = ({navigation}) => {
                         <Controller
                             control={control}
                             rules={{
-                            required: true,
-                            minLength: 6,
+                                required: true,
+                                minLength: 6,
                             }}
                             render={({ field: { onChange, onBlur, value } }) => (
-                            <TextInput
-                                label="Password"
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                style={styles.textinput}
-                                value={value}
-                                error={!!errors.password}
-                                secureTextEntry={!showPassword}
-                                right={<TextInput.Icon name={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(!showPassword)} />}
-                            />
+                                <TextInput
+                                    label="Password"
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    style={styles.textinput}
+                                    value={value}
+                                    error={!!errors.password}
+                                    secureTextEntry={!showPassword}
+                                    right={<TextInput.Icon icon={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(!showPassword)} />}
+                                />
                             )}
                             name="password"
                             defaultValue=""
@@ -89,15 +94,15 @@ export const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
     container: {
-      display: "flex",
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "row",
-      backgroundColor: "rgb(101,37,131)"
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        backgroundColor: "rgb(101,37,131)"
     },
     textinput: {
-      margin: 10,  
+        margin: 10,
     },
     view: {
         width: "80%",
@@ -110,4 +115,4 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
     },
-  });
+});
