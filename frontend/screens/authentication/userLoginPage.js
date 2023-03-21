@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
-import { useForm, Controller, SubmitHandler } from "react-hook-form"
-import axios from 'axios';
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 
-export const LoginScreen = ({ navigation }) => {
+export const UserLoginScreen = ({ navigation }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -21,7 +20,7 @@ export const LoginScreen = ({ navigation }) => {
         }).then(async response => {
             console.log(JSON.stringify(await response.text()))
             console.log("-------------------------------------------");
-            // console.log(responseData);
+            navigation.navigate("CustomerLanding");
         });
     };
 
@@ -84,7 +83,7 @@ export const LoginScreen = ({ navigation }) => {
                         {/* <TextInput label = "username" keyboardType="email-address"  left={<TextInput.Icon name="account" />} style={styles.textinput}></TextInput>
                         <TextInput label = "password" left={<TextInput.Icon name="form-textbox-password" />} right = {<TextInput.Icon name = "eye-off-outline"/>}  secureTextEntry={true} style={styles.textinput}></TextInput> */}
                         <Button mode="contained" style={styles.button} onPress={handleSubmit(onSubmit)}>Login</Button>
-                        <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("register")}>Don't have an account? Sign Up here</Button>
+                        <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("userRegister")}>Don't have an account? Sign Up here</Button>
                     </Card.Content>
                 </Card>
             </View>

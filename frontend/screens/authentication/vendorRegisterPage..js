@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { TextInput, Button, Text, Card, Checkbox, Switch,ToggleButton } from 'react-native-paper';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { TextInput, Button, Text, Card, IconButton, } from 'react-native-paper';
 
 
-export const RegisterScreen = ({ navigation }) => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+
+export const VendorRegisterScreen = ({ navigation }) => {
+    const [contactPersonName, setContactPersonName] = useState('');
+    const [foodTruckName, setFoodTruckName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [permitNumber,setPermitNumber] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-    const [value, setValue] = useState('left');
-    const [firstNameError, setFirstNameError] = useState('');
-    const [lastNameError, setLastNameError] = useState('');
+    const [contactPersonNameError, setContactPersonNameError] = useState('');
+    const [foodTruckNameError, setFoodTruckNameError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
-    const onToggle = (newValue) => {
-        setValue(newValue);
-    };
+    const [permitNumberError,setPermitNumberError] = useState('');
 
     const handlePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -32,24 +29,25 @@ export const RegisterScreen = ({ navigation }) => {
     };
 
     const handleSignup = async () => {
-        let firstNameValid = true;
-        let lastNameValid = true;
+        let contactPersonNameValid = true;
+        let foodTruckNameValid = true;
         let usernameValid = true;
         let passwordValid = true;
         let confirmPasswordValid = true;
+        let permitNumberValid = true;
 
-        if (firstName.length === 0) {
-        firstNameValid = false;
-        setFirstNameError('First name is required');
+        if (contactPersonName.length === 0) {
+        contactPersonNameValid = false;
+        setContactPersonNameError('Contact Person\'s Name is required');
         } else {
-        setFirstNameError('');
+        setContactPersonNameError('');
         }
 
-        if (lastName.length === 0) {
-        lastNameValid = false;
-        setLastNameError('Last name is required');
+        if (foodTruckName.length === 0) {
+        foodTruckNameValid = false;
+        setFoodTruckNameError('Last name is required');
         } else {
-        setLastNameError('');
+        setFoodTruckNameError('');
         }
 
         if (username.length === 0) {
@@ -76,33 +74,30 @@ export const RegisterScreen = ({ navigation }) => {
         setConfirmPasswordError('');
         }
 
-        if (firstNameValid && lastNameValid && usernameValid && passwordValid && confirmPasswordValid) {
+        if (permitNumber.length < 6){
+            permitNumberValid = false;
+            setPermitNumberError('Permit number must be atleast 6 characters long');
+        }else {
+            setPermitNumberError('');
+        }
+
+        if (contactPersonNameValid && foodTruckNameValid && usernameValid && passwordValid && confirmPasswordValid) {
         const data = {
-            first_name: firstName,
-            last_name: lastName,
+            contact_person: contactPersonName,
+            food_truck: foodTruckName,
             username: username,
-            password: password
+            password: password,
+            permit_numer: permitNumber
         };
         console.log(data);
         // Redirect based on toggle value
-        if (value === 'left') {
-            await fetch('http://3.239.61.7:3000/user/signUp', {
+        await fetch('http://3.239.61.7:3000/vendor/signUp', {
                 method: 'POST',
                 body: JSON.stringify(data),headers: {
                         'Content-Type': 'application/json' } })
                         .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
             console.log(data)
             console.log('Successful');
-        } else {
-            await fetch('http://3.239.61.7:3000/vendor/signUp', {
-                method: 'POST',
-                body: JSON.stringify(data),headers: {
-                        'Content-Type': 'application/json' } })
-                        .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
-            console.log(data)
-            console.log('Successful');
-            // Redirect to page 2
-        }
         }
     };
 
@@ -111,27 +106,27 @@ export const RegisterScreen = ({ navigation }) => {
         <SafeAreaView>
             <ScrollView>
                 <Card>
-                    <Card.Title title="Register" titleStyle={styles.title}></Card.Title>
+                    <Card.Title title="Vendor Registration" titleStyle={styles.title}></Card.Title>
                 </Card>
 
                 <TextInput
-                    label="First name"
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    error={!!firstNameError}
-                    errorText={firstNameError}
+                    label="Contact Person name"
+                    value={contactPersonName}
+                    onChangeText={setContactPersonName}
+                    error={!!contactPersonNameError}
+                    errorText={contactPersonNameError}
                     style={styles.textinput}
                 />
-                {firstNameError ? <Text style={styles.error}>{firstNameError}</Text> : null}
+                {contactPersonNameError ? <Text style={styles.error}>{contactNameError}</Text> : null}
                 <TextInput
-                    label="Last name"
-                    value={lastName}
-                    onChangeText={setLastName}
-                    error={!!lastNameError}
-                    errorText={lastNameError}
+                    label="Food Truck Name"
+                    value={foodTruckName}
+                    onChangeText={setFoodTruckName}
+                    error={!!foodTruckNameError}
+                    errorText={foodTruckNameError}
                     style={styles.textinput}
                 />
-                 {lastNameError ? <Text style={styles.error}>{lastNameError}</Text> : null}
+                 {foodTruckNameError ? <Text style={styles.error}>{foodTruckNameError}</Text> : null}
                 <TextInput
                     label="Username"
                     value={username}
@@ -174,28 +169,26 @@ export const RegisterScreen = ({ navigation }) => {
                 />
                 {confirmPasswordError ? <Text style={styles.error}>{confirmPasswordError}</Text> : null}
 
-                <ToggleButton.Row onValueChange={(val) => onToggle(val)} value={value}>
-                    <ToggleButton
-                        icon= {()=><View><Text style={{color:'blue'}}>Customer</Text></View>}
-                        value="left"
-                        color={value === 'left' ? '#fff' : '#000'}
-                        style={{flex: 1}}
-                    >
-                        <Text style={{color: value === 'left' ? '#000' : '#fff'}}>Unlock</Text>
-                    </ToggleButton>
-                    <ToggleButton
-                        icon={()=><View><Text style={{color:'blue'}}>Vendor</Text></View>}
-                        value="right"
-                        color={value === 'right' ? '#fff' : '#000'}
-                        style={{flex: 1}}
-                    >
-                        <Text style={{color: value === 'right' ? '#000' : '#fff'}}>Lock</Text>
-                    </ToggleButton>
-                </ToggleButton.Row>
+                <TextInput
+                    label="Food Truck Permit Number"
+                    value={permitNumber}
+                    onChangeText={setPermitNumber}
+                    error={!!permitNumberError}
+                    errorText={permitNumberError}
+                    style={styles.textinput}
+                    right={
+                        <IconButton
+                        icon="send"
+                        label="send"
+                        color="blue"
+                        //onPress={handlePress}
+                        />
+                    }
+                />
+                {permitNumberError ? <Text style={styles.error}>{permitNumberError}</Text> : null}
 
                 <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
-                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("login")}>Already an account? Login here</Button>
-
+                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("vendorLogin")}>Already an account? Login here</Button>
             </ScrollView>
         </SafeAreaView>
     );
