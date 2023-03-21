@@ -377,4 +377,16 @@ router.get('/truck/getall', async function (req, res) {
     res.send(listTrucks);
 });
 
+router.post('/dish/update', async function (req, res) {
+    const id = req.body.truckId;
+    const truck = await Truck.findById(id);
+    if(truck == null) {
+        res.send({message: "Truck Not found"});
+        return;
+    }
+    const truckDishes = truck.available_dishes;
+    console.log(truckDishes);
+    res.send(truck);
+});
+
 module.exports = router;    
