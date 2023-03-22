@@ -58,7 +58,7 @@ export default function App() {
         <Stack.Screen
           name="CustomerLanding"
           component={CustomerLanding}
-          options ={{title: "Customer Authentication"}}
+          options ={{title: "Customer Home Page"}}
         />
       </Stack.Navigator>
     </NavigationContainer>
