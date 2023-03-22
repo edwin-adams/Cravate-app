@@ -1,14 +1,10 @@
 import HomeScreen from "./screens/HomeScreen";
 import VendorLanding from "./screens/VendorLanding";
 import CustomerLanding from "./screens/CustomerLanding";
-import { UserLoginScreen } from "./screens/authentication/userLoginPage";
-import { UserRegisterScreen } from "./screens/authentication/userRegisterPage";
-import { VendorLoginScreen } from "./screens/authentication/vendorLoginPage";
-import { VendorRegisterScreen } from "./screens/authentication/vendorRegisterPage.";
-import { SplashScreen } from "./screens/authentication/splashPage";
+import { LoginScreen } from "./screens/authentication/loginPage";
+import { RegisterScreen } from "./screens/authentication/registerPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 
 const Stack = createNativeStackNavigator();
 
@@ -16,35 +12,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-
         <Stack.Screen 
-          name="splash"
-          component={SplashScreen}
-          options = {{}}
-        />
-
-        <Stack.Screen 
-          name="userLogin"
-          component={UserLoginScreen}
+          name="login"
+          component={LoginScreen}
           options = {{}}
         />
         <Stack.Screen 
-          name="userRegister"
-          component={UserRegisterScreen}
+          name="register"
+          component={RegisterScreen}
           options = {{}}
         />
-
-        <Stack.Screen 
-          name="vendorLogin"
-          component={VendorLoginScreen}
-          options = {{}}
-        />
-        <Stack.Screen 
-          name="vendorRegister"
-          component={VendorRegisterScreen}
-          options = {{}}
-        />
-
         <Stack.Screen
           name="home"
           component={HomeScreen}
@@ -58,7 +35,7 @@ export default function App() {
         <Stack.Screen
           name="CustomerLanding"
           component={CustomerLanding}
-          options ={{title: "Customer Home Page"}}
+          options ={{title: "Customer Authentication"}}
         />
       </Stack.Navigator>
     </NavigationContainer>
