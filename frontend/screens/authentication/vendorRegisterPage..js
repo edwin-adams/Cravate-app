@@ -5,20 +5,18 @@ import { TextInput, Button, Text, Card, IconButton, } from 'react-native-paper';
 
 
 export const VendorRegisterScreen = ({ navigation }) => {
-    const [contactPersonName, setContactPersonName] = useState('');
-    const [foodTruckName, setFoodTruckName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [permitNumber,setPermitNumber] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-    const [contactPersonNameError, setContactPersonNameError] = useState('');
-    const [foodTruckNameError, setFoodTruckNameError] = useState('');
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
-    const [permitNumberError,setPermitNumberError] = useState('');
 
     const handlePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -28,30 +26,26 @@ export const VendorRegisterScreen = ({ navigation }) => {
         setConfirmPasswordVisible(!confirmPasswordVisible);
     };
 
-    const handleVerify = () =>{
-        
-    }
     
     const handleSignup = async () => {
-        let contactPersonNameValid = true;
-        let foodTruckNameValid = true;
+        let firstNameValid = true;
+        let lastNameValid = true;
         let usernameValid = true;
         let passwordValid = true;
         let confirmPasswordValid = true;
-        let permitNumberValid = true;
 
-        if (contactPersonName.length === 0) {
-        contactPersonNameValid = false;
-        setContactPersonNameError('Contact Person\'s Name is required');
+        if (firstName.length === 0) {
+        firstNameValid = false;
+        setFirstNameError('First Name is required');
         } else {
-        setContactPersonNameError('');
+        setFirstNameError('');
         }
 
-        if (foodTruckName.length === 0) {
-        foodTruckNameValid = false;
-        setFoodTruckNameError('Food Truck Name is required');
+        if (lastName.length === 0) {
+        lastNameValid = false;
+        setLastNameError('Last name is required');
         } else {
-        setFoodTruckNameError('');
+        setLastNameError('');
         }
 
         if (username.length === 0) {
@@ -78,29 +72,53 @@ export const VendorRegisterScreen = ({ navigation }) => {
         setConfirmPasswordError('');
         }
 
-        if (permitNumber.length < 6){
-            permitNumberValid = false;
-            setPermitNumberError('Permit number must be atleast 6 characters long');
-        }else {
-            setPermitNumberError('');
-        }
 
-        if (contactPersonNameValid && foodTruckNameValid && usernameValid && passwordValid && confirmPasswordValid && permitNumberValid) {
-        const data = {
-            contact_person: contactPersonName,
-            food_truck: foodTruckName,
-            username: username,
-            password: password,
-            permit_numer: permitNumber
-        };
-        console.log(data);
-        await fetch('http://3.239.61.7:3000/vendor/signUp', {
+        if (firstNameValid && lastNameValid && usernameValid && passwordValid && confirmPasswordValid) {
+            const data = {
+                first_name: firstName,
+                last_name: lastName,
+                username: username,
+                password: password
+            };
+            console.log(data);
+            try {
+                const response = await fetch('http://3.239.61.7:3000/vendor/signUp', {
                 method: 'POST',
-                body: JSON.stringify(data),headers: {
-                        'Content-Type': 'application/json' } })
-                        .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
-            console.log(data)
-            console.log('Successful');
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+                });
+            
+                if (response.ok) {
+                // The signup was successful, navigate to the next screen
+                    navigation.navigate('addFoodTruck',{
+                        username 
+                    });
+                } else {
+                // There was an error with the signup, handle it appropriately
+                const errorText = await response.text();
+                console.error(errorText);
+                // You can show an error message to the user here
+                }
+            } catch (error) {
+                console.error(error);
+                // You can show an error message to the user here
+            }
+
+        
+        // await fetch('http://3.239.61.7:3000/vendor/signUp', {
+        //          method: 'POST',
+        //          body: JSON.stringify(data),headers: {
+        //                  'Content-Type': 'application/json' } })
+        //                  .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
+            
+        //     console.log(data);
+        //     console.log('Vendor Registration Successful');
+
+        //     navigation.navigate('addFoodTruck',{
+        //          username 
+        //     });
         }
     };
 
@@ -113,23 +131,23 @@ export const VendorRegisterScreen = ({ navigation }) => {
                 </Card>
 
                 <TextInput
-                    label="Contact Person name"
-                    value={contactPersonName}
-                    onChangeText={setContactPersonName}
-                    error={!!contactPersonNameError}
-                    errorText={contactPersonNameError}
+                    label="First Name"
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    error={!!firstNameError}
+                    errorText={firstNameError}
                     style={styles.textinput}
                 />
-                {contactPersonNameError ? <Text style={styles.error}>{contactNameError}</Text> : null}
+                {firstNameError ? <Text style={styles.error}>{firstNameError}</Text> : null}
                 <TextInput
-                    label="Food Truck Name"
-                    value={foodTruckName}
-                    onChangeText={setFoodTruckName}
-                    error={!!foodTruckNameError}
-                    errorText={foodTruckNameError}
+                    label="Last Name"
+                    value={lastName}
+                    onChangeText={setLastName}
+                    error={!!lastNameError}
+                    errorText={lastNameError}
                     style={styles.textinput}
                 />
-                 {foodTruckNameError ? <Text style={styles.error}>{foodTruckNameError}</Text> : null}
+                 {lastNameError ? <Text style={styles.error}>{lastNameError}</Text> : null}
                 <TextInput
                     label="Username"
                     value={username}
@@ -172,18 +190,6 @@ export const VendorRegisterScreen = ({ navigation }) => {
                 />
                 {confirmPasswordError ? <Text style={styles.error}>{confirmPasswordError}</Text> : null}
 
-                <View style={{flexDirection:"row",flex:1}}>
-                    <TextInput
-                        label="Food Truck Permit Number"
-                        value={permitNumber}
-                        onChangeText={setPermitNumber}
-                        error={!!permitNumberError}
-                        errorText={permitNumberError}
-                        style={styles.textinput}
-                    />
-                    <Button mode="contained" style={styles.button} onPress={handleVerify}>Verify</Button>
-                </View>
-                {permitNumberError ? <Text style={styles.error}>{permitNumberError}</Text> : null}
 
                 <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
                 <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("vendorLogin")}>Already an account? Login here</Button>

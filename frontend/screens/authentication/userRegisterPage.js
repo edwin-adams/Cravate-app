@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { TextInput, Button, Text, Card, Checkbox, Switch,ToggleButton } from 'react-native-paper';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 export const UserRegisterScreen = ({ navigation }) => {
