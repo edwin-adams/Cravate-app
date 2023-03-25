@@ -8,6 +8,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const { Model } = require("mongoose");
+const { findOne } = require("../models/user");
+const { findOneAndUpdate } = require("../models/admin");
 const TOKEN_KEY = "DCMXIXvHBH";
 
 // Role API's
@@ -353,16 +355,16 @@ router.get("/truck/getall", async function (req, res) {
   res.send(listTrucks);
 });
 
-router.post("/dish/update", async function (req, res) {
+router.post("/truck/addDish", async function (req, res) {
   const id = req.body.truckId;
   const truck = await Truck.findById(id);
   if (truck == null) {
     res.send({ message: "Truck Not found" });
     return;
   }
-  const truckDishes = truck.available_dishes;
-  console.log(truckDishes);
-  res.send(truck);
+  truck.available_dishes = req.body.dishes;
+  const updatedTruck = await truck.save();
+  res.send({truck: updatedTruck});
 });
 
 // router.post("/search", async function (req, res) {

@@ -54,12 +54,10 @@ const trucksSchema = new mongoose.Schema({
         default: true
     },
     start_time: {
-        type: String,
-        required: true
+        type: String
     },
     end_time: {
         type: String,
-        required: true
     }
 }, { timestamps: true });
 
