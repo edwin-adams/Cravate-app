@@ -379,6 +379,7 @@ router.post("/truck/addDish", async function (req, res) {
 
 router.post("/search", async function (req, res) {
   const search = req.body.search;
+  const lowerCaseSearch = search.toLowerCase();
   if(search == "") {
     const allTrucks = await Truck.find();
     res.send(allTrucks);
@@ -400,8 +401,10 @@ router.post("/search", async function (req, res) {
 
     let foundItems = [];
     let finalArray = [];
+    
     for (let i = 0; i < dishArray.length; i++) {
-      if (dishArray[i].dishes.includes(search)) {
+      const dishes = dishArray[i].dishes.map(dish => dish.toLowerCase());
+      if(dishes.includes(lowerCaseSearch)){
         foundItems.push(dishArray[i].name);
       }
     }
