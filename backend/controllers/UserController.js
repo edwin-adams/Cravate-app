@@ -384,9 +384,9 @@ router.post("/search", async function (req, res) {
     res.send(allTrucks);
     return;
   }
-
+  const array1 = [];
   const isTruckSearch = await Truck.findOne({ truck_name: search });
-  console.log(isTruckSearch, "isTruck");
+  array1.push(isTruckSearch);
   if (isTruckSearch == null) {
     const TruckArray = await Truck.find();
     const dishArray = [];
@@ -414,13 +414,13 @@ router.post("/search", async function (req, res) {
         finalArray.push(trucks);
       }
     } else {
-      res.send(`${search} not found in any truck`);
+      res.send(finalArray);
       return;
     }
     res.send(finalArray);
     return;
   }
-  res.send(isTruckSearch);
+  res.send(array1);
 });
 
 module.exports = router;
