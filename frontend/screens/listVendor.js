@@ -1,34 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 export const ListVendor = ({navigation}) => {
     const [vendors, setVendors] = useState([]);
 
-    useEffect(() => {
-        fetch('http://3.239.61.7:3000/vendors/getall')
-        .then(response => response.json())
-        .then(data => setVendors(data))
-        .catch(error => console.error(error));
-    }, []);
+    const fetchVendors = useCallback(() => {
+      fetch('http://3.239.61.7:3000/vendors/getall')
+          .then(response => response.json())
+          .then(data => setVendors(data))
+          .catch(error => console.error(error))
+  }, []);
 
-    const handleCardClick = (username) => {
-        navigation.navigate('vendorDetails', { username });
-    };
+  useEffect(() => {
+      setTimeout(fetchVendors, 3000);
+  }, [fetchVendors]);
 
-    return (
-        <View style={styles.container}>
-        <Text style={styles.heading}>Vendor List</Text>
-        {vendors.map(vendor => (
-            <TouchableOpacity
-            key={vendor.username}
-            style={styles.card}
-            onPress={() => handleCardClick(vendor.username)}
-            >
-            <Text style={styles.cardText}>{vendor.username}</Text>
-            </TouchableOpacity>
-        ))}
-        </View>
-    );
+  useFocusEffect(fetchVendors);
+
+  const handleCardClick = (username) => {
+      navigation.navigate('vendorDetails', { username });
+  };
+
+  return (
+      <View style={styles.container}>
+          <Text style={styles.heading}>Vendor List</Text>
+          {vendors.map(vendor => (
+              <TouchableOpacity
+                  key={vendor.username}
+                  style={styles.card}
+                  onPress={() => handleCardClick(vendor.username)}
+              >
+                  <Text style={styles.cardText}>{vendor.username}</Text>
+              </TouchableOpacity>
+          ))}
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({

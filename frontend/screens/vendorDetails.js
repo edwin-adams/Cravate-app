@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
 
 export const VendorDetails = ({navigation}) => {
     const route = useRoute();

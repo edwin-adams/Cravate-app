@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 export const ListUser = ({navigation}) => {
     const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-      setTimeout(() => {
+    const fetchUsers = useCallback(() => {
         fetch('http://3.239.61.7:3000/users/getall')
-          .then(response => response.json())
-          .then(data => setUsers(data))
-          .catch(error => console.error(error))
-      }, 3000);
+            .then(response => response.json())
+            .then(data => setUsers(data))
+            .catch(error => console.error(error))
     }, []);
+
+    useEffect(() => {
+        setTimeout(fetchUsers, 3000);
+    }, [fetchUsers]);
+
+    useFocusEffect(fetchUsers);
 
     const handleCardClick = (username) => {
         navigation.navigate('userDetails', { username });
@@ -19,19 +24,20 @@ export const ListUser = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-        <Text style={styles.heading}>User List</Text>
-        {users.map(user => (
-            <TouchableOpacity
-            key={user.username}
-            style={styles.card}
-            onPress={() => handleCardClick(user.username)}
-            >
-            <Text style={styles.cardText}>{user.username}</Text>
-            </TouchableOpacity>
-        ))}
+            <Text style={styles.heading}>User List</Text>
+            {users.map(user => (
+                <TouchableOpacity
+                    key={user.username}
+                    style={styles.card}
+                    onPress={() => handleCardClick(user.username)}
+                >
+                    <Text style={styles.cardText}>{user.username}</Text>
+                </TouchableOpacity>
+            ))}
         </View>
     );
-}
+};
+
 
 const styles = StyleSheet.create({
     container: {
