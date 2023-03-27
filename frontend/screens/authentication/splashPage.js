@@ -11,6 +11,7 @@ export const SplashScreen = ({ navigation }) => {
                 <Card.Content>
                 <Button mode="contained" style={styles.button} title="User" onPress={() => navigation.navigate("userLogin")}>User</Button>
                 <Button mode="contained" style={styles.button} title="Vendor" onPress={() => navigation.navigate("vendorLogin")} >Vendor</Button>
+                <Button mode="contained" style={styles.button} title="Admin" onPress={() => navigation.navigate("adminLogin")} >Admin</Button>
                 </Card.Content>
             </Card>
           </View>

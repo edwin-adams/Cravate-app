@@ -9,6 +9,14 @@ import { SplashScreen } from "./screens/authentication/splashPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddFoodTruck } from "./screens/authentication/addFoodTruck";
+import { AdminLoginScreen } from "./screens/authentication/adminLoginPage";
+import { AdminLanding } from "./screens/adminLanding";
+import { ListVendor } from "./screens/listVendor";
+import { ListUser } from "./screens/listUser";
+import { ListFoodTruck } from "./screens/listFoodTruck";
+import { UserDetails } from "./screens/userDetails";
+import { FoodTruckDetails } from "./screens/foodTruckDetails";
+import { VendorDetails } from "./screens/vendorDetails";
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +31,54 @@ export default function App() {
           name="splash"
           component={SplashScreen}
           options = {{headerShown:false}}
+        />
+
+        <Stack.Screen 
+          name="adminLogin"
+          component={AdminLoginScreen}
+          options = {{headerShown:false}}
+        />
+
+        <Stack.Screen 
+          name="adminLanding"
+          component={AdminLanding}
+          options = {{headerShown:false}}
+        />
+
+        <Stack.Screen 
+          name="listVendor"
+          component={ListVendor}
+          options = {{}}
+        />
+
+        <Stack.Screen 
+          name="listUser"
+          component={ListUser}
+          options = {{}}
+        />
+
+        <Stack.Screen 
+          name="listFoodTruck"
+          component={ListFoodTruck}
+          options = {{}}
+        />
+
+        <Stack.Screen 
+          name="userDetails"
+          component={UserDetails}
+          options = {{}}
+        />
+
+        <Stack.Screen 
+          name="foodTruckDetails"
+          component={FoodTruckDetails}
+          options = {{}}
+        />
+
+        <Stack.Screen 
+          name="vendorDetails"
+          component={VendorDetails}
+          options = {{}}
         />
 
         <Stack.Screen 

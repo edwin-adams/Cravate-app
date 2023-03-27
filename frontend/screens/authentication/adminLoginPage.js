@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 
-export const VendorLoginScreen = ({ navigation }) => {
+export const AdminLoginScreen = ({ navigation }) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -40,7 +39,7 @@ export const VendorLoginScreen = ({ navigation }) => {
                     password: password
                 };
                 console.log(data);
-                await fetch('http://3.239.61.7:3000/vendor/login', {
+                await fetch('http://3.239.61.7:3000/admin/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -49,7 +48,7 @@ export const VendorLoginScreen = ({ navigation }) => {
                 }).then(async response => {
                     //console.log(response);
                     let message = await response.text();
-                    if (message === 'Successfully logged in.') navigation.navigate("VendorLanding",{username})
+                    if (message === 'Successfully logged in.') navigation.navigate("adminLanding")
                     else Alert.alert('Authentication failed')
                     
                     //const message = JSON.stringify(await response.text())
@@ -80,7 +79,7 @@ export const VendorLoginScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.view}>
                 <Card>
-                    <Card.Title title="Cravate Vendor Login" titleStyle={styles.title}></Card.Title>
+                    <Card.Title title="Cravate Admin Login" titleStyle={styles.title}></Card.Title>
                     <Card.Content>
 
                         <TextInput
@@ -110,7 +109,7 @@ export const VendorLoginScreen = ({ navigation }) => {
                         {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
 
                         <Button mode="contained" style={styles.button} onPress={handleLogin}>Login</Button>
-                        <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("vendorRegister")}>Don't have an account? Sign Up here</Button>
+                        {/* <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("vendorRegister")}>Don't have an account? Sign Up here</Button> */}
                     </Card.Content>
                 </Card>
             </View>
