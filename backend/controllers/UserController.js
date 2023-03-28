@@ -344,7 +344,7 @@ router.post("/truck/get", async function (req, res) {
   try {
     const truck = req.body.name;
     if (truck == null) {
-      res, send("Truck name is required");
+      res.send("Truck name is required");
     }
     const getTruck = await Truck.findOne({ truck_name: truck });
     if (getTruck == null) {
@@ -432,6 +432,23 @@ router.post("/truck/update", async function (req, res) {
   const truckUpdated = await Truck.findByIdAndUpdate(truck._id, req.body);
   const truck2 = await Truck.findOne({vendorId: req.body.vendorId});
   res.send(truck2);
+});
+
+router.post("/truck/getByVendorId", async function (req, res) {
+  try {
+    const vendorId = req.body.vendorId;
+    if (vendorId == null) {
+      res.send("VendorId is required");
+    }
+    const getTruck = await Truck.findOne({ vendorId: vendorId });
+    if (getTruck == null) {
+      res.send({ message: "Truck not found." });
+    } else {
+      res.send(getTruck);
+    }
+  } catch (error) {
+    console.log("Error:", error);
+  }
 });
 
 module.exports = router;
