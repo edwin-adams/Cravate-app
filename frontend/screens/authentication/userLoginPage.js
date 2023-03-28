@@ -20,7 +20,7 @@ export const UserLoginScreen = ({ navigation }) => {
         }).then(async response => {
             //console.log(response);
             let message = await response.text();
-            if (message === 'Successfully logged in.') navigation.navigate("CustomerLanding")
+            if (message === 'Successfully logged in.') navigation.navigate("Customer")
              else Alert.alert('Authentication failed')
             
             //const message = JSON.stringify(await response.text())
