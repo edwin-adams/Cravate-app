@@ -426,4 +426,12 @@ router.post("/search", async function (req, res) {
   res.send(array1);
 });
 
+router.post("/truck/update", async function (req, res) {
+  const body = req.body;
+  const truck = await Truck.findOne({vendorId: req.body.vendorId});
+  const truckUpdated = await Truck.findByIdAndUpdate(truck._id, req.body);
+  const truck2 = await Truck.findOne({vendorId: req.body.vendorId});
+  res.send(truck2);
+});
+
 module.exports = router;
