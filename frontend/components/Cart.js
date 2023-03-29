@@ -6,8 +6,18 @@ import {
     Image,
     Pressable,
   } from "react-native";
-  import React, { useState } from "react";
-  
+  import React, { useState, useEffect} from "react";
+
+ 
+
+
+
+
+
+
+
+
+
   const images = [
     {
       id: "0",
@@ -35,7 +45,7 @@ import {
     return (
       <>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
-          FoodCart
+          Dishes
         </Text>
         {images.map((item) => (
           <Pressable
@@ -60,7 +70,7 @@ import {
                      padding: 5,
                    }}
                  >
-                  REMOVE FROM CART
+                 Unavailable
                  </Text>
                </Pressable>
               ):(
@@ -73,7 +83,7 @@ import {
                     padding: 5,
                   }}
                 >
-                  ADD TO CART
+                  Available
                 </Text>
               </Pressable>
               )}
@@ -81,14 +91,8 @@ import {
             </View>
           </Pressable>
         ))}
-        <View style={{ height: 1, borderColor: "gray", borderWidth: 2 }} />
-        <Text>CART ITEMS ADDED: </Text>
-        {cart.map((item) => (
-          <View style={{margin:10}}>
-            <Image style={{ width: 100, height: 100, borderRadius: 8 }} source={{uri:item.image}}/>
-            <Text>{item.name}</Text>
-          </View>
-        ))}
+      
+        
       </>
     );
   };

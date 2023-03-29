@@ -1,0 +1,102 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+
+const apiUrl = 'https://example.com/api/dishes';
+
+const App = () => {
+  const [availableDishes, setAvailableDishes] = useState([]);
+  const [unavailableDishes, setUnavailableDishes] = useState([]);
+
+  useEffect(() => {
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        setAvailableDishes(data.available_dishes);
+        setUnavailableDishes(data.unavailable_dishes);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
+  const toggleAvailability = (dish, isAvailable) => {
+    if (isAvailable) {
+      setAvailableDishes([...availableDishes, dish]);
+      setUnavailableDishes(unavailableDishes.filter(d => d !== dish));
+    } else {
+      setUnavailableDishes([...unavailableDishes, dish]);
+      setAvailableDishes(availableDishes.filter(d => d !== dish));
+    }
+  };
+
+  const handleSubmit = () => {
+    const data = {
+      available_dishes: availableDishes,
+      unavailable_dishes: unavailableDishes
+    };
+    fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+  };
+
+  const styles = StyleSheet.create({
+    dishItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 10,
+      marginVertical: 5,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 10
+    },
+    dishName: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      marginRight: 10
+    },
+    buttonContainer: {
+      borderRadius: 50,
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'purple'
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 12
+    }
+  });
+
+  return (
+    <View>
+      <Text>Available Dishes:</Text>
+      {availableDishes.map(dish => (
+        <View key={dish} style={styles.dishItem}>
+          <Text style={styles.dishName}>{dish}</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => toggleAvailability(dish, false)}>
+            <Text style={styles.buttonText}>-</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+      <Text>Unavailable Dishes:</Text>
+      {unavailableDishes.map(dish => (
+        <View key={dish} style={styles.dishItem}>
+          <Text style={styles.dishName}>{dish}</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => toggleAvailability(dish, true)}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+      <Button title="Submit" onPress={handleSubmit} style={styles.button} textStyle={styles.buttonText} />
+    </View>
+  );
+};
+
+export default App;
