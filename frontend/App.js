@@ -1,5 +1,4 @@
 import HomeScreen from "./screens/HomeScreen";
-import VendorLanding from "./screens/VendorLanding";
 import CustomerLanding from "./screens/CustomerLanding";
 import { UserLoginScreen } from "./screens/authentication/userLoginPage";
 import { UserRegisterScreen } from "./screens/authentication/userRegisterPage";
@@ -19,6 +18,7 @@ import { FoodTruckDetails } from "./screens/foodTruckDetails";
 import { VendorDetails } from "./screens/vendorDetails";
 import CustomerMapScreen from "./screens/maps/CustomerMap.js"
 import { createSwitchNavigator } from '@react-navigation/core';
+import { VendorLanding } from "./screens/VendorLanding";
 
 const Stack = createNativeStackNavigator();
 // const CustomerSwitch = createSwitchNavigator({
@@ -118,10 +118,10 @@ export default function App() {
           options ={{title: "HomeScreen Landing"}}
         />
         <Stack.Screen
-          name="VendorLanding"
+          name = "VendorLanding"
           component={VendorLanding}
-          options ={{title: "Vendor Landing"}}
-        />
+          options = {{title: "Vendor Landing Page"}}
+          />
          <Stack.Screen
           name="CustomerLanding"
           component={CustomerLanding}

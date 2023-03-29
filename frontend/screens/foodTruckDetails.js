@@ -5,7 +5,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 export const FoodTruckDetails = ({navigation}) => {
     const route = useRoute();
-    const { name } = route.params;
+    const { vendorId } = route.params;
 
     const [foodTruck, setFoodTruck] = useState(null);
     const [region, setRegion] = useState({
@@ -15,34 +15,15 @@ export const FoodTruckDetails = ({navigation}) => {
         longitudeDelta: 0.005,
     });
 
-    
-
-    // const deleteUser = async () => {
-    //     try {
-    //         const response = await fetch(`http://3.239.61.7:3000/user/delete?username=${username}`, {
-    //           method: 'DELETE'
-    //         });
-    //         const result = await response.text();
-    //         if (result === "User Deleted.") {
-    //           alert("User deleted successfully.");
-    //           navigation.navigate('listUser');
-    //         } else {
-    //             console.log(result)
-    //           alert("Failed to delete user.");
-    //         }
-    //       } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
 
     if (!foodTruck) {
-        
-        fetch('http://3.239.61.7:3000/truck/get', {
+        console.log(vendorId);
+        fetch('http://3.239.61.7:3000/truck/getByVendorId', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name: name })
+        body: JSON.stringify({ vendorId: vendorId })
         })
         .then(response => response.json())
         .then(data => setFoodTruck(data))

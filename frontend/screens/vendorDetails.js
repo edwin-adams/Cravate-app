@@ -24,6 +24,11 @@ export const VendorDetails = ({navigation}) => {
       }  
   };
 
+  const goToFoodTruck = (vendorId) =>{
+    console.log(vendorId);
+    navigation.navigate('foodTruckDetails', { vendorId });
+  }
+
     if (!vendor) {
         fetch('http://3.239.61.7:3000/vendor/get', {
         method: 'POST',
@@ -53,6 +58,9 @@ export const VendorDetails = ({navigation}) => {
         </View>
         <TouchableOpacity style={styles.button} onPress={deleteVendor}>
             <Text style={styles.buttonText}>Delete Vendor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => goToFoodTruck(vendor._id)}>
+            <Text style={styles.buttonText}>Corresponding Food Truck</Text>
         </TouchableOpacity>
         </View>
     );

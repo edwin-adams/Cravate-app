@@ -1,26 +1,7 @@
-import {StyleSheet, Text, View, Button} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 
-export default function VendorLanding() {
-    return (
-        <View style = {styles.container}>
-            <Text>Vendor Login & Signup</Text>
-
-            {/*<Button
-                title = "For Vendors"
-                onPress = {() => navigation.navigate("VendorLanding")}
-            />
-            <Button
-                title = "For Customers"
-                onPress = {() => navigation.navigate("ConsumerLanding")}
-            /> */}   
-        </View>
-    );
+export const VendorLanding =({ navigation }) => {
+  
+  
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "t#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    }
-});

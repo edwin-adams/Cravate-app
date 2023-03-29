@@ -32,42 +32,7 @@ export const AddFoodTruck =({ navigation }) => {
   const [showStartPickerModal, setShowStartPickerModal] = useState(false);
   const [showEndPickerModal, setShowEndPickerModal] = useState(false);
 
-
-  // const handleApiResponse = (response) => {
-  //   const { _id } = response;
-  //   setVendorId(_id);
-  //   console.log(vendorId);
-  // };
-  
   const [vendorResponse, setVendorResponse] = React.useState();
-
-    // useEffect(() => {
-    //   if(username){
-    //     const getVendorID = async () => {
-    //       const response = await fetch('http://3.239.61.7:3000/vendor/get', {
-    //           method: 'POST',
-    //           headers: {
-    //               'Content-Type': 'application/json'
-    //           },
-    //           body: JSON.stringify({
-    //               username: username
-    //           })
-    //       })
-
-    //       const data = await response.json()
-    //       console.log('data response ==>', data)
-    //       setVendorResponse(data)
-    //   }
-
-    //   getVendorID();
-    //   }
-    //   else{
-    //     console.log('username not found')
-    //   }
-    // }, [username])
-
-
-  //console.log('outside vendorResponse ==>', vendorResponse)
 
   const [isLoading, setIsLoading] = useState(false);
   
@@ -98,14 +63,12 @@ export const AddFoodTruck =({ navigation }) => {
     };
     
     getVendorId();
-    // if(vendorId === null){
-    //   getVendorId();  
-    // }
+  
     if (!vendorId) {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-        // add any other code to refresh the screen here
+        
       }, 1000);
     }
   },[vendorId])
@@ -156,47 +119,48 @@ export const AddFoodTruck =({ navigation }) => {
       Alert.alert('VendorId is null')
     }
 
-    data = {
-      truck_name: foodTruckName,
-      truck_code: foodTruckCode,
-      vendorId: vendorId,
-      address: address,
-      city: city,
-      location : {
-        latitude: latitude,
-         longitude: longitude
-      },
-     available_dishes: items,
-     unavailable_dishes: [],
-     start_time: startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-     end_time: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-
-    console.log(data);
-    try {
-      const response = await fetch('http://3.239.61.7:3000/truck/add', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-      });
-  
-      if (response.ok) {
-      // The signup was successful, navigate to the next screen
-          navigation.navigate('VendorLanding',{
-              foodTruckName 
+    if(foodTruckNameValid && foodTruckCodeValid && addressValid && cityValid){
+        data = {
+          truck_name: foodTruckName,
+          truck_code: foodTruckCode,
+          vendorId: vendorId,
+          address: address,
+          city: city,
+          location : {
+            latitude: latitude,
+            longitude: longitude
+          },
+        available_dishes: items,
+        unavailable_dishes: [],
+        start_time: startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        end_time: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+    
+        console.log(data);
+        try {
+          const response = await fetch('http://3.239.61.7:3000/truck/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
           });
-      } else {
-      // There was an error with the signup, handle it appropriately
-      const errorText = await response.text();
-      console.error(errorText);
-      // You can show an error message to the user here
+      
+          if (response.ok) {
+          // The signup was successful, navigate to the next screen
+            Alert.alert('Registration successful. Please login.')
+            navigation.navigate('vendorLogin');
+          } else {
+          // There was an error with the signup, handle it appropriately
+          const errorText = await response.text();
+          console.error(errorText);
+          // You can show an error message to the user here
+          }
+      } catch (error) {
+          console.error(error);
+          // You can show an error message to the user here
       }
-  } catch (error) {
-      console.error(error);
-      // You can show an error message to the user here
-  }
+    }
   }
 
   const handleStartTimeChange = (event, selectedTime) => {

@@ -96,29 +96,12 @@ export const VendorRegisterScreen = ({ navigation }) => {
                         username 
                     });
                 } else {
-                // There was an error with the signup, handle it appropriately
                 const errorText = await response.text();
                 console.error(errorText);
-                // You can show an error message to the user here
                 }
             } catch (error) {
                 console.error(error);
-                // You can show an error message to the user here
             }
-
-        
-        // await fetch('http://3.239.61.7:3000/vendor/signUp', {
-        //          method: 'POST',
-        //          body: JSON.stringify(data),headers: {
-        //                  'Content-Type': 'application/json' } })
-        //                  .then(res => console.log(JSON.stringify(res))) .catch(err => console.log('err =>', JSON.stringify(err)))
-            
-        //     console.log(data);
-        //     console.log('Vendor Registration Successful');
-
-        //     navigation.navigate('addFoodTruck',{
-        //          username 
-        //     });
         }
     };
 

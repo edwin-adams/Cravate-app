@@ -11,8 +11,8 @@ export const ListFoodTruck = ({navigation}) => {
         .catch(error => console.error(error));
     }, []);
 
-    const handleCardClick = (name) => {
-        navigation.navigate('foodTruckDetails', { name });
+    const handleCardClick = (vendorId) => {
+      navigation.navigate('foodTruckDetails', { vendorId });
     };
 
     return (
@@ -22,7 +22,7 @@ export const ListFoodTruck = ({navigation}) => {
             <TouchableOpacity
             key={foodTruck.truck_name}
             style={styles.card}
-            onPress={() => handleCardClick(foodTruck.truck_name)}
+            onPress={() => handleCardClick(foodTruck.vendorId)}
             >
             <Text style={styles.cardText}>{foodTruck.truck_name}</Text>
             </TouchableOpacity>
