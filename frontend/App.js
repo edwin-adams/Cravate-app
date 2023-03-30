@@ -140,103 +140,38 @@ function Customer({ navigation })
   );
 }
 
-
-
 function Vendor ({ navigation})
 {
-
-
 //  const [isLoading, setLoading] = useState(true);
-
-const API_URL = 'http://3.239.61.7:3000/truck/get';
-const [availableDishes, setAvailableDishes] = useState([]);
-  const [unavailableDishes, setUnavailableDishes] = useState([]);
+  const [data, setData] = useState([]);
+ 
   useEffect(() => {
-    fetch(API_URL,
-      
-      {
+    fetch('http://3.239.61.7:3000/truck/get', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ name: 'Frooty' }) //body parameter to be changed for dynamic 
         
-  }
-      
-      )
+  })
       .then(response => response.json())
-      .then(data => {
-        setAvailableDishes(data.available_dishes);
-        setUnavailableDishes(data.unavailable_dishes);
-      })
-      .catch(error => console.error(error));
+      .then( data => setData(data))
+      .catch((error) => console.error(error))
   }, []);
+  console.log("data from api",data);
 
+  return( 
 
-  const toggleAvailability = (dish, isAvailable) => {
-    if (isAvailable) {
-      setAvailableDishes([...availableDishes, dish]);
-      setUnavailableDishes(unavailableDishes.filter(d => d !== dish));
-    } else {
-      setUnavailableDishes([...unavailableDishes, dish]);
-      setAvailableDishes(availableDishes.filter(d => d !== dish));
-    }
-  };
-  const styles = StyleSheet.create({
-    dishItem: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
-      marginVertical: 5,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 10
-    },
-    dishName: {
-      fontWeight: 'bold',
-      fontSize: 18,
-      marginRight: 10
-    },
-    buttonContainer: {
-      borderRadius: 50,
-      width: 110,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'purple'
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 12
-    }
-  });
+  <View style={styles.container}>
 
-  return (
-    <View>
-      <Text style = {styles.dishName}>Available Dishes:</Text>
-      {availableDishes.map(dish => (
-        <View key={dish} style={styles.dishItem}>
-          <Text style={styles.dishName}>{dish}</Text>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => toggleAvailability(dish, false)}>
-            <Text style={styles.buttonText}>Make Unavailable</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
-      <Text style = {styles.dishName}>Unavailable Dishes:</Text>
-      {unavailableDishes.map(dish => (
-        <View key={dish} style={styles.dishItem}>
-          <Text style={styles.dishName}>{dish}</Text>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => toggleAvailability(dish, true)}>
-            <Text style={styles.buttonText}>Make Available</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </View>
+  <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
+      <Cart/>
+    </SafeAreaView>
+            </View>
+            
   );
-};
-
-
+}
 
 
 
