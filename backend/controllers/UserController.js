@@ -309,6 +309,16 @@ router.delete("/vendor/delete", async function (req, res) {
     res.send("No such vendor exists.");
   } else {
     const deleteVendor = await Vendor.deleteOne({ username: usn });
+    const isFoodTruckOfVendor = await Truck.findOne({ vendorId: vendor._id });
+    if (isFoodTruckOfVendor == null) {
+      console.log("No food Truck Found for the vendor");
+      res.send("Vendor Deleted");
+      return;
+    }
+    const foodTruckOfVendor = await Truck.findOneAndDelete({
+      vendorId: vendor._id,
+    });
+    console.log("Food Truck Deleted");
     res.send("Vendor Deleted.");
   }
 });
@@ -334,7 +344,7 @@ router.post("/truck/get", async function (req, res) {
   try {
     const truck = req.body.name;
     if (truck == null) {
-      res, send("Truck name is required");
+      res.send("Truck name is required");
     }
     const getTruck = await Truck.findOne({ truck_name: truck });
     if (getTruck == null) {
@@ -364,44 +374,20 @@ router.post("/truck/addDish", async function (req, res) {
   }
   truck.available_dishes = req.body.dishes;
   const updatedTruck = await truck.save();
-  res.send({truck: updatedTruck});
+  res.send({ truck: updatedTruck });
 });
-
-// router.post("/search", async function (req, res) {
-//   const search = req.body.search;
-//   const isTruckSearch = await Truck.findOne({ truck_name: search });
-//   console.log(isTruckSearch, "isTruck");
-//   if (isTruckSearch == null) {
-//     const TruckArray = await Truck.find();
-//     const dishArray = [];
-//     for (let i = 0; i < TruckArray.length; i++) {
-//       const element = TruckArray[i].available_dishes;
-//       dishArray.push(element);
-//     }
-//     console.log(dishArray);
-
-//     let foundItems = [];
-//     for (let i = 0; i < dishArray.length; i++) {
-//       if (dishArray[i].includes(search)) {
-//         foundItems.push(dishArray[i]);
-//       }
-//     }
-
-//     if (foundItems.length > 0) {
-//       console.log(`Found ${search} in the following arrays:`, foundItems);
-//     } else {
-//       console.log(`${search} not found in the array`);
-//     }
-
-//     res.send(dishArray);
-//   }
-//   return true;
-// });
 
 router.post("/search", async function (req, res) {
   const search = req.body.search;
+  const lowerCaseSearch = search.toLowerCase();
+  if(search == "") {
+    const allTrucks = await Truck.find();
+    res.send(allTrucks);
+    return;
+  }
+  const array1 = [];
   const isTruckSearch = await Truck.findOne({ truck_name: search });
-  console.log(isTruckSearch, "isTruck");
+  array1.push(isTruckSearch);
   if (isTruckSearch == null) {
     const TruckArray = await Truck.find();
     const dishArray = [];
@@ -412,25 +398,57 @@ router.post("/search", async function (req, res) {
       };
       dishArray.push(truck);
     }
-    console.log(dishArray);
 
     let foundItems = [];
+    let finalArray = [];
+    
     for (let i = 0; i < dishArray.length; i++) {
-      if (dishArray[i].dishes.includes(search)) {
+      const dishes = dishArray[i].dishes.map(dish => dish.toLowerCase());
+      if(dishes.includes(lowerCaseSearch)){
         foundItems.push(dishArray[i].name);
       }
     }
 
     if (foundItems.length > 0) {
       console.log(`Found ${search} in the following trucks:`, foundItems);
+      for (let i = 0; i < foundItems.length; i++) {
+        const element = foundItems[i];
+        const trucks = await Truck.findOne({truck_name: element});
+        finalArray.push(trucks);
+      }
     } else {
-      res.send(`${search} not found in any truck`);
+      res.send(finalArray);
       return;
     }
-    res.send(foundItems);
+    res.send(finalArray);
     return;
   }
-  res.send(isTruckSearch);
+  res.send(array1);
+});
+
+router.post("/truck/update", async function (req, res) {
+  const body = req.body;
+  const truck = await Truck.findOne({vendorId: req.body.vendorId});
+  const truckUpdated = await Truck.findByIdAndUpdate(truck._id, req.body);
+  const truck2 = await Truck.findOne({vendorId: req.body.vendorId});
+  res.send(truck2);
+});
+
+router.post("/truck/getByVendorId", async function (req, res) {
+  try {
+    const vendorId = req.body.vendorId;
+    if (vendorId == null) {
+      res.send("VendorId is required");
+    }
+    const getTruck = await Truck.findOne({ vendorId: vendorId });
+    if (getTruck == null) {
+      res.send({ message: "Truck not found." });
+    } else {
+      res.send(getTruck);
+    }
+  } catch (error) {
+    console.log("Error:", error);
+  }
 });
 
 module.exports = router;
