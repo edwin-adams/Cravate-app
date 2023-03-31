@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-navigation/core": "github:react-navigation/core",
     "@react-navigation/native": "^6.1.6",

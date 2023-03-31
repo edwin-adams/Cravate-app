@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { BackHandler } from 'react-native';
 import { TextInput, Button, Text, Card, Checkbox, Switch,ToggleButton } from 'react-native-paper';
 
 
 export const UserRegisterScreen = ({ navigation }) => {
+    
+    // Fields required for user registration model
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
@@ -11,53 +14,69 @@ export const UserRegisterScreen = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-    const [value, setValue] = useState('left');
     const [firstNameError, setFirstNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    const onToggle = (newValue) => {
-        setValue(newValue);
-    };
+    // Constructor function kind of
+    useEffect(() => {
+        // If backbutton is pressed it has no effect
+        const backAction = () => {
+          return true; // returning true disables the back button
+        };
+        const backHandler = BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction,
+        );
+        return () => backHandler.remove();
+      }, []);    
 
+    // Toggle password visibility 
     const handlePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    // Toggle confirm password visibility 
     const handleConfirmPasswordVisibility = () => {
         setConfirmPasswordVisible(!confirmPasswordVisible);
     };
 
+    // Submit the details to register api
     const handleSignup = async () => {
+        // Fields for validation
         let firstNameValid = true;
         let lastNameValid = true;
         let usernameValid = true;
         let passwordValid = true;
         let confirmPasswordValid = true;
 
-        if (firstName.length === 0) {
+        // If first name is empty, give error
+        if (firstName.trim().length === 0) {
         firstNameValid = false;
         setFirstNameError('First name is required');
         } else {
         setFirstNameError('');
         }
 
-        if (lastName.length === 0) {
+        // If last name is empty, give error
+        if (lastName.trim().length === 0) {
         lastNameValid = false;
         setLastNameError('Last name is required');
         } else {
         setLastNameError('');
         }
 
-        if (username.length === 0) {
+        // If username is empty, give error
+        if (username.trim().length === 0) {
         usernameValid = false;
         setUsernameError('Username is required');
         } else {
         setUsernameError('');
         }
 
+        // If password is less than 6 characters, give error
         if (password.length < 6) {
         passwordValid = false;
         setPasswordError('Password must be at least 6 characters long');
@@ -65,6 +84,7 @@ export const UserRegisterScreen = ({ navigation }) => {
         setPasswordError('');
         }
 
+        // If confirm password is empty or isn't the same as password, give error
         if (confirmPassword.length < 6) {
         confirmPasswordValid = false;
         setConfirmPasswordError('Confirm password must be at least 6 characters long');
@@ -75,6 +95,7 @@ export const UserRegisterScreen = ({ navigation }) => {
         setConfirmPasswordError('');
         }
 
+        // if validation satisfied call api
         if (firstNameValid && lastNameValid && usernameValid && passwordValid && confirmPasswordValid) {
         const data = {
             first_name: firstName,
@@ -205,7 +226,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     title: {
-        marginVertical: 20,
+        marginVertical: 35,
         color: "rgb(101,37,131)",
         fontSize: 20,
         textAlign: "center",

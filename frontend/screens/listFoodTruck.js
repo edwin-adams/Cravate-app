@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export const ListFoodTruck = ({navigation}) => {
+    
+    // variable to store all the food truck list 
     const [foodTrucks, setFoodTrucks] = useState([]);
 
+    // Constructor function kind of
     useEffect(() => {
         fetch('http://3.239.61.7:3000/truck/getall')
         .then(response => response.json())
@@ -11,14 +14,18 @@ export const ListFoodTruck = ({navigation}) => {
         .catch(error => console.error(error));
     }, []);
 
+    // pass the details of that particular food truck to food truck details page
     const handleCardClick = (vendorId) => {
       navigation.navigate('foodTruckDetails', { vendorId });
     };
 
+    // display on screen
     return (
         <View style={styles.container}>
         <Text style={styles.heading}>Food Truck List</Text>
+        {/* display all items from foodTruck list */}
         {foodTrucks.map(foodTruck => (
+            // Touchable list
             <TouchableOpacity
             key={foodTruck.truck_name}
             style={styles.card}

@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {  StyleSheet, View, Text } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 
 export const FoodTruckDetails = ({navigation}) => {
+    //Get vendorID passed from food truck list or vendor details page
     const route = useRoute();
     const { vendorId } = route.params;
 
+    // Store food truck object in foodTruck
     const [foodTruck, setFoodTruck] = useState(null);
-    const [region, setRegion] = useState({
-        latitude: 44.638642,
-        longitude: -63.600575,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-    });
 
-
+    // If food truck is empty, fetch food truck details
     if (!foodTruck) {
         console.log(vendorId);
         fetch('http://3.239.61.7:3000/truck/getByVendorId', {
@@ -30,6 +26,7 @@ export const FoodTruckDetails = ({navigation}) => {
         .catch(error => console.error(error));
     }
 
+    // If food truck is empty, display temporary screen
     if (!foodTruck) {
         return (
         <View style={styles.container}>
@@ -38,6 +35,7 @@ export const FoodTruckDetails = ({navigation}) => {
         );
     }
 
+    // display on screen
     return (
             <View style={styles.container}>
             <View style={styles.card}>
@@ -47,6 +45,7 @@ export const FoodTruckDetails = ({navigation}) => {
                 <Text style={styles.cardText}>City : {foodTruck.city}</Text>
                 <Text style={styles.cardText}>Dishes : {[...foodTruck.available_dishes,...foodTruck.unavailable_dishes].join(',')}</Text>
                 <Text style={styles.cardText}>Location:</Text>
+                {/* Display the location on map */}
                 <MapView style={{ width: '100%', height: 200 }} region={{
                     latitude: parseFloat(foodTruck.location.latitude),
                     longitude: parseFloat(foodTruck.location.longitude),
@@ -56,10 +55,6 @@ export const FoodTruckDetails = ({navigation}) => {
                     <Marker coordinate={{ latitude: parseFloat(foodTruck.location.latitude), longitude: parseFloat(foodTruck.location.longitude) }} />
                 </MapView>
             </View>
-        {/* <TouchableOpacity style={styles.button} onPress={deleteUser}>
-            <Text style={styles.buttonText}>Delete User</Text>
-        </TouchableOpacity> */}
-            
         </View>
     );
 }

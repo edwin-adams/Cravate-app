@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {  StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ListVendor = ({navigation}) => {
+    // variable to store all the vendor list 
     const [vendors, setVendors] = useState([]);
 
+    // If there has been any change in the number of users it will be refreshed
     const fetchVendors = useCallback(() => {
       fetch('http://3.239.61.7:3000/vendors/getall')
           .then(response => response.json())
@@ -12,20 +14,26 @@ export const ListVendor = ({navigation}) => {
           .catch(error => console.error(error))
   }, []);
 
+  // Constructor function kind of
   useEffect(() => {
       setTimeout(fetchVendors, 3000);
   }, [fetchVendors]);
 
+  // Call the function
   useFocusEffect(fetchVendors);
 
+  // pass the details of that particular user to user details page
   const handleCardClick = (username) => {
       navigation.navigate('vendorDetails', { username });
   };
 
+  // display on screen
   return (
       <View style={styles.container}>
           <Text style={styles.heading}>Vendor List</Text>
+          {/* display all items from vendor list */}
           {vendors.map(vendor => (
+            // touchable list
               <TouchableOpacity
                   key={vendor.username}
                   style={styles.card}

@@ -7,6 +7,12 @@ import { useRoute } from '@react-navigation/native';
 
 export const AddFoodTruck =({ navigation }) => {
   
+  // Get username passed from vendor registration page
+  const route = useRoute();
+  const { username } = route.params;
+  const [vendorId, setVendorId] = useState(null);
+  
+  // Fields required for Food Truck data model
   const [foodTruckName, setFoodTruckName] = useState('');
   const [foodTruckNameError, setFoodTruckNameError] = useState('');
   const [foodTruckCode, setFoodTruckCode] = useState('');
@@ -16,29 +22,28 @@ export const AddFoodTruck =({ navigation }) => {
   const [city, setCity] = useState('');
   const [cityError, setCityError] = useState('');
 
-  const route = useRoute();
-  const { username } = route.params;
-  const [vendorId, setVendorId] = useState(null);
-
-
+  // Fields for adding dish functionality
   const [text, setText] = useState('');
   const [items, setItems] = useState([]);
   
+  // Fields for adding map functionality
   const [latitude, setLatitude] = useState(44.64936); // initial latitude
   const [longitude, setLongitude] = useState(-63.57302); // initial longitude
 
+  // Fields for setting time functionality
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [showStartPickerModal, setShowStartPickerModal] = useState(false);
   const [showEndPickerModal, setShowEndPickerModal] = useState(false);
 
-  const [vendorResponse, setVendorResponse] = React.useState();
-
+  // Field for if data is loading display temporary screen
   const [isLoading, setIsLoading] = useState(false);
   
+  // this function runs when the screen is loaded
   useEffect(() => {
     console.log(username);
 
+    // get vendor ID from the username
     const getVendorId = async () => {
       try {
         const response = await fetch('http://3.239.61.7:3000/vendor/get', {
@@ -62,8 +67,10 @@ export const AddFoodTruck =({ navigation }) => {
       }
     };
     
+    //Call the function
     getVendorId();
   
+    // If vendor ID is not saved in database and returns null, it will reload the screen until it gets a valid response
     if (!vendorId) {
       setIsLoading(true);
       setTimeout(() => {
@@ -73,52 +80,55 @@ export const AddFoodTruck =({ navigation }) => {
     }
   },[vendorId])
   
+  // Temporary screen if the vendor ID is null
   if (isLoading) {
     return (
       <View>
-        <Text>Loading...</Text>
+        <Text style={styles.container}>Loading...</Text>
       </View>
     );
   }
   
+  // Function to save all the food truck details to database
   const onSubmit = async () => {
+    // Fields to validate all fields of food truck
     let foodTruckNameValid = true;
     let foodTruckCodeValid = true;
     let addressValid = true;
     let cityValid = true;
 
-    if (foodTruckName.length === 0) {
+    // If food truck name is empty it gives error
+    if (foodTruckName.trim().length === 0) {
       foodTruckNameValid = false;
       setFoodTruckNameError('Food Truck Name is required');
     } else {
         setFoodTruckNameError('');
     }
 
-    if (foodTruckCode.length === 0) {
+    // If food truck code is empty it gives error
+    if (foodTruckCode.trim().length === 0) {
       foodTruckCodeValid = false;
       setFoodTruckCodeError('Food Truck code is required');
     } else {
       setFoodTruckCodeError('');
     }
 
-    if (address.length === 0) {
+    // If address is empty it gives error
+    if (address.trim().length === 0) {
       addressValid = false;
       setAddressError('Address is required');
     } else {
       setAddressError('');
     }
-
-    if (city.length === 0) {
+    // If city is empty it gives error
+    if (city.trim().length === 0) {
       cityValid = false;
       setCityError('Address is required');
     } else {
       setCityError('');
     }
 
-    if(vendorId === null){
-      Alert.alert('VendorId is null')
-    }
-
+    // If all conditions have been fulfilled, save the data and call the api
     if(foodTruckNameValid && foodTruckCodeValid && addressValid && cityValid){
         data = {
           truck_name: foodTruckName,
@@ -163,6 +173,7 @@ export const AddFoodTruck =({ navigation }) => {
     }
   }
 
+  //Set start time
   const handleStartTimeChange = (event, selectedTime) => {
     setShowStartPickerModal(false);
     if (selectedTime !== undefined) {
@@ -170,6 +181,7 @@ export const AddFoodTruck =({ navigation }) => {
     }
   };
 
+  //Set end time
   const handleEndTimeChange = (event, selectedTime) => {
     setShowEndPickerModal(false);
     if (selectedTime !== undefined) {
@@ -177,14 +189,17 @@ export const AddFoodTruck =({ navigation }) => {
     }
   };
 
+  // Display the spinner for start time
   const showStartPicker = () => {
     setShowStartPickerModal(true);
   };
 
+  // Display the spinner for end time
   const showEndPicker = () => {
     setShowEndPickerModal(true);
   };
   
+  // Adds the dish to items list
   const handleAddItem = () => {
     if (text.trim() !== '') {
       setItems([...items, text.trim()]);
@@ -192,17 +207,20 @@ export const AddFoodTruck =({ navigation }) => {
     }
   };
 
+  // Deletes the dish from items list
   const handleDeleteItem = (index) => {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
   };
 
+  // Changes the marker location and sets the latitude and longitude
   const handleMapPress = event => {
     setLatitude(event.nativeEvent.coordinate.latitude);
     setLongitude(event.nativeEvent.coordinate.longitude);
   };
 
+  // Display this screen
   return (
     <ScrollView>
       <Card>
@@ -250,6 +268,7 @@ export const AddFoodTruck =({ navigation }) => {
             />
             {cityError ? <Text style={styles.error}>{cityError}</Text> : null}
 
+            {/* Start time selector */}
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{fontSize: 18, color: "#000", margin:10, }}>Starting time</Text>
               <Button mode="contained" style={styles.button} onPress={showStartPicker}>Select </Button>
@@ -266,6 +285,7 @@ export const AddFoodTruck =({ navigation }) => {
               {startTime && <Text>Start Time: {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>}
             </View>
             
+            {/* End time selector */}
             <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:20 }}>
               <Text style={{fontSize: 18, color: "#000", margin:10, marginRight:18, }}>Ending time</Text>
               <Button mode="contained" style={styles.button} onPress={showEndPicker}>Select </Button>
@@ -282,6 +302,7 @@ export const AddFoodTruck =({ navigation }) => {
               {endTime && <Text>End Time: {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>}
             </View>
 
+            {/* Add Dish functionality */}
             <View>
               <Text style={styles.addDishes}>Add Dishes</Text>
               <View>
@@ -311,6 +332,7 @@ export const AddFoodTruck =({ navigation }) => {
               </List.Section>
             </View>
 
+            {/* Location and Map function */}
             <Text style={styles.addDishes}>Set location on map</Text>
             <MapView
               style={styles.map}

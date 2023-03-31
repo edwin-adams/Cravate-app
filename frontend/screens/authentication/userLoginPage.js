@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { BackHandler } from 'react-native';
 import { Button, Card, TextInput } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 
 export const UserLoginScreen = ({ navigation }) => {
 
+    // Fields required for user login model
     const [showPassword, setShowPassword] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm();
 
+    
+    // Constructor function kind of
+    useEffect(() => {
+        // If backbutton is pressed it has no effect
+        const backAction = () => {
+          return true; // returning true disables the back button
+        };
+        const backHandler = BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction,
+        );
+        return () => backHandler.remove();
+      }, []);
+    
+    // Submit the details to login api
     const onSubmit = async (data) => {
         console.log(data);
         await fetch('http://3.239.61.7:3000/user/login', {
@@ -18,28 +35,22 @@ export const UserLoginScreen = ({ navigation }) => {
             },
             body: JSON.stringify(data),
         }).then(async response => {
-            //console.log(response);
+           
             let message = await response.text();
             if (message === 'Successfully logged in.') navigation.navigate("CustomerMap")
              else Alert.alert('Authentication failed')
             
-            //const message = JSON.stringify(await response.text())
-            //console.log(JSON.stringify(await response.text()))
+           
             console.log(message);
-            //if (message == "Successfully logged in."){
-              //  navigation.navigate("CustomerLanding");
-            //}
-            //else{
-              //  Alert.alert("Authentication failed");
-            //}
             console.log("-------------------------------------------");
-            // console.log(responseData);
         });
     };
 
+    // Displays on the screen
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.view}>
+                {/* To display in the middle of screen  */}
                 <Card>
                     <Card.Title title="Cravate" titleStyle={styles.title}></Card.Title>
                     <Card.Content>
@@ -92,9 +103,7 @@ export const UserLoginScreen = ({ navigation }) => {
                         {errors.password && errors.password.type === 'minLength' && (
                             <Text>Password must be at least 6 characters long</Text>
                         )}
-
-                        {/* <TextInput label = "username" keyboardType="email-address"  left={<TextInput.Icon name="account" />} style={styles.textinput}></TextInput>
-                        <TextInput label = "password" left={<TextInput.Icon name="form-textbox-password" />} right = {<TextInput.Icon name = "eye-off-outline"/>}  secureTextEntry={true} style={styles.textinput}></TextInput> */}
+                        
                         <Button mode="contained" style={styles.button} onPress={handleSubmit(onSubmit)}>Login</Button>
                         <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("userRegister")}>Don't have an account? Sign Up here</Button>
                     </Card.Content>

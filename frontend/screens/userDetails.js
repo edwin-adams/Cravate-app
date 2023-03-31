@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
 export const UserDetails = ({navigation}) => {
+    //Get username passed from user list page
     const route = useRoute();
     const { username } = route.params;
 
+    // Store user object in user
     const [user, setUser] = useState(null);
 
 
+    // Delete the user
     const deleteUser = async () => {
       try {
         const response = await axios.delete('http://3.239.61.7:3000/user/delete', {
@@ -25,6 +28,7 @@ export const UserDetails = ({navigation}) => {
       }  
     };
 
+    // If user is empty fetch user details
     if (!user) {
         fetch('http://3.239.61.7:3000/user/get', {
         method: 'POST',
@@ -38,6 +42,7 @@ export const UserDetails = ({navigation}) => {
         .catch(error => console.error(error));
     }
 
+    // If user is empty return temporary screen
     if (!user) {
         return (
         <View style={styles.container}>
@@ -46,6 +51,7 @@ export const UserDetails = ({navigation}) => {
         );
     }
 
+    // display on screen
     return (
         <View style={styles.container}>
         <View style={styles.card}>
