@@ -159,7 +159,7 @@ export const AddFoodTruck =({ navigation }) => {
           if (response.ok) {
           // The signup was successful, navigate to the next screen
             Alert.alert('Registration successful. Please login.')
-            navigation.navigate('vendorLogin');
+            navigation.navigate('VendorLogin');
           } else {
           // There was an error with the signup, handle it appropriately
           const errorText = await response.text();
