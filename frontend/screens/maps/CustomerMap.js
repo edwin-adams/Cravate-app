@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Appbar } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get("window");
 
@@ -19,14 +23,15 @@ const INITIAL_POSITION = {
 
 const getTrucksAPI = "http://3.239.61.7:3000/truck/getall";
 
-export default function App() {
+export default function App({navigation}) {
+
 
   //const [foodtruckLocations, setFoodtruckLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [query, setQuery] = useState('');
-  
+   
   useEffect(() => {
     (async () => {
       
@@ -132,12 +137,41 @@ export default function App() {
       });
   };
 
+  const handleSignOut = () => {
+    console.log('Sign Out');
+    navigation.navigate('UserLogin');
+  };
+
+  const handleDeleteAccount = async () => {
+    // Uncomment this
+    // try {
+    //   const response = await axios.delete('http://3.239.61.7:3000/user/delete', {
+    //     data: {
+    //       username: username
+    //     },
+    //   });
+    //   console.log(response.data); // "User Deleted."
+    //   // Redirect to another page
+    //   navigation.navigate('UserLogin');
+    // } catch (error) {
+    //   console.log("Error " + error);
+    // }
+    // console.log("Delete account");
+  };
+
   return (
     <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <>
+        
+        <Appbar.Header>
+          <Appbar.Action icon="logout" accessibilityLabel="Menu" onPress={handleSignOut} />
+          <Appbar.Content title="Cravate"  style={{alignItems:"center"}}/>
+          <Appbar.Action icon="delete" title="Delete Account" onPress={handleDeleteAccount} />
+        </Appbar.Header>
+
         <TextInput
         style={styles.input}
         onChangeText={setQuery}

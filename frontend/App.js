@@ -188,7 +188,7 @@ export default function App() {
         <Stack.Screen
           name = "VendorLanding"
           component={VendorLanding}
-          options = {{title: "Vendor Landing Page"}}
+          options = {{headerShown:false}}
           />
         
          <Stack.Screen
@@ -201,7 +201,7 @@ export default function App() {
         <Stack.Screen
           name="CustomerMap"
           component={CustomerMapScreen}
-          
+          options={{headerShown:false}}
         /> 
         {/* <CustomerSwitch.Screen
           name="Customer"
