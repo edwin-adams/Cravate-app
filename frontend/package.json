@@ -9,7 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.18.1",
+    "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-navigation/core": "github:react-navigation/core",
     "@react-navigation/native": "^6.1.6",
@@ -20,7 +20,7 @@
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-hook-form": "^7.43.5",
-    "react-native": "0.71.4",
+    "react-native": "0.71.6",
     "react-native-maps": "1.3.2",
     "react-native-paper": "^5.4.1",
     "react-native-paper-form-builder": "^2.1.2",

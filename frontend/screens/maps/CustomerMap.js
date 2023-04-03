@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Button} from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
@@ -26,7 +26,9 @@ const getTrucksAPI = "http://3.239.61.7:3000/truck/getall";
 export default function App({navigation}) {
 
 
-  //const [foodtruckLocations, setFoodtruckLocations] = useState([]);
+  const [foodtruckLocations, setFoodtruckLocations] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [showButton, setShowButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
@@ -74,37 +76,6 @@ export default function App({navigation}) {
       });
   }, []);
 
-  // const showFoodTrucks = () => {
-  //   return foodtruckLocations.map((item, index) => {
-  //     const handleGetDirections = () => {
-  //       const latitude = parseFloat(item.location.latitude);
-  //       const longitude = parseFloat(item.location.longitude);
-  //       const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
-  //       Linking.openURL(url);
-  //     };
-  //     return (
-  //       <Marker
-  //         key={index}
-  //         coordinate={{
-  //           latitude: parseFloat(item.location.latitude),
-  //           longitude: parseFloat(item.location.longitude),
-  //         }}
-  //         title={item.name}
-  //         description={item.description}
-  //       >
-  //         <Callout>
-  //           <TouchableOpacity onPress={handleGetDirections}>
-  //             <View style={styles.calloutContainer}>
-  //               <Text style={styles.calloutText}>{item.title}</Text>
-  //               <Text>{item.description}</Text>
-  //             </View>
-  //           </TouchableOpacity>
-  //         </Callout>
-  //       </Marker>
-  //     );
-  //   });
-  // };
-
   const handleSearch = () => {
     // call API with the search query
     fetch(`http://3.239.61.7:3000/search`, {
@@ -137,6 +108,16 @@ export default function App({navigation}) {
       });
   };
 
+  const handleMarkerPress = () => {
+    setShowButton(true);
+  };
+
+  //send users to google maps
+  const handleGetDirections = (latitude, longitude) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    Linking.openURL(url);
+  };
+
   const handleSignOut = () => {
     console.log('Sign Out');
     navigation.navigate('UserLogin');
@@ -160,37 +141,38 @@ export default function App({navigation}) {
   };
 
   return (
+  
+
+    
+  
+
     <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <>
-        
-        <Appbar.Header>
+        <View style={styles.appbar}>
+        <Appbar.Header style={styles.appbarContent}>
           <Appbar.Action icon="logout" accessibilityLabel="Menu" onPress={handleSignOut} />
-          <Appbar.Content title="Cravate"  style={{alignItems:"center"}}/>
+          <Appbar.Content title="Cravate"  style={{alignItems:'center', top: -10}}/>
           <Appbar.Action icon="delete" title="Delete Account" onPress={handleDeleteAccount} />
         </Appbar.Header>
-
-        <TextInput
-        style={styles.input}
-        onChangeText={setQuery}
-        value={query}
-        onSubmitEditing={handleSearch}
-        />  
-        <MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={INITIAL_POSITION}>
+        </View>
 
         
-        
+        <MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={INITIAL_POSITION} showsCompass={false}>
           {markers.map((marker, index) => (
             <Marker
               key={index}
               coordinate={marker.location}
               title={marker.truck_name}
+              //onPress= {handleGetDirections(marker)}
+              //onPress= {() => console.log("Callout pressed")}
+              onCalloutPress={ () => console.log("Callout pressed")}
+              onPress={handleMarkerPress}
             >  
-              
-              <Callout>
-             <TouchableOpacity >
+
+            <Callout>
                <View style={styles.calloutContainer}>
                  <Text style={styles.calloutText}>{marker.truck_name}</Text>
                  <View style={styles.flexRow}>
@@ -201,27 +183,44 @@ export default function App({navigation}) {
                     <Text>Opening Hours: {marker.start_time}</Text>
                     <Text> - {marker.end_time}</Text>
                  </View> : null}
-               
-             </View>
-             </TouchableOpacity>
-           </Callout>
-              
-            </Marker>
+                 
+                 {/* <TouchableOpacity
+                  style={styles.directionsButton}
+                  onPress={() => handleGetDirections(marker.location.latitude, marker.location.longitude)}>
+                    <Text style={styles.directionsButtonText}>Get Directions</Text>
+                  </TouchableOpacity> */}
+              </View>
+            </Callout>
+          </Marker>
+
           ))}
 
-          {userLocation ?  <Marker
+          {userLocation ? <Marker
               key={21}
               coordinate={userLocation.coords}
               title={"Your location"}
               >
                 <Image source={require("../../assets/icons8-user-location-53.png")}></Image>
-              </Marker>
-              //image={require("./assets/icons8-user-location-53.png")}
-              
-              //style={{height: 1000, width: 1000}}
-            
+              </Marker>            
            : null}
         </MapView>
+        {/* {showButton && (
+          <View style={styles.buttonContainer}> 
+            <Text>Button</Text>
+          </View>
+        )} */}
+
+
+
+        <View style={styles.inputContainer}>
+          <TextInput
+          style={styles.input}
+          placeholder="Search here"
+          onChangeText={setQuery}
+          value={query}
+          onSubmitEditing={handleSearch}
+          />
+        </View>
         </>
       )}
     </View>
@@ -236,28 +235,72 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  calloutTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 5,
-  },
   calloutContainer: {
     width: 220,
   },
   calloutText: {
     fontWeight: 'bold',
   },
-  directionsText: {
-    color: 'blue',
-    marginTop: 5,
-    textDecorationLine: 'underline',
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  flexRow: {flexDirection: "row"},
+  appbar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    zIndex: 2,
+  },
+  appbarContent: {
+    alignItems: 'flex-end',
+    //textAlign: 'center',
+    height: 35,
+    backgroundColor: 'white',
+  },
+  inputContainer: {
+    position: 'absolute',
+    top: 90,
+    left: 20,
+    right: 20,
+    zIndex: 1,
+  },
   input: {
     height: 40,
-    marginTop: 30,
+    borderColor: 'white',
     borderWidth: 1,
+    borderRadius: 20,
     padding: 10,
-    borderRadius: 10,
+    backgroundColor: 'white',
+    fontSize: 18,
+    paddingLeft:20,
+  },
+  directionsButton: {
+    backgroundColor: '#2196F3',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: 5,
+    borderRadius: 5,
+    
+  },
+  directionsButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 8,
+    alignItems: 'center',
   },
 });
