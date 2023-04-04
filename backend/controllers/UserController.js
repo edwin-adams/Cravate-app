@@ -451,4 +451,42 @@ router.post("/truck/getByVendorId", async function (req, res) {
   }
 });
 
+router.post("/truck/ratings", async function (req, res) {
+    try {
+      const body = req.body;
+      console.log(body);
+      if(body.truckId == null || (body.ratings == null || body.ratings == '') ) {
+        res.send("TruckID and ratings required");
+        return;
+      }
+      if(!Number.isInteger(body.ratings)) {
+        if(body.ratings > 5){
+          res.send("Ratings should be less than or equal to 5 or an whole integer");
+          return;
+        };
+        res.send("Rating should be an integer");
+        return;
+      };
+      const truck = await Truck.findOne({_id: body.truckId});
+      if(truck == null) {
+        console.log("Truck Not found");
+      }
+      const ratingCount = truck.no_of_ratings || 1;
+      console.log(ratingCount, "ratingCount");
+      if (truck.ratings == undefined) {
+        truck.ratings = 0;
+      }
+      console.log(truck.ratings, "truck.ratings");
+      const totalRatings = truck.ratings + body.ratings;
+      console.log(totalRatings, "totalRatings");
+      const avgRatings = (totalRatings/ratingCount);
+      console.log(avgRatings, "avgRatings");
+      const truckUpdate = await Truck.findOneAndUpdate({_id: body.truckId}, {ratings: avgRatings, no_of_ratings: ratingCount+1});
+      const updatedTruck = await Truck.findOne({_id: body.truckId});
+      res.send(updatedTruck);
+    } catch (error) {
+      console.log(error);
+    }
+});
+
 module.exports = router;

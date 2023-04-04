@@ -46,6 +46,12 @@ const trucksSchema = new mongoose.Schema({
         enum: ['VENDOR'],
         default: 'VENDOR'
     },
+    ratings: {
+        type: Number
+    },
+    no_of_ratings:{
+        type: Number
+    },
     token: {
        type: String 
     },
