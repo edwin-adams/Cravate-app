@@ -5,10 +5,13 @@ stages:
 build:
   stage: build
   script:
+    - apt-get update
+    - apt-get install -y curl
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
     - export NVM_DIR="$HOME/.nvm"
     - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
     - source "$NVM_DIR/nvm.sh"
-    - nvm install --lts=fermium
+    - nvm install 14.18.1
     - npm install
     - npm start
 
