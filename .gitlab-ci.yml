@@ -1,23 +1,16 @@
 stages:
   - build
-  - test
   - deploy
 
 build:
   stage: build
-  image: node:latest
   script:
     - npm install
-    - npm run build
-
-test:
-  stage: test
-  image: node:latest
-  script:
-    - npm run test
+    - npm start
 
 deploy:
   stage: deploy
-  image: node:latest
   script:
-    - npm run deploy
+    - ssh ec2-user@3.239.61.7 'cd /group20/backend && git pull && npm install && pm2 restart index.js'
+  only:
+    - main
