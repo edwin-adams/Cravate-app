@@ -27,7 +27,11 @@ export const UserLoginScreen = ({ navigation }) => {
     
     // Submit the details to login api
     const onSubmit = async (data) => {
-        console.log(data);
+        console.log('data is:', data);
+
+        const dataValue = data.username;
+        console.log(' data value is: ', dataValue);
+
         await fetch('http://3.239.61.7:3000/user/login', {
             method: 'POST',
             headers: {
@@ -37,7 +41,7 @@ export const UserLoginScreen = ({ navigation }) => {
         }).then(async response => {
            
             let message = await response.text();
-            if (message === 'Successfully logged in.') navigation.navigate("CustomerMap")
+            if (message === 'Successfully logged in.') navigation.navigate("CustomerMap", dataValue);
              else Alert.alert('Authentication failed')
             
            

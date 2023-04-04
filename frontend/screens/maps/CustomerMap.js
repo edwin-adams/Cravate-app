@@ -33,7 +33,10 @@ export default function App({navigation}) {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [query, setQuery] = useState('');
-   
+  const route = useRoute();
+
+  const username = route.params;
+   console.log(' passed username is: ',username);
   useEffect(() => {
     (async () => {
       
@@ -125,19 +128,19 @@ export default function App({navigation}) {
 
   const handleDeleteAccount = async () => {
     // Uncomment this
-    // try {
-    //   const response = await axios.delete('http://3.239.61.7:3000/user/delete', {
-    //     data: {
-    //       username: username
-    //     },
-    //   });
-    //   console.log(response.data); // "User Deleted."
-    //   // Redirect to another page
-    //   navigation.navigate('UserLogin');
-    // } catch (error) {
-    //   console.log("Error " + error);
-    // }
-    // console.log("Delete account");
+    try {
+      const response = await axios.delete('http://3.239.61.7:3000/user/delete', {
+        data: {
+          username: username
+        },
+      });
+      console.log(response.data); // "User Deleted."
+      // Redirect to another page
+      navigation.navigate('UserLogin');
+    } catch (error) {
+      console.log("Error " + error);
+    }
+    console.log("Delete account");
   };
 
   return (
