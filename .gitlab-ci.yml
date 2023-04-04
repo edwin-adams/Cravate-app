@@ -5,6 +5,7 @@ stages:
 build:
   stage: build
   script:
+    - nvm install --lts=fermium
     - npm install
     - npm start
 
