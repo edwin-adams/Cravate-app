@@ -18,10 +18,13 @@ build:
 deploy:
   stage: deploy
   script:
+    - apt-get-update
+    - apt-get install -y curl
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
     - export NVM_DIR="$HOME/.nvm"
     - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-    - nvm install --lts=fermium
-    - ssh ec2-user@3.239.61.7 'cd /group20/backend && git pull && npm install && pm2 restart index.js'
+    - source "$NVM_DIR/nvm.sh"
+    - ssh ec2-user@3.239.61.7 'cd /group20/backend && nvm install --lts=fermium && git pull && npm install && pm2 restart index.js'
   only:
     - main
   needs:
