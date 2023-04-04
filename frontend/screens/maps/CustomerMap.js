@@ -111,8 +111,9 @@ export default function App({navigation}) {
       });
   };
 
-  const handleMarkerPress = () => {
+  const handleMarkerPress = (marker) => {
     setShowButton(true);
+    setSelectedMarker(marker);
   };
 
   //send users to google maps
@@ -125,6 +126,12 @@ export default function App({navigation}) {
     console.log('Sign Out');
     navigation.navigate('UserLogin');
   };
+
+  const handleButtonPress = () => {
+    navigation.navigate('UserFoodTruckDetails', { marker: selectedMarker });
+    console.log(selectedMarker);
+    console.log('Button pressed');
+  }
 
   const handleDeleteAccount = async () => {
     // Uncomment this
@@ -172,7 +179,7 @@ export default function App({navigation}) {
               //onPress= {handleGetDirections(marker)}
               //onPress= {() => console.log("Callout pressed")}
               onCalloutPress={ () => console.log("Callout pressed")}
-              onPress={handleMarkerPress}
+              onPress={() => handleMarkerPress(marker)}
             >  
 
             <Callout>
@@ -207,12 +214,11 @@ export default function App({navigation}) {
               </Marker>            
            : null}
         </MapView>
-        {/* {showButton && (
-          <View style={styles.buttonContainer}> 
-            <Text>Button</Text>
-          </View>
-        )} */}
-
+        {selectedMarker && (
+            <View style={styles.buttonContainer}>
+            <Button title="View Details" onPress={handleButtonPress} />
+            </View>
+        )}
 
 
         <View style={styles.inputContainer}>
@@ -298,12 +304,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 8,
-    alignItems: 'center',
-  },
+    bottom: 20,
+    alignSelf: 'center',
+},
 });

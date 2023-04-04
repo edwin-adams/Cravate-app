@@ -21,6 +21,7 @@ import CustomerMapScreen from "./screens/maps/CustomerMap.js"
 import { createSwitchNavigator } from '@react-navigation/core';
 import { VendorLanding } from "./screens/VendorLanding";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserFoodTruckDetails } from "./screens/userFoodTruckDetails";
 
 const Stack = createNativeStackNavigator();
 // const CustomerSwitch = createSwitchNavigator({
@@ -195,6 +196,12 @@ export default function App() {
           name="CustomerLanding"
           component={CustomerLanding}
           options ={{title: "Customer Landing"}}
+        />
+
+        <Stack.Screen
+          name="UserFoodTruckDetails"
+          component={UserFoodTruckDetails}
+          options={{title: "Food Truck"}}
         />
 
         {/* Screen for user homepage */}
