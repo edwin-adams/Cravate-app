@@ -5,6 +5,8 @@ stages:
 build:
   stage: build
   script:
+    - export NVM_DIR="$HOME/.nvm"
+    - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
     - nvm install --lts=fermium
     - npm install
     - npm start
@@ -12,6 +14,9 @@ build:
 deploy:
   stage: deploy
   script:
+    - export NVM_DIR="$HOME/.nvm"
+    - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    - nvm install --lts=fermium
     - ssh ec2-user@3.239.61.7 'cd /group20/backend && git pull && npm install && pm2 restart index.js'
   only:
     - main
