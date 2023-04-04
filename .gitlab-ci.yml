@@ -14,7 +14,6 @@ build:
     - nvm install 14.18.1
     - cd backend
     - npm install
-    - npm start
 
 deploy:
   stage: deploy
