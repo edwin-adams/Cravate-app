@@ -17,19 +17,41 @@ export const UserFoodTruckDetails = ({navigation}) => {
     const maxRating = 5;
     const [emptyStars,setEmptyStars] = useState(5);
 
+    const fullStarIcons = [...Array(avgRating)].map((_, i) => (
+        <AntDesign key={`full-${i}`} name="star" size={24} color="gold" />
+    ));
+
+    const emptyStarIcons = [...Array(emptyStars)].map((_, i) => (
+        <AntDesign key={`empty-${i}`} name="staro" size={24} color="gold" />
+    ));
+
+    const handlePress = (num) => {
+        setRating(num);
+    };
+
+    const submitRating = async () => {
+        const aa = await axios.post('http://3.239.61.7:3000/truck/ratings', {
+            "truckId": truckId,
+            "ratings": rating,
+        });
+        console.log(JSON.stringify(aa));
+        Alert.alert('Thank you for your review');
+    }
+    
     useEffect(() => {
         setMenu(marker.available_dishes);
         setTruckId(marker._id);
         setAvgRating(Math.floor(parseFloat(marker.ratings)));
         setEmptyStars(maxRating - avgRating);
     },[])
-
+    
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
           <Text style={{fontSize:18}}>{item}</Text>
         </View>
     );
-
+    
+    // Display on screen
     return (
         <FlatList style={{ padding: 10,flex:1 }}
         data = {[1]}
@@ -42,6 +64,11 @@ export const UserFoodTruckDetails = ({navigation}) => {
             <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
             <FlatList data={menu} renderItem={renderItem} keyExtractor={(item) => item} />
 
+            <Text style={{ fontSize: 25, fontWeight: 'bold', marginVertical: 10 }}>Average Customer Rating</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {fullStarIcons}
+                {emptyStarIcons}
+            </View>
 
             <Text style={{ fontSize: 25, fontWeight: 'bold', marginVertical: 10 }}>Rate the food truck</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -56,7 +83,18 @@ export const UserFoodTruckDetails = ({navigation}) => {
                 ))}
             </View>
             <Text style={{ fontSize: 20 }}>You rated {rating} stars.</Text>
+            <Button mode="contained" onPress={submitRating}> Submit Rating</Button>
+
+            {/* <MapView onPress = {handleMapPress} style={{ width: '100%', height: 200 }} region={{
+                        latitude: latitude,
+                        longitude: longitude,
+                        latitudeDelta: 0.01,
+                        longitudeDelta: 0.01,            
+            }}>
+            <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
+            </MapView>
             
+            <Button mode="contained" onPress={updateDetails} style={{marginVertical:10}}>Update Details</Button> */}
         </View>
         }}
         />
