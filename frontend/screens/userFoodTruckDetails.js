@@ -39,11 +39,12 @@ export const UserFoodTruckDetails = ({navigation}) => {
     }
     
     useEffect(() => {
-        setMenu(marker.available_dishes);
-        setTruckId(marker._id);
-        setAvgRating(Math.floor(parseFloat(marker.ratings)));
+        setMenu(marker?.available_dishes);
+        setTruckId(marker?._id);
+        if (marker.ratings !== null && marker.ratings !== undefined)  
+            setAvgRating(Math.floor(marker?.ratings));
         setEmptyStars(maxRating - avgRating);
-    },[])
+    },[menu, truckId, avgRating, emptyStars])
     
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>

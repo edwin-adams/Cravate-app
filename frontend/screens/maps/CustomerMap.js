@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View, TextInput, Button} from 'react-native';
+import { ActivityIndicator, Dimensions, Image, FlatList,StyleSheet, Text, TouchableOpacity, View, TextInput, Button} from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar } from 'react-native-paper';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
@@ -27,6 +27,7 @@ export default function App({navigation}) {
 
 
   const [foodtruckLocations, setFoodtruckLocations] = useState([]);
+  const [top3FoodTrucks,setTop3FoodTrucks] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [showButton, setShowButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +37,7 @@ export default function App({navigation}) {
   const route = useRoute();
 
   const username = route.params;
-   console.log(' passed username is: ',username);
+  //  console.log(' passed username is: ',username);
   useEffect(() => {
     (async () => {
       
@@ -48,7 +49,7 @@ export default function App({navigation}) {
 
       let location = await Location.getCurrentPositionAsync({});
 
-      console.log('Location is ', location)
+      // console.log('Location is ', location)
       setUserLocation(location);
     })();
   }, []);
@@ -58,10 +59,10 @@ export default function App({navigation}) {
     fetch("http://3.239.61.7:3000/truck/getall")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       
         const trucks = data.filter((truck) => truck.isAvailable);
-        console.log("Trucks are ",trucks)
+        // console.log("Trucks are ",trucks)
         const newMarkers = trucks.map((truck) => ({
           ...truck,
           location: {
@@ -69,7 +70,12 @@ export default function App({navigation}) {
             longitude: Number(truck.location.longitude),
           },
         }));
-        console.log("Markers are ", newMarkers)
+        const sortedFoodTrucks = trucks.sort(
+          (a, b) => b.ratings - a.ratings
+        );
+        setTop3FoodTrucks(sortedFoodTrucks.slice(0, 3));
+
+        // console.log("Markers are ", newMarkers)
         setMarkers(newMarkers);
         setIsLoading(false);
       })
@@ -93,7 +99,7 @@ export default function App({navigation}) {
         console.log("Data is " ,data);
       
         const trucks = data.filter((truck) => truck.isAvailable);
-        console.log("Trucks are ",trucks)
+        // console.log("Trucks are ",trucks)
         const newMarkers = trucks.map((truck) => ({
           ...truck,
           location: {
@@ -101,7 +107,8 @@ export default function App({navigation}) {
             longitude: Number(truck.location.longitude),
           },
         }));
-        console.log("Markers are ", newMarkers)
+
+        // console.log("Markers are ", newMarkers)
         setMarkers(newMarkers);
         setIsLoading(false);
       })
@@ -110,27 +117,26 @@ export default function App({navigation}) {
         console.error(error);
       });
   };
-
+  
   const handleMarkerPress = (marker) => {
     setShowButton(true);
     setSelectedMarker(marker);
-  };
-
-  //send users to google maps
-  const handleGetDirections = (latitude, longitude) => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
-    Linking.openURL(url);
+    // console.log(marker?.ratings)
   };
 
   const handleSignOut = () => {
-    console.log('Sign Out');
+    // console.log('Sign Out');
     navigation.navigate('UserLogin');
   };
 
   const handleButtonPress = () => {
     navigation.navigate('UserFoodTruckDetails', { marker: selectedMarker });
-    console.log(selectedMarker);
-    console.log('Button pressed');
+    // console.log(selectedMarker);
+    // console.log('Button pressed');
+  }
+
+  const handleTopFoodTruck = (foodTruck) => {
+    navigation.navigate('UserFoodTruckDetails', { marker: foodTruck });
   }
 
   const handleDeleteAccount = async () => {
@@ -141,7 +147,7 @@ export default function App({navigation}) {
           username: username
         },
       });
-      console.log(response.data); // "User Deleted."
+      // console.log(response.data); // "User Deleted."
       // Redirect to another page
       navigation.navigate('UserLogin');
     } catch (error) {
@@ -168,7 +174,20 @@ export default function App({navigation}) {
           <Appbar.Action icon="delete" title="Delete Account" onPress={handleDeleteAccount} />
         </Appbar.Header>
         </View>
-
+        
+        <View style={{height:'20%',width:'100%'}}>
+          <Text style={{fontSize:20,fontWeight:'bold',textAlign:'center'}}>Top 3 Food Trucks</Text>
+          {top3FoodTrucks.map(foodTruck => (
+            // Touchable list
+            <TouchableOpacity
+            key={foodTruck.truck_name}
+            style={{alignItems:'center',backgroundColor: '#fff',borderRadius: 5,padding: 10,marginBottom: 10,width: '100%',}}
+            onPress={() => handleTopFoodTruck(foodTruck)}
+            >
+            <Text style={styles.cardText}>{foodTruck.truck_name}</Text>
+            </TouchableOpacity>
+        ))}
+        </View>
         
         <MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={INITIAL_POSITION} showsCompass={false}>
           {markers.map((marker, index) => (
@@ -193,12 +212,6 @@ export default function App({navigation}) {
                     <Text>Opening Hours: {marker.start_time}</Text>
                     <Text> - {marker.end_time}</Text>
                  </View> : null}
-                 
-                 {/* <TouchableOpacity
-                  style={styles.directionsButton}
-                  onPress={() => handleGetDirections(marker.location.latitude, marker.location.longitude)}>
-                    <Text style={styles.directionsButtonText}>Get Directions</Text>
-                  </TouchableOpacity> */}
               </View>
             </Callout>
           </Marker>
@@ -242,7 +255,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '100%',
+    height: '65%',
   },
   calloutContainer: {
     width: 220,

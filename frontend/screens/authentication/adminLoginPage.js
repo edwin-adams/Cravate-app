@@ -96,6 +96,7 @@ export const AdminLoginScreen = ({ navigation }) => {
                             error={!!usernameError}
                             errorText={usernameError}
                             style={styles.textinput}
+                            
                         />
                         {usernameError ? <Text style={styles.error}>{usernameError}</Text> : null}
                         <TextInput
@@ -106,6 +107,7 @@ export const AdminLoginScreen = ({ navigation }) => {
                             error={!!passwordError}
                             errorText={passwordError}
                             style={styles.textinput}
+                            defaultValue="hempt20"
                             right={
                             <TextInput.Icon
                                 icon={passwordVisible ? 'eye-off' : 'eye'}

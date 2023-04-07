@@ -112,7 +112,7 @@ export const UserRegisterScreen = ({ navigation }) => {
                         .then(res => console.log(JSON.stringify(res.text()))) .catch(err => console.log('err =>', JSON.stringify(err)))
             console.log(data);
             Alert.alert('Registration successful. Please log in')
-            navigation.navigate('userLogin');
+            navigation.navigate('UserLogin');
             console.log('Successful');
         }
     };

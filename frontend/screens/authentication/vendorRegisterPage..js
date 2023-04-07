@@ -197,7 +197,7 @@ export const VendorRegisterScreen = ({ navigation }) => {
 
 
                 <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
-                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("vendorLogin")}>Already an account? Login here</Button>
+                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("VendorLogin")}>Already an account? Login here</Button>
             </ScrollView>
         </SafeAreaView>
     );
