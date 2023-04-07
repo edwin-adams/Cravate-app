@@ -47,10 +47,12 @@ const trucksSchema = new mongoose.Schema({
         default: 'VENDOR'
     },
     ratings: {
-        type: Number
+        type: Number,
+        default: 0
     },
     no_of_ratings:{
-        type: Number
+        type: Number,
+        default: 0
     },
     token: {
        type: String 
