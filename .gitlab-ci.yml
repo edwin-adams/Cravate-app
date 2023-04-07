@@ -5,12 +5,29 @@ stages:
 build:
   stage: build
   script:
+    - apt-get update
+    - apt-get install -y curl
+    - apt-get install -y openssh-client
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    - export NVM_DIR="$HOME/.nvm"
+    - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    - source "$NVM_DIR/nvm.sh"
+    - nvm install 14.18.1
+    - cd backend
     - npm install
-    - npm start
 
 deploy:
   stage: deploy
   script:
-    - ssh ec2-user@3.239.61.7 'cd /group20/backend && git pull && npm install && pm2 restart index.js'
+    - apt-get update
+    - apt-get install -y curl
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    - export NVM_DIR="$HOME/.nvm"
+    - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    - source "$NVM_DIR/nvm.sh"
+    - ssh ec2-user@3.239.61.7 'cd /group20/backend && nvm install --lts=fermium && git pull && npm install && pm2 restart index.js'
   only:
     - main
+  needs:
+    - job: build
+      artifacts: true
