@@ -31,6 +31,6 @@ deploy:
     - ssh -o "StrictHostKeyChecking=no" -i id_rsa ec2-user@3.239.61.7 'cd /group20/backend && nvm install --lts=fermium && git pull && npm install && pm2 restart index.js'
   only:
     - main
-  needs:
-    - job: build
-      artifacts: true
+  # needs:
+  #   - job: build
+  #     artifacts: true
