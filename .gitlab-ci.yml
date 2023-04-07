@@ -18,6 +18,8 @@ build:
 
 deploy:
   stage: deploy
+  variables:
+    GIT_STRATEGY: fetch
   script:
     - apt-get update
     - apt-get install -y curl
@@ -30,6 +32,10 @@ deploy:
     - echo "$SSH_KEY" > id_rsa
     - chmod 600 id_rsa
     - export GIT_ASKPASS=/bin/echo
+    - git config --global credential.helper store # store the credentials for future use
+    # - git config --global user.email "you@example.com" # set your email
+    # - git config --global user.name "Your Name" # set your name
+    - printf "protocol=https\nhost=git.cs.dal.ca\nusername=%s\npassword=%s\n" "$GITLAB_USERNAME" "$GITLAB_PASSWORD" | git credential-store --file ~/.git-credentials store # store the credentials in the credential helper
     - git pull https://git.cs.dal.ca/group20/backend.git
     - ssh -o "StrictHostKeyChecking=no" -i id_rsa ec2-user@3.239.61.7 'cd group20/backend && nvm install --lts=fermium && git pull && npm install && pm2 restart index.js'
   only:
