@@ -57,17 +57,17 @@ const TOKEN_KEY = "DCMXIXvHBH";
 //     const response = await request(app)
 //       .delete("/role/delete")
 //       .send({ _id: role._id });
-//     expect(response.status).toBe(200);
-//     expect(response.text).toBe("Role Deleted.");
+//     expect(response.status).to.equal(200);
+//     expect(response.text).to.equal("Role Deleted.");
 //     const deletedRole = await Role.findOne({ _id: role._id });
-//     expect(deletedRole).toBeNull();
+//     expect(deletedRole).to.equalNull();
 //   });
 //   it("should return an error message if role is not found", async () => {
 //     const response = await request(app)
 //       .delete("/role/delete")
 //       .send({ _id: "fakeID" });
-//     expect(response.status).toBe(200);
-//     expect(response.text).toBe("Role Not found");
+//     expect(response.status).to.equal(200);
+//     expect(response.text).to.equal("Role Not found");
 //   });
 // });
 
@@ -130,3 +130,61 @@ describe("User signUp API", () => {
     expect(response.body.message).to.equal("User Exists");
   });
 });
+
+describe("User login API", () => {
+  let testUser;
+
+  beforeEach(async () => {
+    // Create a test user
+    testUser = {
+      first_name: "John",
+      last_name: "Doe",
+      username: "johndoe",
+      password: bcrypt.hashSync("password123", 10),
+      role: "USER"
+    };
+    await User.create(testUser);
+  });
+
+  afterEach(async () => {
+    // Delete the test user after each test
+    await User.deleteOne({ username: testUser.username });
+  });
+
+  it("should log in a user with correct credentials", async () => {
+    const credentials = {
+      username: "johndoe",
+      password: "password123"
+    };
+
+    const response = await request(app).post("/user/login").send(credentials);
+
+    expect(response.status).to.equal(200);
+    expect(response.text).to.equal("Successfully logged in.");
+  });
+
+  it("should return an error when user is not found", async () => {
+    const credentials = {
+      username: "nonexistentuser",
+      password: "password123"
+    };
+
+    const response = await request(app).post("/user/login").send(credentials);
+
+    expect(response.status).to.equal(200);
+    expect(response.text).to.equal("User Not found");
+  });
+
+  it("should return an error when password is incorrect", async () => {
+    const credentials = {
+      username: "johndoe",
+      password: "wrongpassword"
+    };
+
+    const response = await request(app).post("/user/login").send(credentials);
+
+    expect(response.status).to.equal(200);
+    expect(response.text).to.equal("Incorrect Password.");
+  });
+});
+
