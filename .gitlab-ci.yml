@@ -21,9 +21,11 @@ test:
   stage: test
   script: 
     - cd ./backend
-    - CI=false npm install
+    # - CI=false npm install
+    - nvm install --lts=fermium
+    - npm install
     - npm run coverage
-  artifacts: 
+  artifacts:
     paths: 
       - backend/coverage/lcov.info
 
