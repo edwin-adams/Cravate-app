@@ -37,28 +37,6 @@ router.post("/role/get", async function (req, res) {
   } catch (error) {
     console.log("Error: ", error);
   }
-  const adminExists = await Admin.findOne({ username: username });
-  if (!(adminExists == null)) {
-    res.send({ message: "Admin Exists" });
-  }
-  const addAdmin = await Admin.create({
-    first_name,
-    last_name,
-    username,
-    password: pass,
-    role: "ADMIN",
-  });
-  const token = jwt.sign(
-    { user_id: addAdmin._id, username, role: "ADMIN" },
-    TOKEN_KEY,
-    {
-      expiresIn: "2h",
-    }
-  );
-
-  addAdmin.token = token;
-
-  res.send(addAdmin);
 });
 
 router.get("/roles/getall", async function (req, res) {

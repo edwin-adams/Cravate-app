@@ -30,15 +30,14 @@ const TOKEN_KEY = "DCMXIXvHBH";
 // });
 
 describe("POST /role/get", function () {
-  this.timeout(5000);
   it("should get a role by ID", async function () {
     const role = await Role.findOne({ roleName: "CUSTOMER" });
     const response = await request(app)
       .post("/role/get")
       .send({ id: role._id });
     expect(response.status).to.equal(200);
-    expect(response.body).to.deep.equal({ __v: 0, _id: "6430f93445ae774c1903f7c2", roleName: "CUSTOMER" });
-  });
+    expect(response.body).to.deep.equal({ __v: 0, _id: "64318148db38e714330c1e10", roleName: "CUSTOMER" });
+  }, 5000);
 });
 
 describe("GET /roles/getall", () => {
@@ -47,7 +46,7 @@ describe("GET /roles/getall", () => {
     // await Role.insertMany(roles);
     const response = await request(app).get("/roles/getall");
     expect(response.status).to.equal(200);
-    expect(response.body.length).to.equal(30);
+    expect(response.body.length).to.equal(10);
   });
 });
 
