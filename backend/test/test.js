@@ -17,6 +17,8 @@ const { Model } = require("mongoose");
 const { findOne } = require("../models/user");
 const { findOneAndUpdate } = require("../models/admin");
 const TOKEN_KEY = "DCMXIXvHBH";
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
 // describe("POST /role/add", function () {
 //   this.timeout(5000);
@@ -79,9 +81,9 @@ describe("User signUp API", () => {
 
   it("should create a new user with valid details", async () => {
     const newUser = {
-      first_name: "John",
-      last_name: "Doe",
-      username: "johndoe",
+      first_name: "Doug",
+      last_name: "Judy",
+      username: "dougj",
       password: "password123",
     };
 
@@ -97,8 +99,8 @@ describe("User signUp API", () => {
 
   it("should return an error when required fields are missing", async () => {
     const newUser = {
-      first_name: "John",
-      last_name: "Doe",
+      first_name: "Doug",
+      last_name: "Judy",
       password: "password123",
     };
 
@@ -111,15 +113,15 @@ describe("User signUp API", () => {
   it("should return an error when username already exists", async () => {
     const existingUser = {
       first_name: "Jane",
-      last_name: "Doe",
+      last_name: "Judy",
       username: "janedoe",
       password: "password123",
     };
     await User.create(existingUser);
 
     const newUser = {
-      first_name: "John",
-      last_name: "Doe",
+      first_name: "Doug",
+      last_name: "Judy",
       username: "janedoe",
       password: "password123",
     };
@@ -137,9 +139,9 @@ describe("User login API", () => {
   beforeEach(async () => {
     // Create a test user
     testUser = {
-      first_name: "John",
-      last_name: "Doe",
-      username: "johndoe",
+      first_name: "Doug",
+      last_name: "Judy",
+      username: "dougj",
       password: bcrypt.hashSync("password123", 10),
       role: "USER"
     };
@@ -153,7 +155,7 @@ describe("User login API", () => {
 
   it("should log in a user with correct credentials", async () => {
     const credentials = {
-      username: "johndoe",
+      username: "dougj",
       password: "password123"
     };
 
@@ -177,7 +179,7 @@ describe("User login API", () => {
 
   it("should return an error when password is incorrect", async () => {
     const credentials = {
-      username: "johndoe",
+      username: "dougj",
       password: "wrongpassword"
     };
 
@@ -191,14 +193,14 @@ describe("User login API", () => {
 describe("User get API", () => {
   beforeEach(async () => {
     // Check if user exists
-    const existingUser = await User.findOne({ username: "johndoe" });
+    const existingUser = await User.findOne({ username: "dougj" });
   
     // If user does not exist, create a test user
     if (!existingUser) {
       const newUser = {
-        first_name: "John",
-        last_name: "Doe",
-        username: "johndoe",
+        first_name: "Doug",
+        last_name: "Judy",
+        username: "dougj",
         password: bcrypt.hashSync("password123", 10),
         role: "USER"
       };
@@ -208,14 +210,14 @@ describe("User get API", () => {
   
 
   it("should return the correct user information", async () => {
-    const username = "johndoe";
+    const username = "dougj";
 
     const response = await request(app).post("/user/get").send({ username });
 
     expect(response.status).to.equal(200);
     expect(response.body).to.have.property("username", username);
-    expect(response.body).to.have.property("first_name", "John");
-    expect(response.body).to.have.property("last_name", "Doe");
+    expect(response.body).to.have.property("first_name", "Doug");
+    expect(response.body).to.have.property("last_name", "Judy");
     expect(response.body).to.have.property("role", "USER");
   });
 
@@ -226,6 +228,47 @@ describe("User get API", () => {
 
     expect(response.status).to.equal(200);
     expect(response.text).to.equal("User not found.");
+  });
+});
+
+
+chai.use(chaiHttp);
+
+describe('Vendor sign up API', () => {
+  it('should return 400 status code if any details are missing', async () => {
+    const res = await chai
+      .request(app)
+      .post('/vendor/signUp')
+      .send({ first_name: 'Doug', last_name: 'Judy', password: 'password123' });
+    expect(res).to.have.status(400);
+  });
+
+  // it('should create a new vendor account and return a JWT token', async () => {
+  //   const res = await chai
+  //     .request(app)
+  //     .post('/vendor/signUp')
+  //     .send({
+  //       first_name: 'Doug',
+  //       last_name: 'Judy',
+  //       username: 'dougj',
+  //       password: 'password123',
+  //     });
+  //   expect(res).to.have.status(200);
+  //   expect(res.body.token).to.exist;
+  // });
+
+  it('should return "Error occurred" message if there is an error', async () => {
+    const res = await chai
+      .request(app)
+      .post('/vendor/signUp')
+      .send({
+        first_name: 'Doug',
+        last_name: 'Judy',
+        username: 'dougj',
+        password: 'password123',
+      });
+    expect(res).to.have.status(200);
+    expect(res.text).to.equal('Error occured.');
   });
 });
 
