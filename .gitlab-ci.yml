@@ -33,10 +33,8 @@ deploy:
     - chmod 600 id_rsa
     - export GIT_SSH_COMMAND="ssh -o 'StrictHostKeyChecking=no' -i $PWD/id_rsa"
     - git config --global credential.helper store # store the credentials for future use
-    # - git config --global user.email "you@example.com" # set your email
-    # - git config --global user.name "Your Name" # set your name
-    - printf "protocol=https\nhost=git.cs.dal.ca\nusername=%s\npassword=%s\n\n" "$GITLAB_USERNAME" "$GITLAB_PASSWORD" | git credential-store --file ~/.git-credentials store
-    - git pull https://git.cs.dal.ca/courses/2023-winter/csci-5308/group20
+    - git remote set-url origin git@git.cs.dal.ca:courses/2023-winter/csci-5308/group20.git # set the remote URL to use SSH
+    - git pull # now Git will use the SSH key for authentication
     - ssh -o "StrictHostKeyChecking=no" -i id_rsa ec2-user@3.239.61.7 'cd group20/backend && nvm install --lts=fermium && git pull && npm install && pm2 restart index.js'
   only:
     - main
