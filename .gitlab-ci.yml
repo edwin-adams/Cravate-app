@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - deploy
 
 build:
@@ -15,6 +16,16 @@ build:
     # - nvm install 14.18.1
     # - cd backend
     # - npm install
+
+test:
+  stage: test
+  script: 
+    - cd group20/backend
+    - npm run coverage
+  artifacts: 
+    paths: 
+      - backend/coverage/lcov.info
+
 
 deploy:
   stage: deploy
