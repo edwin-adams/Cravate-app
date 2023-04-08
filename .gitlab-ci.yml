@@ -62,5 +62,5 @@ deploy:
   only:
     - main
   needs:
-    - job: build
+    - job: test
       artifacts: true
