@@ -25,10 +25,10 @@ deploy:
     - apt-get install -y curl
     - apt-get install -y openssh-client
     - apt-get install -y git
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    - export NVM_DIR="$HOME/.nvm"
-    - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-    - source "$NVM_DIR/nvm.sh"
+    # - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    # - export NVM_DIR="$HOME/.nvm"
+    # - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    # - source "$NVM_DIR/nvm.sh"
     # - echo "$SSH_KEY" > id_rsa
     # - chmod 600 id_rsa
     # - export GIT_SSH_COMMAND="ssh -o 'StrictHostKeyChecking=no' -i $PWD/id_rsa"
