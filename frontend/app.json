@@ -22,10 +22,25 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.cravate.app"
+      "package": "com.cravate.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCgc15ltckSb6EBxNogK0LjfIKxXtc6Haw"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7707a951-56c7-4f74-b76b-09f4594e48fd"
+      }
+    },
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBkeRikVvTXhCqMm3xpQYrSEWkTpPYgA5U"
+      }
     }
   }
 }

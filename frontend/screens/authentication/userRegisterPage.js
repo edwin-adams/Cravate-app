@@ -112,7 +112,7 @@ export const UserRegisterScreen = ({ navigation }) => {
                         .then(res => console.log(JSON.stringify(res.text()))) .catch(err => console.log('err =>', JSON.stringify(err)))
             console.log(data);
             Alert.alert('Registration successful. Please log in')
-            navigation.navigate('userLogin');
+            navigation.navigate('UserLogin');
             console.log('Successful');
         }
     };
@@ -187,7 +187,7 @@ export const UserRegisterScreen = ({ navigation }) => {
 
 
                 <Button mode="contained" style={styles.button} onPress={handleSignup}>Sign up</Button>
-                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("userLogin")}>Already an account? Login here</Button>
+                <Button uppercase={false} style={styles.button} onPress={() => navigation.navigate("UserLogin")}>Already an account? Login here</Button>
 
             </ScrollView>
         </SafeAreaView>

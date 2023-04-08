@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Dimensions, ScrollView, ActivityIndicator, Alert } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Button, TextInput, List, IconButton, Card } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
@@ -159,7 +159,7 @@ export const AddFoodTruck =({ navigation }) => {
           if (response.ok) {
           // The signup was successful, navigate to the next screen
             Alert.alert('Registration successful. Please login.')
-            navigation.navigate('vendorLogin');
+            navigation.navigate('VendorLogin');
           } else {
           // There was an error with the signup, handle it appropriately
           const errorText = await response.text();
@@ -336,6 +336,7 @@ export const AddFoodTruck =({ navigation }) => {
             <Text style={styles.addDishes}>Set location on map</Text>
             <MapView
               style={styles.map}
+              provider={PROVIDER_GOOGLE}
               initialRegion={{
                 latitude,
                 longitude,
