@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useRoute } from '@react-navigation/native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { AntDesign } from '@expo/vector-icons';
 
 export const FoodTruckDetails = ({ navigation }) => {
@@ -94,7 +94,7 @@ export const FoodTruckDetails = ({ navigation }) => {
           : null} */}
         <Text style={styles.cardText}>Location:</Text>
         {/* Display the location on map */}
-        <MapView style={{ width: '100%', height: 200 }} region={{
+        <MapView provider={PROVIDER_GOOGLE} style={{ width: '100%', height: 200 }} region={{
           latitude: parseFloat(foodTruck.location.latitude),
           longitude: parseFloat(foodTruck.location.longitude),
           latitudeDelta: 0.01,

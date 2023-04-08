@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity,Dimensions, ScrollView, Alert } from 'react-native';
 import { IconButton, TextInput, Button,Appbar } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
@@ -304,7 +304,7 @@ export const VendorLanding =({ navigation }) => {
           {endTime && <Text>End Time: {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>}
         </View>
 
-        <MapView onPress = {handleMapPress} style={{ width: '100%', height: 200 }} region={{
+        <MapView provider={PROVIDER_GOOGLE} onPress = {handleMapPress} style={{ width: '100%', height: 200 }} region={{
                     latitude: latitude,
                     longitude: longitude,
                     latitudeDelta: 0.01,

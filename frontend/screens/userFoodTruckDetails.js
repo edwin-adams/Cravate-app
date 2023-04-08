@@ -86,16 +86,6 @@ export const UserFoodTruckDetails = ({navigation}) => {
             <Text style={{ fontSize: 20 }}>You rated {rating} stars.</Text>
             <Button mode="contained" onPress={submitRating}> Submit Rating</Button>
 
-            {/* <MapView onPress = {handleMapPress} style={{ width: '100%', height: 200 }} region={{
-                        latitude: latitude,
-                        longitude: longitude,
-                        latitudeDelta: 0.01,
-                        longitudeDelta: 0.01,            
-            }}>
-            <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
-            </MapView>
-            
-            <Button mode="contained" onPress={updateDetails} style={{marginVertical:10}}>Update Details</Button> */}
         </View>
         }}
         />
