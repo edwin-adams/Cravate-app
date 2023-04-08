@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha ./test/test.js",
-    "coverage": "jest --coverage -forceExit",
+    "coverage": "jest --coverage --rootDir=./test",
     "start": "nodemon index.js"
   },
   "repository": {
