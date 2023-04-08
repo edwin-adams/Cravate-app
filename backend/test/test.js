@@ -299,3 +299,37 @@ describe("Vendor login API", function () {
   });
 });
 
+
+describe('Vendor get API', () => {
+  it('should return 200 status code and vendor details if vendor is found', async () => {
+    const vendorUsername = 'johndoe';
+    const vendorData = {
+      username: vendorUsername,
+    };
+    await request(app)
+      .post('/vendor/get')
+      .send({ username: vendorUsername })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then(response => {
+        expect(response.body.username).to.equal(vendorUsername);
+      });
+  });
+
+  it('should return 200 status code and "Vendor not found." message if vendor is not found', async () => {
+    const nonExistentVendorUsername = 'nonexistentvendor';
+    await request(app)
+      .post('/vendor/get')
+      .send({ username: nonExistentVendorUsername })
+      .expect(200)
+      .expect('Vendor not found.');
+  });
+
+  it('should return 200 status code if username is missing', async () => {
+    await request(app)
+      .post('/vendor/get')
+      .send({ username: null })
+      .expect(200)
+      .expect('Vendor not found.');
+  });
+});

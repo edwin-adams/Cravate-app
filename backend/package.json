@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "coverage": "jest --coverage -forceExit",
     "test": "mocha ./test/test.js",
     "start": "nodemon index.js"
   },
