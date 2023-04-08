@@ -17,9 +17,4 @@ app.get("/", (req, res) => {
 app.use(bodyParser.json());
 app.use('/', api);   
 
-// var http = require("http");
-
-// http.createServer(function (req, res) {
-//     res.write("A Cloud server hosted"); 
-//     res.end;
-// }).listen(3000);
+module.exports = app;

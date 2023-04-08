@@ -16,6 +16,11 @@ const TOKEN_KEY = "DCMXIXvHBH";
 
 router.post("/role/add", async function (req, res) {
   const body = req.body;
+  const findRoles = await Role.findOne({ roleName: body.role });
+  if(findRoles !== null) {
+    res.send("Role Already Exists");
+    return;
+  }
   const addRole = await Role.create({ roleName: body.role });
   res.send("Role Created");
 });
@@ -58,7 +63,6 @@ router.post("/role/get", async function (req, res) {
 
 router.get("/roles/getall", async function (req, res) {
   const listRoles = await Role.find();
-  console.log("Roles", listRoles);
   if (listRoles == "") {
     return res.send({ message: "No roles found" });
   }
@@ -86,7 +90,7 @@ router.post("/user/signUp", async function (req, res) {
   }
   const userExists = await User.findOne({ username: username });
   if (!(userExists == null)) {
-    res.send({ message: "User Exists" });
+    return res.send({ message: "User Exists" });
   }
   const addUser = await User.create({
     first_name,
@@ -112,8 +116,7 @@ router.post("/user/login", async function (req, res) {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
   if (user == null) {
-    res.send("User Not found");
-    return;
+    return res.send("User Not found");
   }
   const comparePassword = bcrypt.compareSync(password, user.password);
   if (comparePassword == true) {
@@ -129,12 +132,13 @@ router.post("/user/get", async function (req, res) {
     const getUser = await User.findOne({ username: user });
     if (getUser == null) {
       console.log("User not found.");
-      res.send("User not found.");
+      return res.send("User not found.");
     } else {
-      res.send(getUser);
+      return res.send(getUser);
     }
   } catch (error) {
     console.log("Error: ", error);
+    return;
   }
 });
 
