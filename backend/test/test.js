@@ -188,3 +188,44 @@ describe("User login API", () => {
   });
 });
 
+describe("User get API", () => {
+  beforeEach(async () => {
+    // Check if user exists
+    const existingUser = await User.findOne({ username: "johndoe" });
+  
+    // If user does not exist, create a test user
+    if (!existingUser) {
+      const newUser = {
+        first_name: "John",
+        last_name: "Doe",
+        username: "johndoe",
+        password: bcrypt.hashSync("password123", 10),
+        role: "USER"
+      };
+      await User.create(newUser);
+    }
+  });
+  
+
+  it("should return the correct user information", async () => {
+    const username = "johndoe";
+
+    const response = await request(app).post("/user/get").send({ username });
+
+    expect(response.status).to.equal(200);
+    expect(response.body).to.have.property("username", username);
+    expect(response.body).to.have.property("first_name", "John");
+    expect(response.body).to.have.property("last_name", "Doe");
+    expect(response.body).to.have.property("role", "USER");
+  });
+
+  it("should return an error when user is not found", async () => {
+    const username = "nonexistentuser";
+
+    const response = await request(app).post("/user/get").send({ username });
+
+    expect(response.status).to.equal(200);
+    expect(response.text).to.equal("User not found.");
+  });
+});
+
