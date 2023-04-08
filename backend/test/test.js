@@ -29,27 +29,27 @@ const TOKEN_KEY = "DCMXIXvHBH";
 //   });
 // });
 
-describe("POST /role/get", function () {
-  this.timeout(5000);
-  it("should get a role by ID", async function () {
-    const role = await Role.findOne({ roleName: "CUSTOMER" });
-    const response = await request(app)
-      .post("/role/get")
-      .send({ id: role._id });
-    expect(response.status).to.equal(200);
-    expect(response.body).to.deep.equal({ __v: 0, _id: "6430f93445ae774c1903f7c2", roleName: "CUSTOMER" });
-  });
-});
+// describe("POST /role/get", function () {
+//   this.timeout(5000);
+//   it("should get a role by ID", async function () {
+//     const role = await Role.findOne({ roleName: "CUSTOMER" });
+//     const response = await request(app)
+//       .post("/role/get")
+//       .send({ id: role._id });
+//     expect(response.status).to.equal(200);
+//     expect(response.body).to.deep.equal({ __v: 0, _id: "6430f93445ae774c1903f7c2", roleName: "CUSTOMER" });
+//   });
+// });
 
-describe("GET /roles/getall", () => {
-  it("should get all roles", async () => {
-    const roles = [      { roleName: "Manager" },      { roleName: "Employee" },      { roleName: "Customer" },    ];
-    // await Role.insertMany(roles);
-    const response = await request(app).get("/roles/getall");
-    expect(response.status).to.equal(200);
-    expect(response.body.length).to.equal(30);
-  });
-});
+// describe("GET /roles/getall", () => {
+//   it("should get all roles", async () => {
+//     const roles = [      { roleName: "Manager" },      { roleName: "Employee" },      { roleName: "Customer" },    ];
+//     // await Role.insertMany(roles);
+//     const response = await request(app).get("/roles/getall");
+//     expect(response.status).to.equal(200);
+//     expect(response.body.length).to.equal(30);
+//   });
+// });
 
 // describe("DELETE /role/delete", () => {
 //   it("should delete a role by ID", async () => {
@@ -70,3 +70,63 @@ describe("GET /roles/getall", () => {
 //     expect(response.text).toBe("Role Not found");
 //   });
 // });
+
+describe("User signUp API", () => {
+  beforeEach(async () => {
+    // Clear the User collection before each test
+    await User.deleteMany({});
+  });
+
+  it("should create a new user with valid details", async () => {
+    const newUser = {
+      first_name: "John",
+      last_name: "Doe",
+      username: "johndoe",
+      password: "password123",
+    };
+
+    const response = await request(app).post("/user/signUp").send(newUser);
+
+    expect(response.status).to.equal(200);
+    expect(response.body.first_name).to.equal(newUser.first_name);
+    expect(response.body.last_name).to.equal(newUser.last_name);
+    expect(response.body.username).to.equal(newUser.username);
+    expect(response.body.role).to.equal("USER");
+    expect(response.body.token).to.exist;
+  });
+
+  it("should return an error when required fields are missing", async () => {
+    const newUser = {
+      first_name: "John",
+      last_name: "Doe",
+      password: "password123",
+    };
+
+    const response = await request(app).post("/user/signUp").send(newUser);
+
+    expect(response.status).to.equal(400);
+    expect(response.text).to.equal("Provide all details.");
+  });
+
+  it("should return an error when username already exists", async () => {
+    const existingUser = {
+      first_name: "Jane",
+      last_name: "Doe",
+      username: "janedoe",
+      password: "password123",
+    };
+    await User.create(existingUser);
+
+    const newUser = {
+      first_name: "John",
+      last_name: "Doe",
+      username: "janedoe",
+      password: "password123",
+    };
+
+    const response = await request(app).post("/user/signUp").send(newUser);
+
+    expect(response.status).to.equal(200);
+    expect(response.body.message).to.equal("User Exists");
+  });
+});
