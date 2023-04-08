@@ -21,6 +21,7 @@ test:
   stage: test
   script: 
     - cd ./backend
+    - CI=false npm install
     - npm run coverage
   artifacts: 
     paths: 
