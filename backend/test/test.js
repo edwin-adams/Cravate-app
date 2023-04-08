@@ -272,3 +272,30 @@ describe('Vendor sign up API', () => {
   });
 });
 
+
+describe("Vendor login API", function () {
+  it("should return error message if vendor is not found", function (done) {
+    request(app)
+      .post("/vendor/login")
+      .send({ username: "nonexistent", password: "password123" })
+      .expect(200)
+      .expect("Vendor Not found", done);
+  });
+
+  it("should return error message if password is incorrect", function (done) {
+    request(app)
+      .post("/vendor/login")
+      .send({ username: "dougj", password: "wrongpassword" })
+      .expect(200)
+      .expect("Incorrect Password.", done);
+  });
+
+  it("should return success message if login credentials are correct", function (done) {
+    request(app)
+      .post("/vendor/login")
+      .send({ username: "dougj", password: "password123" })
+      .expect(200)
+      .expect("Successfully logged in.", done);
+  });
+});
+
