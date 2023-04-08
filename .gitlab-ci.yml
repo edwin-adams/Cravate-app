@@ -20,7 +20,7 @@ build:
 test:
   stage: test
   script: 
-    - cd group20/backend
+    - cd ./backend
     - npm run coverage
   artifacts: 
     paths: 
