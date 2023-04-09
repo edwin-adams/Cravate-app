@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity,Dimensions, ScrollView, Alert } from 'react-native';
+import { View, Text, FlatList, Alert } from 'react-native';
 import { IconButton, TextInput, Button,Appbar } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';

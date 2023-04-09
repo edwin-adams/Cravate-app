@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, Text } from "react-native";
+import React from "react";
+import {  StyleSheet, View} from "react-native";
 import { Button, Card } from "react-native-paper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

@@ -1605,9 +1605,7 @@ describe("Vendor login API", function () {
 describe('Vendor get API', () => {
   it('should return 200 status code and vendor details if vendor is found', async () => {
     const vendorUsername = 'dougj';
-    // const vendorData = {
-    //   username: vendorUsername,
-    // };
+    
     await request(app)
       .post('/vendor/get')
       .send({ username: vendorUsername })

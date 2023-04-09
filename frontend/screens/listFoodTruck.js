@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export const ListFoodTruck = ({navigation}) => {
     

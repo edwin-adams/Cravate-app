@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, FlatList,StyleSheet, Text, TouchableOpacity, View, TextInput, Button} from 'react-native';
+import { ActivityIndicator, Dimensions, Image,StyleSheet, Text, TouchableOpacity, View, TextInput, Button} from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar } from 'react-native-paper';
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
@@ -26,7 +25,6 @@ const getTrucksAPI = "http://3.239.61.7:3000/truck/getall";
 export default function App({navigation}) {
 
 
-  const [foodtruckLocations, setFoodtruckLocations] = useState([]);
   const [top3FoodTrucks,setTop3FoodTrucks] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [showButton, setShowButton] = useState(false);
@@ -37,7 +35,7 @@ export default function App({navigation}) {
   const route = useRoute();
 
   const username = route.params;
-  //  console.log(' passed username is: ',username);
+
   useEffect(() => {
     (async () => {
       
@@ -49,7 +47,6 @@ export default function App({navigation}) {
 
       let location = await Location.getCurrentPositionAsync({});
 
-      // console.log('Location is ', location)
       setUserLocation(location);
     })();
   }, []);
@@ -59,10 +56,10 @@ export default function App({navigation}) {
     fetch("http://3.239.61.7:3000/truck/getall")
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        
       
         const trucks = data.filter((truck) => truck.isAvailable);
-        // console.log("Trucks are ",trucks)
+        
         const newMarkers = trucks.map((truck) => ({
           ...truck,
           location: {
@@ -75,7 +72,7 @@ export default function App({navigation}) {
         );
         setTop3FoodTrucks(sortedFoodTrucks.slice(0, 3));
 
-        // console.log("Markers are ", newMarkers)
+        
         setMarkers(newMarkers);
         setIsLoading(false);
       })
@@ -99,7 +96,7 @@ export default function App({navigation}) {
         console.log("Data is " ,data);
       
         const trucks = data.filter((truck) => truck.isAvailable);
-        // console.log("Trucks are ",trucks)
+        
         const newMarkers = trucks.map((truck) => ({
           ...truck,
           location: {
@@ -108,7 +105,7 @@ export default function App({navigation}) {
           },
         }));
 
-        // console.log("Markers are ", newMarkers)
+        
         setMarkers(newMarkers);
         setIsLoading(false);
       })
@@ -125,14 +122,13 @@ export default function App({navigation}) {
   };
 
   const handleSignOut = () => {
-    // console.log('Sign Out');
+    
     navigation.navigate('UserLogin');
   };
 
   const handleButtonPress = () => {
     navigation.navigate('UserFoodTruckDetails', { marker: selectedMarker });
-    // console.log(selectedMarker);
-    // console.log('Button pressed');
+
   }
 
   const handleTopFoodTruck = (foodTruck) => {
@@ -147,8 +143,6 @@ export default function App({navigation}) {
           username: username
         },
       });
-      // console.log(response.data); // "User Deleted."
-      // Redirect to another page
       navigation.navigate('UserLogin');
     } catch (error) {
       console.log("Error " + error);
@@ -195,8 +189,6 @@ export default function App({navigation}) {
               key={index}
               coordinate={marker.location}
               title={marker.truck_name}
-              //onPress= {handleGetDirections(marker)}
-              //onPress= {() => console.log("Callout pressed")}
               onCalloutPress={ () => console.log("Callout pressed")}
               onPress={() => handleMarkerPress(marker)}
             >  

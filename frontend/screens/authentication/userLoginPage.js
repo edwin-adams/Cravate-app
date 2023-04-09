@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
-import { BackHandler } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, View, Text,  BackHandler } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 
 export const UserLoginScreen = ({ navigation }) => {

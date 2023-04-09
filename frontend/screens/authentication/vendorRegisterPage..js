@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { BackHandler } from 'react-native';
-import { TextInput, Button, Text, Card, IconButton, } from 'react-native-paper';
+import { BackHandler, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { TextInput, Button, Text, Card } from 'react-native-paper';
 
 
 

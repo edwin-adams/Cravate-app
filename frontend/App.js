@@ -18,16 +18,11 @@ import { UserDetails } from "./screens/userDetails";
 import { FoodTruckDetails } from "./screens/foodTruckDetails";
 import { VendorDetails } from "./screens/vendorDetails";
 import CustomerMapScreen from "./screens/maps/CustomerMap.js"
-import { createSwitchNavigator } from '@react-navigation/core';
 import { VendorLanding } from "./screens/VendorLanding";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserFoodTruckDetails } from "./screens/userFoodTruckDetails";
 
 const Stack = createNativeStackNavigator();
-// const CustomerSwitch = createSwitchNavigator({
-//   CustomerLanding: CustomerLandingScreen,
-//   CustomerMap: CustomerMapScreen,
-// });
 
 export default function App() {
 
@@ -51,37 +46,6 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
-      {/* Below code to be uncommented when all features are added */}
-      {/* {!selectedRole && (
-          <Stack.Screen 
-            name="splash"
-            component={SplashScreen}
-            options = {{headerShown:false}}
-          />
-        )}
-        {selectedRole === 'user' && (
-            <Stack.Screen 
-            name="userLogin"
-            component={UserLoginScreen}
-            options = {{headerShown:false}}
-          />
-        )}
-        {selectedRole === 'vendor' && (
-            <Stack.Screen 
-            name="vendorLogin"
-            component={VendorLoginScreen}
-            options = {{headerShown:false}}
-          />
-        )}
-        {selectedRole === 'admin' && (
-            <Stack.Screen 
-            name="adminLogin"
-            component={AdminLoginScreen}
-            options = {{headerShown:false}}
-          />
-        )} */}
-
-        {/* To be deleted when the above code is uncommented */}
         <Stack.Screen 
             name="splash"
             component={SplashScreen}

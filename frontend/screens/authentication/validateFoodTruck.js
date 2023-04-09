@@ -1,26 +1,10 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
-import { Button, Card, TextInput } from "react-native-paper";
+import { Card, TextInput } from "react-native-paper";
 
 export const ValidateFoodTruck = ({ navigation }) => {
     const [permit, setPermit] = useState('');
     const [permitError, setPermitError] = useState('');
-    const handleSignup = async () => {
-        let permitValid = true;
-        if (permit.length === 0) {
-            permitValid = false;
-            setPermitError('Permit number is required');
-        } else {
-            setPermitError('');
-        }
-
-        if (permitValid){
-            const data = {
-                permit: permit
-            }
-            console.log(data);
-        }
-    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.view}>

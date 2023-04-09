@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ListUser = ({navigation}) => {

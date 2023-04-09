@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "DCMXIXvHBH";
 
 // Role API's
-
+//This API is designed to add a new role to a database if it doesn't already exist.
 router.post("/role/add", async function (req, res) {
   const body = req.body;
   const findRoles = await Role.findOne({ roleName: body.role });
@@ -21,6 +21,8 @@ router.post("/role/add", async function (req, res) {
   res.send("Role Created");
 });
 
+
+//This API is designed to retrieve a specific role from a database based on the role ID provided in the request body.
 router.post("/role/get", async function (req, res) {
   try {
     const roleID = req.body.id;
@@ -35,6 +37,7 @@ router.post("/role/get", async function (req, res) {
   }
 });
 
+//This API is designed to retrieve all roles from a database and return them to the client.
 router.get("/roles/getall", async function (req, res) {
   const listRoles = await Role.find();
   if (listRoles == "") {
@@ -43,6 +46,7 @@ router.get("/roles/getall", async function (req, res) {
   res.send(listRoles);
 });
 
+//This API is designed to delete a specific role from a database based on the role ID provided in the request body.
 router.delete("/role/delete", async function (req, res) {
   const id = req.body._id;
   const role = await Role.findOne(id);
@@ -55,7 +59,7 @@ router.delete("/role/delete", async function (req, res) {
 });
 
 // User API's
-
+//This API is designed to handle user sign-up requests, adding a new user to the database if all required fields are provided and the user does not already exist.
 router.post("/user/signUp", async function (req, res) {
   const { first_name, last_name, username, password } = req.body;
   const pass = bcrypt.hashSync(password, 10);
@@ -86,6 +90,7 @@ router.post("/user/signUp", async function (req, res) {
   res.send(addUser);
 });
 
+//This API  is designed to handle user login requests by verifying the user's credentials and returning a response indicating whether the login was successful or not.
 router.post("/user/login", async function (req, res) {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
@@ -100,6 +105,7 @@ router.post("/user/login", async function (req, res) {
   }
 });
 
+//This API is designed to handle requests to retrieve user data from the database based on the provided username.
 router.post("/user/get", async function (req, res) {
   try {
     const user = req.body.username;
@@ -116,6 +122,7 @@ router.post("/user/get", async function (req, res) {
   }
 });
 
+// This API is designed to handle requests to retrieve all user data from the database.
 router.get("/users/getall", async function (req, res) {
   const listUsers = await User.find();
   console.log("Users", listUsers);
@@ -125,6 +132,7 @@ router.get("/users/getall", async function (req, res) {
   res.send(listUsers);
 });
 
+//This API is designed to handle requests to delete a user from the database based on their username.
 router.delete("/user/delete", async function (req, res) {
   const usn = req.body.username;
   const user = await User.findOne({ username: usn });
@@ -137,7 +145,7 @@ router.delete("/user/delete", async function (req, res) {
 });
 
 // Admin API's
-
+//This API is designed to handle admin sign-up requests, adding a new admin to the database if all required fields are provided and the admin does not already exist.
 router.post("/admin/signUp", async function (req, res) {
   const { first_name, last_name, username, password } = req.body;
   const pass = bcrypt.hashSync(password, 10);
@@ -163,6 +171,7 @@ router.post("/admin/signUp", async function (req, res) {
   res.send(addAdmin);
 });
 
+//This API  is designed to handle admin login requests by verifying the admin's credentials and returning a response indicating whether the login was successful or not.
 router.post("/admin/login", async function (req, res) {
   const { username, password } = req.body;
   const admin = await Admin.findOne({ username: username });
@@ -178,6 +187,7 @@ router.post("/admin/login", async function (req, res) {
   }
 });
 
+//This API is designed to handle requests to retrieve admin data from the database based on the provided first name.
 router.post("/admin/get", async function (req, res) {
   try {
     const admin = req.body.firstname;
@@ -192,6 +202,7 @@ router.post("/admin/get", async function (req, res) {
   }
 });
 
+// This API is designed to handle requests to retrieve all admin data from the database.
 router.get("/admins/getall", async function (req, res) {
   const listAdmins = await Admin.find();
   console.log("Admins", listAdmins);
@@ -201,6 +212,7 @@ router.get("/admins/getall", async function (req, res) {
   res.send(listAdmins);
 });
 
+//This API is designed to handle requests to delete an admin from the database based on their username.
 router.delete("/admin/delete", async function (req, res) {
   const usn = req.body.username;
   const admin = await Admin.findOne({ username: usn });
@@ -213,7 +225,8 @@ router.delete("/admin/delete", async function (req, res) {
 });
 
 // Vendor API's
-
+//This API allows vendors to sign up by providing their first name, last name, username, and password. 
+//The password is hashed using bcrypt before it is saved to the database. If any of the required fields are missing, the API returns a 400 status code with a message asking the user to provide all the details.
 router.post("/vendor/signUp", async function (req, res) {
   try {
     const { first_name, last_name, username, password } = req.body;
@@ -243,6 +256,7 @@ router.post("/vendor/signUp", async function (req, res) {
   }
 });
 
+//This API  is designed to handle vendor login requests by verifying the vendor's credentials and returning a response indicating whether the login was successful or not.
 router.post("/vendor/login", async function (req, res) {
   const { username, password } = req.body;
   const vendor = await Vendor.findOne({ username: username });
@@ -257,6 +271,7 @@ router.post("/vendor/login", async function (req, res) {
   return res.send("Incorrect Password.");
 });
 
+//This API is designed to handle requests to retrieve vendor data from the database based on the provided username.
 router.post("/vendor/get", async function (req, res) {
   try {
     const vendor = req.body.username;
@@ -271,6 +286,7 @@ router.post("/vendor/get", async function (req, res) {
   }
 });
 
+// This API is designed to handle requests to retrieve all vendors data from the database.
 router.get("/vendors/getall", async function (req, res) {
   const listVendors = await Vendor.find();
   console.log("Vendors", listVendors);
@@ -281,6 +297,7 @@ router.get("/vendors/getall", async function (req, res) {
   }
 });
 
+//This API is designed to handle requests to delete a vendor from the database based on their username.
 router.delete("/vendor/delete", async function (req, res) {
   const usn = req.body.username;
   const vendor = await Vendor.findOne({ username: usn });
@@ -303,7 +320,8 @@ router.delete("/vendor/delete", async function (req, res) {
 });
 
 // Truck API's
-
+//This API is used to add a new truck to the database. It expects a POST request with the truck details in the request body, including the truck name and address. 
+//If either the truck name or address is missing, it will return an error message.
 router.post("/truck/add", async function (req, res) {
   const body = req.body;
   if (body.truck_name == null) {
@@ -319,6 +337,7 @@ router.post("/truck/add", async function (req, res) {
   });
 });
 
+//This API is designed to handle requests to retrieve truck data from the database based on the provided truck name.
 router.post("/truck/get", async function (req, res) {
   try {
     const truck = req.body.name;
@@ -336,6 +355,7 @@ router.post("/truck/get", async function (req, res) {
   }
 });
 
+// This API is designed to handle requests to retrieve all truck data from the database.
 router.get("/truck/getall", async function (req, res) {
   const listTrucks = await Truck.find();
   if (listTrucks == "") {
@@ -344,6 +364,7 @@ router.get("/truck/getall", async function (req, res) {
   res.send(listTrucks);
 });
 
+//This API is used to add or update the list of available dishes in a food truck.
 router.post("/truck/addDish", async function (req, res) {
   const id = req.body.truckId;
   const truck = await Truck.findById(id);
@@ -356,6 +377,11 @@ router.post("/truck/addDish", async function (req, res) {
   res.send({ truck: updatedTruck });
 });
 
+//This API is used for searching for food trucks based on a search query. 
+//If the search query is an empty string, it returns all the available trucks. 
+//Otherwise, it first tries to find a truck with the exact truck name that matches the search query. 
+//If it finds a match, it returns that truck. If it doesn't find a match, 
+//it searches through all the available dishes of all the trucks and returns all the trucks that have at least one dish that matches the search query.
 router.post("/search", async function (req, res) {
   const search = req.body.search;
   const lowerCaseSearch = search.toLowerCase();
@@ -405,6 +431,9 @@ router.post("/search", async function (req, res) {
   res.send(array1);
 });
 
+//This API is used to update the information of a truck by a vendor. 
+//If the vendor is valid and there is a truck associated with it, the API updates the information of the truck and returns the updated truck information as a response. 
+//If the vendor or the truck does not exist, the API returns an error message.
 router.post("/truck/update", async function (req, res) {
   const body = req.body;
   const truck = await Truck.findOne({vendorId: body.vendorId});
@@ -413,6 +442,9 @@ router.post("/truck/update", async function (req, res) {
   res.send(truck2);
 });
 
+//This API is used to get a truck by its vendorId. 
+//The API will search for a truck in the database that has the given vendorId and will return the truck if found. 
+//If no truck is found, it will return a message indicating that the truck was not found.
 router.post("/truck/getByVendorId", async function (req, res) {
   try {
     const vendorId = req.body.vendorId;
@@ -430,6 +462,9 @@ router.post("/truck/getByVendorId", async function (req, res) {
   }
 });
 
+//This API allows users to submit ratings for a food truck by providing the truck ID and the rating value. 
+//The API validates the input data and calculates the average rating for the truck, taking into account the previous ratings. 
+//Finally, the API returns the updated truck object with the new rating information.
 router.post("/truck/ratings", async function (req, res) {
     try {
       const body = req.body;

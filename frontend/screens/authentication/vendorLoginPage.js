@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
-import { BackHandler } from 'react-native';
+import { BackHandler,Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 
 
@@ -69,7 +68,6 @@ export const VendorLoginScreen = ({ navigation }) => {
                     },
                     body: JSON.stringify(data),
                 }).then(async response => {
-                    //console.log(response);
                     let message = await response.text();
                     if (message === 'Successfully logged in.') navigation.navigate("VendorLanding",{username})
                     else Alert.alert('Authentication failed')

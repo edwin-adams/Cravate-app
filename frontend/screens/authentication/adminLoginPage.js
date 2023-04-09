@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert, SafeAreaView, StyleSheet, View, Text } from "react-native";
-import { BackHandler } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, View, Text, BackHandler } from "react-native";
 import { Button, Card, TextInput } from "react-native-paper";
 
 

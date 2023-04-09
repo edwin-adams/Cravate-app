@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
-import { BackHandler } from 'react-native';
-import { TextInput, Button, Text, Card, Checkbox, Switch,ToggleButton } from 'react-native-paper';
+import {  BackHandler,StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { TextInput, Button, Text, Card } from 'react-native-paper';
 
 
 export const UserRegisterScreen = ({ navigation }) => {

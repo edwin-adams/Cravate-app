@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Alert } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, Alert } from "react-native";
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';

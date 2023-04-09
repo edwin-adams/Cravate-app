@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { AntDesign } from '@expo/vector-icons';
+
 
 export const FoodTruckDetails = ({ navigation }) => {
   //Get vendorID passed from food truck list or vendor details page
@@ -12,11 +12,6 @@ export const FoodTruckDetails = ({ navigation }) => {
   // Store food truck object in foodTruck
   const [foodTruck, setFoodTruck] = useState(null);
 
-  // If food truck is empty, fetch food truck details
-  // if (!foodTruck) {
-  //   console.log(vendorId);
-  
-  // }
 
   useEffect(() => {
     fetch('http://3.239.61.7:3000/truck/getByVendorId', {
@@ -40,7 +35,6 @@ export const FoodTruckDetails = ({ navigation }) => {
     );
   }
 
-  // if (foodTruck?.ratings !== null && foodTruck?.ratings !== undefined) {
   //   const fullStarIcons = [...Array(Math.floor(foodTruck?.ratings))].map((_, i) => (
   //     <AntDesign key={`full-${i}`} name="star" size={24} color="gold" />
   //   ));
@@ -86,12 +80,6 @@ export const FoodTruckDetails = ({ navigation }) => {
         <Text style={styles.cardText}>Address : {foodTruck.address}</Text>
         <Text style={styles.cardText}>City : {foodTruck.city}</Text>
         <Text style={styles.cardText}>Dishes : {[...foodTruck.available_dishes, ...foodTruck.unavailable_dishes].join(',')}</Text>
-        {/* {foodTruck?.ratings !== null && foodTruck?.ratings !== undefined ?
-          <View style={{ flexDirection: 'row' }}>
-            {fullStarIcons()}
-            {emptyStarIcons()}
-          </View>
-          : null} */}
         <Text style={styles.cardText}>Location:</Text>
         {/* Display the location on map */}
         <MapView provider={PROVIDER_GOOGLE} style={{ width: '100%', height: 200 }} region={{
