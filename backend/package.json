@@ -26,6 +26,7 @@
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
     "expect": "^29.5.0",
     "http": "^0.0.1-security",
@@ -38,6 +39,7 @@
     "nodemon": "^2.0.20",
     "nyc": "^15.1.0",
     "pm2": "^5.2.2",
+    "sinon": "^15.0.3",
     "superset": "^2.0.1",
     "supertest": "^6.3.3"
   }
