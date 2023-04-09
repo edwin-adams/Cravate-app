@@ -32,8 +32,8 @@
 "supertest": "^6.3.3"
 ```
 After cloning the project on the local machine
-1. Navigate to the backend folder on terminal through command *cd backend*
-2. To install backend dependencies, run command *npm install*
+1. Navigate to the backend folder on terminal through command `cd backend`
+2. To install backend dependencies, run command `npm install`
 
 <b>Frontend Dependencies for react native application</b><br>
 
@@ -59,8 +59,8 @@ After cloning the project on the local machine
 ```
 
 After cloning the project on the local machine
-1. Navigate to the frontend folder on terminal through command *cd frontend*
-2. To install react native dependencies, run command *npm install*
+1. Navigate to the frontend folder on terminal through command `cd frontend`
+2. To install react native dependencies, run command `npm install`
 
 <hr>
 
@@ -72,52 +72,53 @@ Users can install the current version of application by installing the apk file 
 
 Backend for this application has been written using node js. To build the node js backend -
 
-1. Navigate to the backend folder on terminal through command *cd backend*
-2. To install backend dependencies, run command *npm install*
+1. Navigate to the backend folder on terminal through command `cd backend`
+2. To install backend dependencies, run command `npm install`
 
 <figure align="center">
-  <img src="images\backend_dependencies_installation.png" alt="backend dependencies installation" width="400" />
+  <img src="images/backend_dependencies_installation.png" alt="backend dependencies installation" width="600" />
   <figcaption>Backend dependencies installation.</figcaption>
 </figure>
 
 
-3. To start the node js server, run command *npm start*. The entry point of node js application is through index.js which runs the application on port 3000 unless specified otherwise.
+
+3. To start the node js server, run command `npm start`. The entry point of node js application is through index.js which runs the application on port 3000 unless specified otherwise.
 4. Access the API's through application such as postman through localhost. The format to access API on local server is http://localhost:3000/{API}
 
 <b>Frontend</b><br>
 
 Frontend for this application has been written using React native. To build the node js backend -
 
-1. Navigate to the frontend folder on terminal through command *cd frontend*
-2. To install backend dependencies, run command *npm install*
+1. Navigate to the frontend folder on terminal through command `cd frontend`
+2. To install frontend dependencies, run command `npm install`
 
 <figure align="center">
-  <img src="images\frontend_dependecies_installation.png" alt="frontend dependencies installation" width="400" />
+  <img src="images/frontend_dependecies_installation.png" alt="frontend dependencies installation" width="600" />
   <figcaption>Frontend dependencies installation.</figcaption>
 </figure>
 
 
-3. To launch the project in local/development mode, run the command *npx expo start*.  This will compile the application and host it on expo servers and display a QR code through which the application can be accessed using Expo Go app available in Android Playstore and Apple app store.
+3. To launch the project in local/development mode, run the command `npx expo start`.  This will compile the application and host it on expo servers and display a QR code through which the application can be accessed using Expo Go app available in Android Playstore and Apple app store.
 
 <figure align="center">
-  <img src="images\frontend_run.png" alt="Launch react native application" width="400" />
+  <img src="images/frontend_run.png" alt="Launch react native application" width="600" />
   <figcaption>Launch react native application.</figcaption>
 </figure>
 
 <figure align="center">
-  <img src="images\expo_go_app.jpeg" alt="Expo GO application" height="200" />
+  <img src="images/expo_go_app.jpeg" alt="Expo GO application" height="400" />
   <figcaption>Expo Go  application.</figcaption>
 </figure>
 
 <figure align="center">
-  <img src="images\splash_screen.jpeg" alt="Running Cravate on Expo Go" height="200" />
+  <img src="images/splash_screen.jpeg" alt="Running Cravate on Expo Go" height="400" />
   <figcaption>Expo Go  application.</figcaption>
 </figure>
 
-4. To launch an apk version of application, run the command *eas build -p android --profile preview*. This will build the application into an apk file and host it on expo servers.
+4. To launch an apk version of application, run the command `eas build -p android --profile preview`. This will build the application into an apk file and host it on expo servers.
 
 <figure align="center">
-  <img src="images\build_apk.png" alt="Building apk file" width="400" />
+  <img src="images/build_apk.png" alt="Building apk file" width="600" />
   <figcaption>Building apk file.</figcaption>
 </figure>
 
@@ -130,7 +131,7 @@ The entry point for application is App.js and all subsequent files can be found 
 
 When a user starts the application for the first time, they will be able to select the role they want to choose 
 <figure align="center">
-  <img src="images\splash_screen.jpeg" alt="Splash Screen" height="200" />
+  <img src="images/splash_screen.jpeg" alt="Splash Screen" height="400" />
   <figcaption>Splash Screen.</figcaption>
 </figure>
 
@@ -139,14 +140,14 @@ Role: USER
 2. Users can login using their existing account credentials such as username and password.
 
 <figure align="center">
-  <img src="images\user_login.jpeg" alt="User Login" height="200" />
+  <img src="images/user_login.jpeg" alt="User Login" height="400" />
   <figcaption>User Login.</figcaption>
 </figure>
 
 3. New users who don't have an account can create one by registering through the registration page.
 
 <figure align="center">
-  <img src="images\user_registration.jpeg" alt="User Registration" height="200" />
+  <img src="images/user_registration.jpeg" alt="User Registration" height="400" />
   <figcaption>User Registration.</figcaption>
 </figure>
 
@@ -158,7 +159,7 @@ Role: USER
 9. Clicking on a marker also reveals a 'directions' icon, located at the bottom right corner of the app.
 
 <figure align="center">
-  <img src="images\user_homepage.jpeg" alt="User homepage" height="200" />
+  <img src="images/user_homepage.jpeg" alt="User homepage" height="400" />
   <figcaption>User Homepage.</figcaption>
 </figure>
 
@@ -174,7 +175,7 @@ Role: VENDOR
 1. After selecting the role Vendor, we will be redirected to vendor login page
 
 <figure align="center">
-  <img src="images\vendor_login.jpeg" alt="Vendor login" height="200" />
+  <img src="images/vendor_login.jpeg" alt="Vendor login" height="400" />
   <figcaption>Vendor login.</figcaption>
 </figure>
 
@@ -182,7 +183,7 @@ Role: VENDOR
 3. Vendor is prompted to fill their details and submit the form.
 
 <figure align="center">
-  <img src="images\vendor_registration.jpeg" alt="Vendor login" height="200" />
+  <img src="images/vendor_registration.jpeg" alt="Vendor login" height="400" />
   <figcaption>Vendor registration.</figcaption>
 </figure>
 
@@ -190,7 +191,7 @@ Role: VENDOR
 5. They are asked to enter all the necessary details about their food truck, including name, address, operating hours, menu, and location.
 
 <figure align="center">
-  <img src="images\add_food_truck.jpeg" alt="Add Food Truck" height="200" />
+  <img src="images/add_food_truck.jpeg" alt="Add Food Truck" height="400" />
   <figcaption>Add Food Truck.</figcaption>
 </figure>
 
@@ -199,7 +200,7 @@ Role: VENDOR
 8. Vendors can toggle dishes between available and unavailable, add new dishes to the menu, change their starting or ending times, and update their location.
 
 <figure align="center">
-  <img src="images\vendor_homepage.jpeg" alt="Vendor Homepage" height="200" />
+  <img src="images/vendor_homepage.jpeg" alt="Vendor Homepage" height="400" />
   <figcaption>Vendor Home Page.</figcaption>
 </figure>
 
@@ -209,62 +210,62 @@ Role: VENDOR
 Role: Admin
 1. After selecting the role Admin, we will be redirected to Admin login page.
 <figure align="center">
-  <img src="images\admin_login.jpeg" alt="Admin Login" height="200" />
+  <img src="images/admin_login.jpeg" alt="Admin Login" height="400" />
   <figcaption>Admin Login.</figcaption>
 </figure>
 2. After the admin logs in, they will be able to see a screen that has listed roles which are used in the application.
 
 <figure align="center">
-  <img src="images\admin_homepage.jpeg" alt="Admin HomePage" height="200" />
+  <img src="images/admin_homepage.jpeg" alt="Admin HomePage" height="400" />
   <figcaption>Admin Homepage.</figcaption>
 </figure>
 
 3. If the admin selects user, they will be able to see all users listed 
 
 <figure align="center">
-  <img src="images\user_list.jpeg" alt="User list" height="200" />
+  <img src="images/user_list.jpeg" alt="User list" height="400" />
   <figcaption>User list.</figcaption>
 </figure>
 
 4. User details such as Name and username are displayed when clicked. Admin has the option to delete the record.
 
 <figure align="center">
-  <img src="images\user_details.jpeg" alt="User details" height="200" />
+  <img src="images/user_details.jpeg" alt="User details" height="400" />
   <figcaption>User details.</figcaption>
 </figure>
 
 5. If the admin clicks on the vendor role in home page, they will be able to see all the vendors listed
 
 <figure align="center">
-  <img src="images\vendor_list.jpeg" alt="Vendor list" height="200" />
+  <img src="images/vendor_list.jpeg" alt="Vendor list" height="400" />
   <figcaption>Vendor list.</figcaption>
 </figure>
 
 6. When the admin clicks on a vendor, they will be able to see vendor details, name and username,the admin can delete the vendor from the system.
 
 <figure align="center">
-  <img src="images\vendor_details.jpeg" alt="Vendor details" height="200" />
+  <img src="images/vendor_details.jpeg" alt="Vendor details" height="400" />
   <figcaption>Vendor details.</figcaption>
 </figure>
 
 7. The admin can view the details of a particular food truck by clicking on it, which is connected to the corresponding vendor.
 
 <figure align="center">
-  <img src="images\food_truck_details.jpeg" alt="Food Truck Details" height="200" />
+  <img src="images/food_truck_details.jpeg" alt="Food Truck Details" height="400" />
   <figcaption>Food Truck details.</figcaption>
 </figure>
 
 8. If the admin selects food truck on the home page, they will be redirected to list food truck page which lists all food trucks
 
 <figure align="center">
-  <img src="images\food_truck_list.jpeg" alt="Food Truck list" height="200" />
+  <img src="images/food_truck_list.jpeg" alt="Food Truck list" height="400" />
   <figcaption>Food Truck list.</figcaption>
 </figure>
 
 9. When admin clicks on any food truck they will be shown details for that particular food truck
 
 <figure align="center">
-  <img src="images\food_truck_details.jpeg" alt="Food Truck Details" height="200" />
+  <img src="images/food_truck_details.jpeg" alt="Food Truck Details" height="400" />
   <figcaption>Food Truck details.</figcaption>
 </figure>
 
