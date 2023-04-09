@@ -26,6 +26,7 @@
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "expect": "^29.5.0",
     "http": "^0.0.1-security",
     "istanbul": "^0.4.5",

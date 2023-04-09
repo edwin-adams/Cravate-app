@@ -241,7 +241,8 @@ router.post("/vendor/signUp", async function (req, res) {
     );
     addVendor.token = token;
     res.send(addVendor);
-  } catch (Error) {
+    return
+  } catch (error) {
     res.send("Error occured.");
   }
 });
