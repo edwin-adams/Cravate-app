@@ -6,10 +6,6 @@ const Vendor = require("../models/vendor");
 const Truck = require("../models/trucks");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const jwtDecode = require("jwt-decode");
-const { Model } = require("mongoose");
-const { findOne } = require("../models/user");
-const { findOneAndUpdate } = require("../models/admin");
 const TOKEN_KEY = "DCMXIXvHBH";
 
 // Role API's
@@ -21,7 +17,7 @@ router.post("/role/add", async function (req, res) {
     res.send("Role Already Exists");
     return;
   }
-  const addRole = await Role.create({ roleName: body.role });
+  await Role.create({ roleName: body.role });
   res.send("Role Created");
 });
 
@@ -54,7 +50,7 @@ router.delete("/role/delete", async function (req, res) {
     res.send("Role Not found");
     return;
   }
-  const deleteRole = await Role.deleteOne(role);
+  await Role.deleteOne(role);
   res.send("Role Deleted.");
 });
 
@@ -67,7 +63,7 @@ router.post("/user/signUp", async function (req, res) {
     res.status(400).send("Provide all details.");
   }
   const userExists = await User.findOne({ username: username });
-  if (!(userExists == null)) {
+  if (userExists !== null) {
     return res.send({ message: "User Exists" });
   }
   const addUser = await User.create({
@@ -135,7 +131,7 @@ router.delete("/user/delete", async function (req, res) {
   if (user == null) {
     res.send("No such user exists.");
   } else {
-    const deleteUser = await User.deleteOne({ username: usn });
+    await User.deleteOne({ username: usn });
     res.send("User Deleted.");
   }
 });
@@ -211,7 +207,7 @@ router.delete("/admin/delete", async function (req, res) {
   if (admin == null) {
     res.send("No such admin exists.");
   } else {
-    const deleteAdmin = await Admin.deleteOne({ username: usn });
+    await Admin.deleteOne({ username: usn });
     res.send("Admin Deleted.");
   }
 });
@@ -291,14 +287,14 @@ router.delete("/vendor/delete", async function (req, res) {
   if (vendor == null) {
     res.send("No such vendor exists.");
   } else {
-    const deleteVendor = await Vendor.deleteOne({ username: usn });
+    await Vendor.deleteOne({ username: usn });
     const isFoodTruckOfVendor = await Truck.findOne({ vendorId: vendor._id });
     if (isFoodTruckOfVendor == null) {
       console.log("No food Truck Found for the vendor");
       res.send("Vendor Deleted");
       return;
     }
-    const foodTruckOfVendor = await Truck.findOneAndDelete({
+    await Truck.findOneAndDelete({
       vendorId: vendor._id,
     });
     console.log("Food Truck Deleted");
@@ -411,8 +407,8 @@ router.post("/search", async function (req, res) {
 
 router.post("/truck/update", async function (req, res) {
   const body = req.body;
-  const truck = await Truck.findOne({vendorId: req.body.vendorId});
-  const truckUpdated = await Truck.findByIdAndUpdate(truck._id, req.body);
+  const truck = await Truck.findOne({vendorId: body.vendorId});
+  await Truck.findByIdAndUpdate(truck._id, req.body);
   const truck2 = await Truck.findOne({vendorId: req.body.vendorId});
   res.send(truck2);
 });
@@ -464,7 +460,7 @@ router.post("/truck/ratings", async function (req, res) {
       console.log(totalRatings, "totalRatings");
       const avgRatings = (totalRatings/ratingCount);
       console.log(avgRatings, "avgRatings");
-      const truckUpdate = await Truck.findOneAndUpdate({_id: body.truckId}, {ratings: avgRatings, no_of_ratings: ratingCount+1});
+      await Truck.findOneAndUpdate({_id: body.truckId}, {ratings: avgRatings, no_of_ratings: ratingCount+1});
       const updatedTruck = await Truck.findOne({_id: body.truckId});
       res.send(updatedTruck);
     } catch (error) {

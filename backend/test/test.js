@@ -1,10 +1,8 @@
 
-var request = require("supertest");
-var app = require('../index');
+const request = require("supertest");
+const app = require('../index');
 const {expect} = require('chai');
-const assert = require("assert");
 const UserController = require("../controllers/UserController");
-const router = require("express").Router();
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const Role = require("../models/role");
@@ -12,10 +10,6 @@ const Vendor = require("../models/vendor");
 const Truck = require("../models/trucks");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const jwtDecode = require("jwt-decode");
-const { Model } = require("mongoose");
-const { findOne } = require("../models/user");
-const { findOneAndUpdate } = require("../models/admin");
 const TOKEN_KEY = "DCMXIXvHBH";
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -1684,8 +1678,6 @@ describe("POST /role/get", function () {
 
 describe("GET /roles/getall", () => {
   it("should get all roles", async () => {
-    const roles = [      { roleName: "Manager" },      { roleName: "Employee" },      { roleName: "Customer" },    ];
-    // await Role.insertMany(roles);
     const response = await request(app).get("/roles/getall");
     expect(response.status).to.equal(200);
     expect(response.body.length).to.equal(14);
