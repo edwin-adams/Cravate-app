@@ -8,8 +8,6 @@ test:
   script: 
     - apt-get update
     - apt-get install -y curl
-    - apt-get install -y openssh-client
-    - apt-get install -y git
     - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
     - export NVM_DIR="$HOME/.nvm"
     - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
