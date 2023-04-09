@@ -208,15 +208,65 @@ Role: VENDOR
 
 Role: Admin
 1. After selecting the role Admin, we will be redirected to Admin login page.
+<figure align="center">
+  <img src="images\admin_login.jpeg" alt="Admin Login" height="200" />
+  <figcaption>Admin Login.</figcaption>
+</figure>
 2. After the admin logs in, they will be able to see a screen that has listed roles which are used in the application.
+
+<figure align="center">
+  <img src="images\admin_homepage.jpeg" alt="Admin HomePage" height="200" />
+  <figcaption>Admin Homepage.</figcaption>
+</figure>
+
 3. If the admin selects user, they will be able to see all users listed 
+
+<figure align="center">
+  <img src="images\user_list.jpeg" alt="User list" height="200" />
+  <figcaption>User list.</figcaption>
+</figure>
+
 4. User details such as Name and username are displayed when clicked. Admin has the option to delete the record.
+
+<figure align="center">
+  <img src="images\user_details.jpeg" alt="User details" height="200" />
+  <figcaption>User details.</figcaption>
+</figure>
+
 5. If the admin clicks on the vendor role in home page, they will be able to see all the vendors listed
-6. When the admin clicks on a vendor, they will be able to see vendor details, name and username, 
-7. The admin can delete the vendor from the system.
-8. The admin can view the details of a particular food truck by clicking on it, which is connected to the corresponding vendor.
-9. If the admin selects food truck on the home page, they will be redirected to list food truck page which lists all food trucks
-10.When admin clicks on any food truck they will be shown details for that particular food truck
+
+<figure align="center">
+  <img src="images\vendor_list.jpeg" alt="Vendor list" height="200" />
+  <figcaption>Vendor list.</figcaption>
+</figure>
+
+6. When the admin clicks on a vendor, they will be able to see vendor details, name and username,the admin can delete the vendor from the system.
+
+<figure align="center">
+  <img src="images\vendor_details.jpeg" alt="Vendor details" height="200" />
+  <figcaption>Vendor details.</figcaption>
+</figure>
+
+7. The admin can view the details of a particular food truck by clicking on it, which is connected to the corresponding vendor.
+
+<figure align="center">
+  <img src="images\food_truck_details.jpeg" alt="Food Truck Details" height="200" />
+  <figcaption>Food Truck details.</figcaption>
+</figure>
+
+8. If the admin selects food truck on the home page, they will be redirected to list food truck page which lists all food trucks
+
+<figure align="center">
+  <img src="images\food_truck_list.jpeg" alt="Food Truck list" height="200" />
+  <figcaption>Food Truck list.</figcaption>
+</figure>
+
+9. When admin clicks on any food truck they will be shown details for that particular food truck
+
+<figure align="center">
+  <img src="images\food_truck_details.jpeg" alt="Food Truck Details" height="200" />
+  <figcaption>Food Truck details.</figcaption>
+</figure>
 
 
 
