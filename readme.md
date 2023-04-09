@@ -1,12 +1,12 @@
 <h1 style ="font-family: Arial" align="center"><b>Cravate</b></h1>
 
-<p style ="font-family: Arial">Cravate is a android mobile application that can be used to locate nearby food trucks and be directed towards them using google maps.</p>
+<p style ="font-family: Arial">The Cravate app, which is compatible with Android devices, enables users to find food trucks in close proximity and receive navigation instructions via Google Maps.</p>
 
 <hr>
 
 <h2 style ="font-family: Arial">Dependencies</h2> 
 
-<b>Dependencies for node js backend</b><br>
+<b>Dependencies for nodejs backend</b><br>
 
 ```
 "chai-as-promised": "^7.1.1",
@@ -98,7 +98,7 @@ Frontend for this application has been written using React native. To build the 
 </figure>
 
 
-3. To launch the project in local/development mode, run the command `npx expo start`.  This will compile the application and host it on expo servers and display a QR code through which the application can be accessed using Expo Go app available in Android Playstore and Apple app store.
+3. To launch the project in local/development mode, run the command `npx expo start`. Compiling the application and deploying it on Expo servers will generate a QR code. This code can be scanned using the Expo Go app, which is accessible from the Android Playstore and Apple app store, to access the application.
 
 <figure align="center">
   <img src="images/frontend_run.png" alt="Launch react native application" width="600" />
@@ -122,8 +122,7 @@ Frontend for this application has been written using React native. To build the 
   <figcaption>Building apk file.</figcaption>
 </figure>
 
-The entry point for application is App.js and all subsequent files can be found under ‘screens’ folder.  Assets folder contains the images and logos used in application, app.json file contains application metadata, such as name of application, version, Google maps API key.
-
+The starting point of the application is App.js, and all the other files can be located in the "screens" folder. The "assets" folder contains the images and logos used in the application, while the "app.json" file holds application metadata such as the name of the app, its version, and the Google Maps API key.
 
 <hr>
 
@@ -197,7 +196,7 @@ Role: VENDOR
 
 6. Food truck details can be added by vendors.
 7. Vendors are prompted to login before they can edit their dishes or perform any other action.
-8. Vendors can toggle dishes between available and unavailable, add new dishes to the menu, change their starting or ending times, and update their location.
+8. The vendors have the ability to switch the status of their dishes from available to unavailable, modify the menu by adding new dishes, adjust the start and end times of their services, and update their location.
 
 <figure align="center">
   <img src="images/vendor_homepage.jpeg" alt="Vendor Homepage" height="400" />
@@ -241,7 +240,7 @@ Role: Admin
   <figcaption>Vendor list.</figcaption>
 </figure>
 
-6. When the admin clicks on a vendor, they will be able to see vendor details, name and username,the admin can delete the vendor from the system.
+6. Upon the administrator's selection of a particular vendor, the system will display the vendor's comprehensive information, including their name and username. The administrator will have the privilege to remove the vendor from the system.
 
 <figure align="center">
   <img src="images/vendor_details.jpeg" alt="Vendor details" height="400" />
@@ -255,14 +254,14 @@ Role: Admin
   <figcaption>Food Truck details.</figcaption>
 </figure>
 
-8. If the admin selects food truck on the home page, they will be redirected to list food truck page which lists all food trucks
+8. Upon selecting the "food truck" option on the homepage, the user will be redirected to a web page that displays a list of all available food trucks.
 
 <figure align="center">
   <img src="images/food_truck_list.jpeg" alt="Food Truck list" height="400" />
   <figcaption>Food Truck list.</figcaption>
 </figure>
 
-9. When admin clicks on any food truck they will be shown details for that particular food truck
+9. Upon an administrator clicking on a specific food truck, the system will retrieve and display the relevant information and details pertaining to that food truck.
 
 <figure align="center">
   <img src="images/food_truck_details.jpeg" alt="Food Truck Details" height="400" />
