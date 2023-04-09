@@ -128,7 +128,7 @@ The entry point for application is App.js and all subsequent files can be found 
 
 <h2 style ="font-family: Arial">Usage Scenario</h2> 
 
-When a user starts the application for the first time, they 
+When a user starts the application for the first time, they will be able to select the role they want to choose 
 <figure align="center">
   <img src="images\splash_screen.jpeg" alt="Splash Screen" height="200" />
   <figcaption>Splash Screen.</figcaption>
@@ -157,6 +157,11 @@ Role: USER
 8. Clicking on a food truck marker reveals a 'view details' button that displays the dishes available and average customer ratings.
 9. Clicking on a marker also reveals a 'directions' icon, located at the bottom right corner of the app.
 
+<figure align="center">
+  <img src="images\user_homepage.jpeg" alt="User homepage" height="200" />
+  <figcaption>User Homepage.</figcaption>
+</figure>
+
 10. Clicking on the 'directions' icon will redirect the user to Google maps with the customer's current location and food truck's location as the destination.
 11. The app bar available at the top of the page allows the customer to sign out or delete their account.
 12. The app provides an interactive map interface for easy navigation and location tracking.
@@ -167,13 +172,37 @@ Role: USER
 
 Role: VENDOR
 1. After selecting the role Vendor, we will be redirected to vendor login page
+
+<figure align="center">
+  <img src="images\vendor_login.jpeg" alt="Vendor login" height="200" />
+  <figcaption>Vendor login.</figcaption>
+</figure>
+
 2. Users can either login with their existing username and password or sign up using the register page.
 3. Vendor is prompted to fill their details and submit the form.
+
+<figure align="center">
+  <img src="images\vendor_registration.jpeg" alt="Vendor login" height="200" />
+  <figcaption>Vendor registration.</figcaption>
+</figure>
+
 4. Upon submission, they are redirected to the "Add food truck details" page.
 5. They are asked to enter all the necessary details about their food truck, including name, address, operating hours, menu, and location.
+
+<figure align="center">
+  <img src="images\add_food_truck.jpeg" alt="Add Food Truck" height="200" />
+  <figcaption>Add Food Truck.</figcaption>
+</figure>
+
 6. Food truck details can be added by vendors.
 7. Vendors are prompted to login before they can edit their dishes or perform any other action.
 8. Vendors can toggle dishes between available and unavailable, add new dishes to the menu, change their starting or ending times, and update their location.
+
+<figure align="center">
+  <img src="images\vendor_homepage.jpeg" alt="Vendor Homepage" height="200" />
+  <figcaption>Vendor Home Page.</figcaption>
+</figure>
+
 9. Vendors can sign out of their account or delete it entirely through the app bar.
 10. The app allows for easy management of a food truck's menu, schedule, and location.
 
