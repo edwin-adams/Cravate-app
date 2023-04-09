@@ -1,4 +1,5 @@
 const Vendor = require("../models/vendor");
+const Truck = require("../models/trucks");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "DCMXIXvHBH";
@@ -31,6 +32,70 @@ async function vendorSignUp(req, res) {
     }
 }
 
+async function vendorLogin(req, res) {
+    const { username, password } = req.body;
+    const vendor = await Vendor.findOne({ username: username });
+    if (vendor == null) {
+    res.send("Vendor Not found");
+    return;
+    }
+    const comparePassword = bcrypt.compareSync(password, vendor.password);
+    if (comparePassword == true) {
+    return res.send("Successfully logged in.");
+    }
+    return res.send("Incorrect Password.");
+}
+
+async function vendorGet(req, res) {
+    try {
+        const vendor = req.body.username;
+        const getVendor = await Vendor.findOne({ username: vendor });
+        if (getVendor == null) {
+            res.send("Vendor not found.");
+        } else {
+            res.send(getVendor);
+        }
+    } catch (error) {
+        console.log("Error:", error);
+    }
+}
+
+async function getAllVendors(req, res) {
+    const listVendors = await Vendor.find();
+    if (listVendors.length === 0) {
+      return res.send({ message: "No vendors found" });
+    } else {
+      res.send(listVendors);
+    }
+}  
+
+async function deleteVendor(req, res) {
+    const { username } = req.body;
+  
+    // Find the vendor with the given username
+    const vendor = await Vendor.findOne({ username });
+  
+    if (!vendor) {
+      // If no vendor found, return an error message
+      return res.send("No such vendor exists.");
+    }
+  
+    // Find the associated food truck, if any
+    const foodTruck = await Truck.findOne({ vendorId: vendor._id });
+  
+    // Delete the vendor
+    await Vendor.deleteOne({ username });
+  
+    if (foodTruck) {
+      // If there is an associated food truck, delete it as well
+      await Truck.findOneAndDelete({ vendorId: vendor._id });
+    }
+  
+    // Return success message
+    return res.send("Vendor Deleted.");
+}
+  
+
 module.exports = {
-    vendorSignUp
+    vendorSignUp,vendorLogin,vendorGet, getAllVendors, deleteVendor
 };

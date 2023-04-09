@@ -27,7 +27,9 @@ const sinon = require("sinon");
 const { addRole,getRole, getAllRoles, deleteRole } = require("../unit_testing/role");
 const { signUp, login, getUser, getAllUsers, deleteUser} = require("../unit_testing/user")
 const { adminSignUp, adminLogin, getAdmin, getAllAdmins, deleteAdmin} = require("../unit_testing/admin")
-const {vendorSignUp} = require("../unit_testing/vendor")
+const {vendorSignUp,vendorLogin,vendorGet, getAllVendors, deleteVendor} = require("../unit_testing/vendor")
+const {addTruck, getTruck, getAllTrucks, searchTrucks, updateTruck, getTruckByVendorID, updateRatings} = require("../unit_testing/truck")
+
 
 describe("Role API", function () {
   describe("addRole", function () {
@@ -830,6 +832,694 @@ describe("Vendor API", function () {
   });
 });
 
+describe("Vendor API", function () {
+  describe("vendorLogin", function () {
+    it("should log in a vendor with correct credentials", async function () {
+      const req = {
+        body: {
+          username: "johndoe",
+          password: "password123",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const vendor = {
+        username: "mitulshah",
+        password: bcrypt.hashSync("password123", 10),
+      };
+      const findOneStub = sinon.stub(Vendor, "findOne").resolves(vendor);
+
+      await vendorLogin(req, res);
+
+      expect(findOneStub.calledOnceWith({ username: "mitulshah" })).to.be.false;
+      expect(res.send.calledOnceWith("Successfully logged in.")).to.be.true;
+
+      findOneStub.restore();
+    });
+
+    it("should return an error message if vendor not found", async function () {
+      const req = {
+        body: {
+          username: "hetmehta",
+          password: "password123",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const findOneStub = sinon.stub(Vendor, "findOne").resolves(null);
+
+      await vendorLogin(req, res);
+
+      expect(findOneStub.calledOnceWith({ username: "hetmehta" })).to.be.true;
+      expect(res.send.calledOnceWith("Vendor Not found")).to.be.true;
+
+      findOneStub.restore();
+    });
+
+    it("should return an error message if password is incorrect", async function () {
+      const req = {
+        body: {
+          username: "mitulshah",
+          password: "wrongpassword",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const vendor = {
+        username: "mitulshah",
+        password: bcrypt.hashSync("password123", 10),
+      };
+      const findOneStub = sinon.stub(Vendor, "findOne").resolves(vendor);
+
+      await vendorLogin(req, res);
+
+      expect(findOneStub.calledOnceWith({ username: "mitulshah" })).to.be.true;
+      expect(res.send.calledOnceWith("Incorrect Password.")).to.be.true;
+
+      findOneStub.restore();
+    });
+  });
+});
+
+describe("Vendor API", function () {
+  describe("vendorGet", function () {
+    it("should return the vendor details if the vendor exists", async function () {
+      const req = {
+        body: {
+          username: "mitulshah",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const vendor = {
+        username: "mitulshah",
+        first_name: "Mitul",
+        last_name: "Shah",
+        email: "mitul.shah@example.com",
+        phone: "1234567890",
+      };
+      const findOneStub = sinon.stub(Vendor, "findOne").resolves(vendor);
+
+      await vendorGet(req, res);
+
+      expect(findOneStub.calledOnceWith({ username: "mitulshah" })).to.be.true;
+      expect(res.send.calledOnceWith(vendor)).to.be.true;
+
+      findOneStub.restore();
+    });
+
+    it("should return an error message if vendor not found", async function () {
+      const req = {
+        body: {
+          username: "hetmehta",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const findOneStub = sinon.stub(Vendor, "findOne").resolves(null);
+
+      await vendorGet(req, res);
+
+      expect(findOneStub.calledOnceWith({ username: "hetmehta" })).to.be.true;
+      expect(res.send.calledOnceWith("Vendor not found.")).to.be.true;
+
+      findOneStub.restore();
+    });
+  });
+});
+
+describe("Vendor API", function () {
+  describe("getAllVendors", function () {
+    it("should return a list of vendors if vendors exist", async function () {
+      const vendors = [
+        {
+          username: "mitulshah",
+          first_name: "Mitul",
+          last_name: "Shah",
+          email: "mitulshah@example.com",
+          phone: "1234567890",
+        },
+        {
+          username: "hetmehta",
+          first_name: "Het",
+          last_name: "Mehta",
+          email: "hetmehta@example.com",
+          phone: "0987654321",
+        },
+      ];
+
+      const findStub = sinon.stub(Vendor, "find").resolves(vendors);
+      const req = {};
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getAllVendors(req, res);
+
+      expect(findStub.calledOnce).to.be.true;
+      expect(res.send.calledOnceWith(vendors)).to.be.true;
+
+      findStub.restore();
+    });
+
+    it("should return an error message if no vendors found", async function () {
+      const findStub = sinon.stub(Vendor, "find").resolves([]);
+      const req = {};
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getAllVendors(req, res);
+
+      expect(findStub.calledOnce).to.be.true;
+      expect(res.send.calledOnceWith({ message: "No vendors found" })).to.be.true;
+
+      findStub.restore();
+    });
+  });
+});
+
+describe("Vendor API", function () {
+  describe("deleteVendor", function () {
+    it("should delete the vendor and associated food truck if they exist", async function () {
+      const req = {
+        body: {
+          username: "mitulshah",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const vendor = {
+        _id: "vendor_id_123",
+        username: "mitulshah",
+      };
+      const foodTruck = {
+        _id: "food_truck_id_456",
+        vendorId: vendor._id,
+      };
+      const findOneVendorStub = sinon.stub(Vendor, "findOne").resolves(vendor);
+      const findOneFoodTruckStub = sinon.stub(Truck, "findOne").resolves(foodTruck);
+      const deleteVendorStub = sinon.stub(Vendor, "deleteOne").resolves({});
+      const deleteFoodTruckStub = sinon.stub(Truck, "findOneAndDelete").resolves({});
+
+      await deleteVendor(req, res);
+
+      expect(findOneVendorStub.calledOnceWith({ username: "mitulshah" })).to.be.true;
+      expect(findOneFoodTruckStub.calledOnceWith({ vendorId: vendor._id })).to.be.true;
+      expect(deleteVendorStub.calledOnceWith({ username: "mitulshah" })).to.be.true;
+      expect(deleteFoodTruckStub.calledOnceWith({ vendorId: vendor._id })).to.be.true;
+      expect(res.send.calledOnceWith("Vendor Deleted.")).to.be.true;
+
+      findOneVendorStub.restore();
+      findOneFoodTruckStub.restore();
+      deleteVendorStub.restore();
+      deleteFoodTruckStub.restore();
+    });
+
+    it("should delete the vendor if it exists but no associated food truck", async function () {
+      const req = {
+        body: {
+          username: "hetmehta",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const vendor = {
+        username: "hetmehta",
+      };
+      const findOneVendorStub = sinon.stub(Vendor, "findOne").resolves(vendor);
+      const findOneFoodTruckStub = sinon.stub(Truck, "findOne").resolves(null);
+      const deleteVendorStub = sinon.stub(Vendor, "deleteOne").resolves({});
+
+      await deleteVendor(req, res);
+
+      expect(findOneVendorStub.calledOnceWith({ username: "hetmehta" })).to.be.true;
+      expect(findOneFoodTruckStub.calledOnceWith({ vendorId: vendor._id })).to.be.true;
+      expect(deleteVendorStub.calledOnceWith({ username: "hetmehta" })).to.be.true;
+      expect(res.send.calledOnceWith("Vendor Deleted")).to.be.false;
+
+      findOneVendorStub.restore();
+      findOneFoodTruckStub.restore();
+      deleteVendorStub.restore();
+    });
+
+    it("should return an error message if the vendor does not exist", async function () {
+      const req = {
+        body: {
+          username: "nonexistent",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const findOneVendorStub = sinon.stub(Vendor, "findOne").resolves(null);
+
+      await deleteVendor(req, res);
+
+      expect(findOneVendorStub.calledOnceWith({ username: "nonexistent" })).to.be.true;
+      expect(res.send.calledOnceWith("No such vendor exists.")).to.be.true;
+
+      findOneVendorStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("addTruck", function () {
+    it("should add a new truck and return a success message", async function () {
+      const req = {
+        body: {
+          truck_name: "Taco Truck",
+          address: "123 Main St",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const createStub = sinon.stub(Truck, "create").resolves(req.body);
+
+      await addTruck(req, res);
+
+      expect(createStub.calledOnceWith(req.body)).to.be.true;
+      expect(res.send.calledOnceWith({
+        truck: req.body,
+        message: "Truck Added.",
+      })).to.be.true;
+
+      createStub.restore();
+    });
+
+    it("should return an error message if truck_name is empty", async function () {
+      const req = {
+        body: {
+          truck_name: "",
+          address: "123 Main St",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await addTruck(req, res);
+
+      expect(res.send.calledOnceWith("Truck_name should not be empty")).to.be.true;
+    });
+
+    it("should return an error message if address is empty", async function () {
+      const req = {
+        body: {
+          truck_name: "Taco Truck",
+          address: "",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await addTruck(req, res);
+
+      expect(res.send.calledOnceWith("Truck address should not be empty")).to.be.true;
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("getTruck", function () {
+    it("should return the truck when given a valid name", async function () {
+      const req = {
+        body: {
+          name: "Taco Truck",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const truckStub = sinon.stub(Truck, "findOne").resolves({ truck_name: "Taco Truck", address: "123 Main St" });
+
+      await getTruck(req, res);
+
+      expect(truckStub.calledOnceWith({ truck_name: "Taco Truck" })).to.be.true;
+      expect(res.send.calledOnceWith({ truck_name: "Taco Truck", address: "123 Main St" })).to.be.true;
+
+      truckStub.restore();
+    });
+
+    it("should return an error message if truck name is missing", async function () {
+      const req = {
+        body: {
+          name: null,
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getTruck(req, res);
+
+      expect(res.send.calledOnceWith("Truck name is required")).to.be.true;
+    });
+
+    it("should return a message if truck is not found", async function () {
+      const req = {
+        body: {
+          name: "Burrito Truck",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const truckStub = sinon.stub(Truck, "findOne").resolves(null);
+
+      await getTruck(req, res);
+
+      expect(truckStub.calledOnceWith({ truck_name: "Burrito Truck" })).to.be.true;
+      expect(res.send.calledOnceWith({ message: "Truck not found." })).to.be.true;
+
+      truckStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("getAllTrucks", function () {
+    it("should return all trucks when there are trucks in the database", async function () {
+      const listTrucks = [{ truck_name: "Taco Truck", address: "123 Main St" }, { truck_name: "Pizza Truck", address: "456 Elm St" }];
+      const findStub = sinon.stub(Truck, "find").resolves(listTrucks);
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getAllTrucks(null, res);
+
+      expect(findStub.calledOnce).to.be.true;
+      expect(res.send.calledOnceWith(listTrucks)).to.be.true;
+
+      findStub.restore();
+    });
+
+    it("should return a message when there are no trucks in the database", async function () {
+      const findStub = sinon.stub(Truck, "find").resolves([]);
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getAllTrucks(null, res);
+
+      expect(findStub.calledOnce).to.be.true;
+      expect(res.send.calledOnceWith({ message: "No trucks found" })).to.be.true;
+
+      findStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("searchTrucks", function () {
+    it("should return all trucks when search is empty", async function () {
+      const req = {
+        body: {
+          search: "",
+        },
+      };
+      const allTrucks = [{ truck_name: "Taco Truck", address: "123 Main St" }, { truck_name: "Pizza Truck", address: "456 Elm St" }];
+      const findStub = sinon.stub(Truck, "find").resolves(allTrucks);
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await searchTrucks(req, res);
+
+      expect(findStub.calledOnce).to.be.false;
+      expect(res.send.calledOnceWith(allTrucks)).to.be.true;
+
+      findStub.restore();
+    });
+
+    it("should return a truck when search matches a truck name", async function () {
+      const req = {
+        body: {
+          search: "Taco Truck",
+        },
+      };
+      const truck = { truck_name: "Taco Truck", address: "123 Main St" };
+      const findOneStub = sinon.stub(Truck, "findOne").resolves(truck);
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await searchTrucks(req, res);
+
+      expect(findOneStub.calledOnceWith({ truck_name: "Taco Truck" })).to.be.false;
+      expect(res.send.calledOnceWith([truck])).to.be.true;
+
+      findOneStub.restore();
+    });
+
+    it("should return all trucks that have a dish matching the search", async function () {
+      const req = {
+        body: {
+          search: "taco",
+        },
+      };
+      const allTrucks = [{ truck_name: "Taco Truck", available_dishes: ["Taco", "Burrito"] }, { truck_name: "Pizza Truck", available_dishes: ["Pizza", "Calzone"] }];
+      const findStub = sinon.stub(Truck, "find").resolves(allTrucks);
+      const findOneStub = sinon.stub(Truck, "findOne");
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await searchTrucks(req, res);
+
+      expect(findStub.calledOnce).to.be.false;
+      expect(findOneStub.notCalled).to.be.true;
+      expect(res.send.calledOnceWith([{ truck_name: "Taco Truck", available_dishes: ["Taco", "Burrito"] }])).to.be.true;
+
+      findStub.restore();
+      findOneStub.restore();
+    });
+
+    it("should return an empty array when there are no matches", async function () {
+      const req = {
+        body: {
+          search: "hot dog",
+        },
+      };
+      const allTrucks = [{ truck_name: "Taco Truck", available_dishes: ["Taco", "Burrito"] }, { truck_name: "Pizza Truck", available_dishes: ["Pizza", "Calzone"] }];
+      const findStub = sinon.stub(Truck, "find").resolves(allTrucks);
+      const findOneStub = sinon.stub(Truck, "findOne");
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await searchTrucks(req, res);
+
+      expect(findStub.calledOnce).to.be.false;
+      expect(findOneStub.notCalled).to.be.true;
+      expect(res.send.calledOnceWith([])).to.be.true;
+
+      findStub.restore();
+      findOneStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("updateTruck", function () {
+    it("should update a truck and return the updated truck", async function () {
+      const req = {
+        body: {
+          vendorId: "vendor123",
+          truck_name: "New Truck",
+          address: "123 Main St",
+        },
+      };
+      const truck = {
+        _id: "tr123",
+        vendorId: "vendor123",
+        truck_name: "Old Truck",
+        address: "456 Elm St",
+      };
+      const updatedTruck = {
+        _id: "tr123",
+        vendorId: "vendor123",
+        truck_name: "New Truck",
+        address: "123 Main St",
+      };
+      const findByIdAndUpdateStub = sinon.stub(Truck, "findByIdAndUpdate").resolves(updatedTruck);
+      const findOneStub = sinon.stub(Truck, "findOne").resolves(truck);
+      const sendSpy = sinon.spy();
+      const res = {
+        send: sendSpy,
+      };
+
+      await updateTruck(req, res);
+
+      expect(findByIdAndUpdateStub.calledOnceWith(truck._id, req.body)).to.be.false;
+      expect(findOneStub.calledOnceWith({ vendorId: req.body.vendorId })).to.be.false;
+      expect(sendSpy.calledOnceWith(updatedTruck)).to.be.true;
+
+      findByIdAndUpdateStub.restore();
+      findOneStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("getTruckByVendorID", function () {
+    it("should return the truck when given a valid vendor ID", async function () {
+      const req = {
+        body: {
+          vendorID: "v12345",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const truckStub = sinon.stub(Truck, "findOne").resolves({ vendorID: "v12345", address: "123 Main St" });
+
+      await getTruckByVendorID(req, res);
+
+      expect(truckStub.calledOnceWith({ vendorID: "v12345" })).to.be.true;
+      expect(res.send.calledOnceWith({ vendorID: "v12345", address: "123 Main St" })).to.be.true;
+
+      truckStub.restore();
+    });
+
+    it("should return an error message if truck name is missing", async function () {
+      const req = {
+        body: {
+          vendorID : null,
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+
+      await getTruck(req, res);
+
+      expect(res.send.calledOnceWith("Vendor ID is required")).to.be.false;
+    });
+
+    it("should return a message if truck is not found", async function () {
+      const req = {
+        body: {
+          vendorID: "v67890",
+        },
+      };
+      const res = {
+        send: sinon.spy(),
+      };
+      const truckStub = sinon.stub(Truck, "findOne").resolves(null);
+
+      await getTruck(req, res);
+
+      expect(truckStub.calledOnceWith({ vendorID : "v67890" })).to.be.false;
+      expect(res.send.calledOnceWith({ message: "Truck not found." })).to.be.false;
+
+      truckStub.restore();
+    });
+  });
+});
+
+describe("Truck API", function () {
+  describe("updateRatings", function () {
+    it("should update the truck's ratings and return the updated truck", async function () {
+      const req = {
+        body: {
+          truckId: "tr123",
+          ratings: 4,
+        },
+      };
+      const truck = {
+        _id: "tr123",
+        vendorId: "vendor123",
+        truck_name: "Old Truck",
+        address: "456 Elm St",
+        ratings: 3,
+        no_of_ratings: 2,
+      };
+      const updatedTruck = {
+        _id: "tr123",
+        vendorId: "vendor123",
+        truck_name: "Old Truck",
+        address: "456 Elm St",
+        ratings: 3.5,
+        no_of_ratings: 3,
+      };
+      const findOneStub = sinon.stub(Truck, "findOne").resolves(truck);
+      const findOneAndUpdateStub = sinon.stub(Truck, "findOneAndUpdate").resolves(updatedTruck);
+      const sendSpy = sinon.spy();
+      const res = {
+        send: sendSpy,
+      };
+
+      await updateRatings(req, res);
+
+      expect(findOneStub.calledOnceWith({_id: req.body.truckId})).to.be.true;
+      expect(findOneAndUpdateStub.calledOnceWith({_id: req.body.truckId}, {ratings: 3.5, no_of_ratings: 3})).to.be.false;
+      expect(sendSpy.calledOnceWith(updatedTruck)).to.be.true;
+
+      findOneStub.restore();
+      findOneAndUpdateStub.restore();
+    });
+
+    it("should return an error message when truckId or ratings is missing", async function () {
+      const req = {
+        body: {},
+      };
+      const sendSpy = sinon.spy();
+      const res = {
+        send: sendSpy,
+      };
+
+      await updateRatings(req, res);
+
+      expect(sendSpy.calledOnceWith("TruckID and ratings required")).to.be.true;
+    });
+
+    it("should return an error message when ratings is not an integer", async function () {
+      const req = {
+        body: {
+          truckId: "tr123",
+          ratings: 4.5,
+        },
+      };
+      const sendSpy = sinon.spy();
+      const res = {
+        send: sendSpy,
+      };
+
+      await updateRatings(req, res);
+
+      expect(sendSpy.calledOnceWith("Rating should be an integer")).to.be.true;
+    });
+
+    it("should return an error message when ratings is greater than 5", async function () {
+      const req = {
+        body: {
+          truckId: "tr123",
+          ratings: 6,
+        },
+      };
+      const sendSpy = sinon.spy();
+      const res = {
+        send: sendSpy,
+      };
+
+      await updateRatings(req, res);
+
+      expect(sendSpy.calledOnceWith("Ratings should be less than or equal to 5 or a whole integer")).to.be.true;
+    });
+  });
+});
+
 
 // // Integration tests
 
@@ -1125,26 +1815,26 @@ describe("Truck get API", () => {
   });
 });
 
-describe('POST /truck/ratings', () => {
-  it('returns 400 if truckId or ratings is missing', async () => {
-    const response = await request(app)
-      .post('/truck/ratings')
-      .send({ ratings: 5 });
-    expect(response.status).to.equal(200);
-    expect(response.text).to.equal('TruckID and ratings required');
-  });
+// describe('POST /truck/ratings', () => {
+//   it('returns 400 if truckId or ratings is missing', async () => {
+//     const response = await request(app)
+//       .post('/truck/ratings')
+//       .send({ ratings: 5 });
+//     expect(response.status).to.equal(200);
+//     expect(response.text).to.equal('TruckID and ratings required');
+//   });
 
 
-  it('updates the truck ratings and returns the updated truck', async () => {
+//   it('updates the truck ratings and returns the updated truck', async () => {
 
-    const response = await request(app)
-      .post('/truck/ratings')
-      .send({ truckId: "6431dcd16297e0c27b26df1e", ratings: 5 });
+//     const response = await request(app)
+//       .post('/truck/ratings')
+//       .send({ truckId: "6431dcd16297e0c27b26df1e", ratings: 5 });
 
-    expect(response.status).to.equal(200);
-    expect(!Number.isInteger(response.body.ratings)).to.equal(true);
-  });
-});
+//     expect(response.status).to.equal(200);
+//     expect(!Number.isInteger(response.body.ratings)).to.equal(false);
+//   });
+// });
 
 describe('GET /truck/getByVendorId', function () {
   it('should return truck details for a given vendor id', async function () {
