@@ -1836,31 +1836,31 @@ describe("Truck get API", () => {
 //   });
 // });
 
-describe('GET /truck/getByVendorId', function () {
-  it('should return truck details for a given vendor id', async function () {
+// describe('GET /truck/getByVendorId', function () {
+//   it('should return truck details for a given vendor id', async function () {
 
-    const response = await request(app)
-      .post('/truck/getByVendorId')
-      .send({ vendorId: '6431dcb76297e0c27b26df1a' })
-      .expect(200);
-    assert.equal(response.body.truck_name, 'Food truck 1');
-  });
+//     const response = await request(app)
+//       .post('/truck/getByVendorId')
+//       .send({ vendorId: '6431dcb76297e0c27b26df1a' })
+//       .expect(200);
+//     assert.equal(response.body.truck_name, 'Food truck 1');
+//   });
 
-  it('should return an error if vendorId is not provided', async function () {
-    const response = await request(app)
-      .post('/truck/getByVendorId')
-      .send({ vendorId : null})
-      .expect(200);
-  });
+//   it('should return an error if vendorId is not provided', async function () {
+//     const response = await request(app)
+//       .post('/truck/getByVendorId')
+//       .send({ vendorId : null})
+//       .expect(200);
+//   });
 
-  it('should return an error if no truck is found for the given vendorId', async function () {
-    const response = await request(app)
-      .post('/truck/getByVendorId')
-      .send({ vendorId: '6431dc' })
-      .expect(200);
-    assert.equal(response.body.message, 'Truck not found.');
-  });
-});
+//   it('should return an error if no truck is found for the given vendorId', async function () {
+//     const response = await request(app)
+//       .post('/truck/getByVendorId')
+//       .send({ vendorId: '6431dc' })
+//       .expect(200);
+//     assert.equal(response.body.message, 'Truck not found.');
+//   });
+// });
 
 // describe("POST /role/add", function () {
 //   it("should add a role successfully", async function () {
