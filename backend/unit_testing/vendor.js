@@ -27,7 +27,7 @@ async function vendorSignUp(req, res) {
         );
         addVendor.token = token;
         res.send(addVendor);
-    } catch (Error) {
+    } catch (error) {
         res.send("Error occurred.");
     }
 }

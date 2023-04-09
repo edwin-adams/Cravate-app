@@ -10,7 +10,7 @@ const signUp = async (req, res) => {
       return res.status(400).send("Provide all details.");
     }
     const userExists = await User.findOne({ username: username });
-    if (!(userExists == null)) {
+    if (userExists !== null) {
       return res.send({ message: "User Exists" });
     }
     const addUser = {

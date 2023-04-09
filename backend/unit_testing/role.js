@@ -7,7 +7,7 @@ async function addRole(req, res) {
     res.send("Role Already Exists");
     return;
   }
-  const addRole = await Role.create({ roleName: body.role });
+  await Role.create({ roleName: body.role });
   res.send("Role Created");
 }
 

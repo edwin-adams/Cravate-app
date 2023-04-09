@@ -10,7 +10,7 @@ const adminSignUp = async (req, res) => {
       return res.status(400).send("Provide all details.");
     }
     const adminExists = await Admin.findOne({ username: username });
-    if (!(adminExists == null)) {
+    if (adminExists !== null) {
       return res.send({ message: "Admin Exists" });
     }
     const addAdmin = {

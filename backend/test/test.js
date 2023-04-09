@@ -1521,69 +1521,7 @@ describe("Truck API", function () {
 });
 
 
-// // Integration tests
-
-// describe("User signUp API", () => {
-//   beforeEach(async () => {
-//     // Clear the User collection before each test
-//     await User.deleteMany({});
-//   });
-
-//   it("should create a new user with valid details", async () => {
-//     const newUser = {
-//       first_name: "Doug",
-//       last_name: "Judy",
-//       username: "dougj",
-//       password: "password123",
-//     };
-
-//     const response = await request(app).post("/user/signUp").send(newUser);
-
-//     expect(response.status).to.equal(200);
-//     expect(response.body.first_name).to.equal(newUser.first_name);
-//     expect(response.body.last_name).to.equal(newUser.last_name);
-//     expect(response.body.username).to.equal(newUser.username);
-//     expect(response.body.role).to.equal("USER");
-//     expect(response.body.token).to.exist;
-//   });
-
-//   it("should return an error when required fields are missing", async () => {
-//     const newUser = {
-//       first_name: "Doug",
-//       last_name: "Judy",
-//       password: "password123",
-//     };
-
-//     const response = await request(app).post("/user/signUp").send(newUser);
-
-//     expect(response.status).to.equal(400);
-//     expect(response.text).to.equal("Provide all details.");
-//   // });
-
-//   // it("should return an error when username already exists", async () => {
-//   //   const existingUser = {
-//   //     first_name: "Mitul",
-//   //     last_name: "Shah",
-//   //     username: "mitulshah",
-//   //     password: "password123",
-//   //   };
-//   //   await User.create(existingUser);
-
-//   //   const newUser = {
-//   //     first_name: "Mitul",
-//   //     last_name: "Shah",
-//   //     username: "mitulshah",
-//   //     password: "password123",
-//   //   };
-
-//   //   const response = await request(app).post("/user/signUp").send(newUser);
-//   //   console.log(response.status, "Status");
-//   //   console.log(response.body.message, "Message");
-//   //   expect(response.status).to.equal(200);
-//   //   expect(response.body.message).to.equal("User Exists");
-//   // });
-//   });
-// });
+// Integration tests
 
 describe("User login API", () => {
   let testUser;
@@ -1642,87 +1580,7 @@ describe("User login API", () => {
   });
 });
 
-// describe("User get API", () => {
-//   beforeEach(async () => {
-//     // Check if user exists
-//     const existingUser = await User.findOne({ username: "dougjade" });
-  
-//     // If user does not exist, create a test user
-//     if (!existingUser) {
-//       const newUser = {
-//         first_name: "Doug",
-//         last_name: "Judy",
-//         username: "dougj",
-//         password: bcrypt.hashSync("password123", 10),
-//         role: "USER"
-//       };
-//       await User.create(newUser);
-//     }
-//   });
-  
-
-//   it("should return the correct user information", async () => {
-//     const username = "dougjade";
-
-//     const response = await request(app).post("/user/get").send({ username });
-
-//     expect(response.status).to.equal(200);
-//     expect(response.body).to.have.property("username", username);
-//     expect(response.body).to.have.property("first_name", "Doug");
-//     expect(response.body).to.have.property("last_name", "Judy");
-//     expect(response.body).to.have.property("role", "USER");
-//   });
-
-//   it("should return an error when user is not found", async () => {
-//     const username = "nonexistentuser";
-
-//     const response = await request(app).post("/user/get").send({ username });
-
-//     expect(response.status).to.equal(200);
-//     expect(response.text).to.equal("User not found.");
-//   });
-// });
-
 chai.use(chaiHttp);
-
-// describe('Vendor sign up API', () => {
-//   it('should return 400 status code if any details are missing', async () => {
-//     const res = await chai
-//       .request(app)
-//       .post('/vendor/signUp')
-//       .send({ first_name: 'Doug', last_name: 'Judy', password: 'password123' });
-//     expect(res).to.have.status(400);
-//   });
-
-//   // it('should create a new vendor account and return a JWT token', async () => {
-//   //   const res = await chai
-//   //     .request(app)
-//   //     .post('/vendor/signUp')
-//   //     .send({
-//   //       first_name: 'Doug',
-//   //       last_name: 'Judy',
-//   //       username: 'dougj',
-//   //       password: 'password123',
-//   //     });
-//   //   expect(res).to.have.status(200);
-//   //   expect(res.body.token).to.exist;
-//   // });
-
-//   it('should return "Error occurred" message if there is an error', async () => {
-//     const res = await chai
-//       .request(app)
-//       .post('/vendor/signUp')
-//       .send({
-//         first_name: 'Doug',
-//         last_name: 'Judy',
-//         username: 'dougj',
-//         password: 'password123',
-//       });
-//     expect(res).to.have.status(200);
-//     expect(res.text).to.equal('Error occured.');
-//   });
-// });
-
 
 describe("Vendor login API", function () {
   it("should return error message if vendor is not found", function (done) {
@@ -1750,13 +1608,12 @@ describe("Vendor login API", function () {
   });
 });
 
-
 describe('Vendor get API', () => {
   it('should return 200 status code and vendor details if vendor is found', async () => {
     const vendorUsername = 'dougj';
-    const vendorData = {
-      username: vendorUsername,
-    };
+    // const vendorData = {
+    //   username: vendorUsername,
+    // };
     await request(app)
       .post('/vendor/get')
       .send({ username: vendorUsername })
@@ -1784,7 +1641,6 @@ describe('Vendor get API', () => {
       .expect('Vendor not found.');
   });
 });
-
 
 describe("Truck get API", () => {
   it("should return 200 status code", async () => {
@@ -1814,63 +1670,6 @@ describe("Truck get API", () => {
       });
   });
 });
-
-// describe('POST /truck/ratings', () => {
-//   it('returns 400 if truckId or ratings is missing', async () => {
-//     const response = await request(app)
-//       .post('/truck/ratings')
-//       .send({ ratings: 5 });
-//     expect(response.status).to.equal(200);
-//     expect(response.text).to.equal('TruckID and ratings required');
-//   });
-
-
-//   it('updates the truck ratings and returns the updated truck', async () => {
-
-//     const response = await request(app)
-//       .post('/truck/ratings')
-//       .send({ truckId: "6431dcd16297e0c27b26df1e", ratings: 5 });
-
-//     expect(response.status).to.equal(200);
-//     expect(!Number.isInteger(response.body.ratings)).to.equal(false);
-//   });
-// });
-
-// describe('GET /truck/getByVendorId', function () {
-//   it('should return truck details for a given vendor id', async function () {
-
-//     const response = await request(app)
-//       .post('/truck/getByVendorId')
-//       .send({ vendorId: '6431dcb76297e0c27b26df1a' })
-//       .expect(200);
-//     assert.equal(response.body.truck_name, 'Food truck 1');
-//   });
-
-//   it('should return an error if vendorId is not provided', async function () {
-//     const response = await request(app)
-//       .post('/truck/getByVendorId')
-//       .send({ vendorId : null})
-//       .expect(200);
-//   });
-
-//   it('should return an error if no truck is found for the given vendorId', async function () {
-//     const response = await request(app)
-//       .post('/truck/getByVendorId')
-//       .send({ vendorId: '6431dc' })
-//       .expect(200);
-//     assert.equal(response.body.message, 'Truck not found.');
-//   });
-// });
-
-// describe("POST /role/add", function () {
-//   it("should add a role successfully", async function () {
-//     const response = await request(app)
-//       .post("/role/add")
-//       .send({ role: "Customer1" });
-//     expect(response.status).to.equal(200);
-//     expect(response.text).to.deep.equal("Role Created");
-//   }, 5000);
-// });
 
 describe("POST /role/get", function () {
   it("should get a role by ID", async function () {
