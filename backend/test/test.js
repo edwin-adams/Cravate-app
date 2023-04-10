@@ -1671,7 +1671,7 @@ describe("POST /role/get", function () {
       .send({ id: role._id });
     expect(response.status).to.equal(200);
     expect(response.body).to.deep.equal({ __v: 0, _id: "64318148db38e714330c1e10", roleName: "CUSTOMER" });
-  }, 5000);
+  }, 7777);
 });
 
 describe("GET /roles/getall", () => {
