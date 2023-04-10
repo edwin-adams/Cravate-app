@@ -34,7 +34,7 @@ sonarTest:
     paths: 
       - .sonar/cache 
   script:
-    - sonar-scanner -Dsonar.projectKey=cravate -Dsonar.sources=. -Dsonar.host.url=http://34.201.249.84:9000 -Dsonar.token=sqp_1f0696df7b143678f04e1269c6abd00f3e859d7b 
+    - sonar-scanner -Dsonar.projectKey=cravate -Dsonar.sources=backend -Dsonar.host.url=http://34.201.249.84:9000 -Dsonar.token=sqp_1f0696df7b143678f04e1269c6abd00f3e859d7b 
   only: 
     - main 
   dependencies: 
